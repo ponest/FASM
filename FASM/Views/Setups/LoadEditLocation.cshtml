@@ -1,0 +1,14 @@
+﻿
+@model FASM_EN.Setups.Location
+
+<div id="Editstatus-area"></div>
+<form class="form" role="form">
+    <div class="form-group">
+        @Html.LabelFor(m => m.LocationName, new { @class = "col-md-6 control-label" })
+        @Html.TextBoxFor(m => m.LocationName, new { @class = "form-control", id = "EditLocationName" })
+        @Html.HiddenFor(m => m.LocationId, new { id = "EditLocationId" })
+    </div>
+</form>
+
+
+

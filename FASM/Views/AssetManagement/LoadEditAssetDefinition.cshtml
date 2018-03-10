@@ -1,0 +1,21 @@
+﻿@model FASM_EN.AssetManagement.AssetDefinition
+<div id="Editstatus-area"></div>
+    <form class="form" role="form">
+        <div class="form-group">
+            @Html.LabelFor(m => m.AssetName, new { @class = "col-md-6 control-label" })
+            @Html.TextBoxFor(m => m.AssetName, new { @class = "form-control", id = "EditAssetName" })
+            @Html.HiddenFor(m => m.AssetDefinitionId, new { id = "EditAssetDefinitionId" })
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.CategoryId, new { @class = "col-md-6 control-label" })
+            @Html.DropDownListFor(m => m.CategoryId, (IEnumerable<SelectListItem>)ViewData["CategoryName"], new { @class = "form-control" , id = "EditCategoryId" })
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.BrandName, new { @class = "col-md-6 control-label" })
+            @Html.TextBoxFor(m => m.BrandName, new { @class = "form-control", id = "EditBrandName" })
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.DepreciationMethod, new { @class = "col-md-6 control-label" })
+            @Html.DropDownListFor(m => m.DepreciationMethod, (IEnumerable<SelectListItem>)ViewData["DepreciationMethods"], new { @class = "form-control", id = "EditDepreciationMethod" })
+        </div>
+    </form>

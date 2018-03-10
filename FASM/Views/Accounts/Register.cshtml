@@ -1,0 +1,145 @@
+﻿@model FASM_EN.User.Users
+@{
+    ViewBag.Title = "Register";
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="~/Content/bootstrapLumen.min.css" rel="stylesheet" />
+    <link href="~/fonts/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="~/Content/Site.css" rel="stylesheet" />
+    <title>FASM|Login</title>
+    <link rel="shortcut icon" href="~/siteIcon.ico" type="image/x-icon" />
+    <link rel="icon" href="~/siteIcon.ico" type="image/ico" />
+</head>
+
+<body>
+
+    <div id="topNav">
+        <span>Fixed Assets Management System</span>
+    </div>
+    <div class="container">
+        <div id="status-area"></div>
+        <div id="registrationFormBody" class="col-md-8">
+            @using (Html.BeginForm("Register", "Home", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+            {
+                if (ViewBag.ReturnMsg == "Success")
+                {
+                    @Html.ValidationSummary("", new { @class = "alert-success HidDiv" })
+                }
+                else if (ViewBag.ReturnMsg == "Failed")
+                { @Html.ValidationSummary("", new { @class = "alert-danger HidDiv" })}
+
+                <h4>Create a new account.</h4>
+                <hr />
+                <div class="form-group row">
+                    @Html.LabelFor(m => m.FirstName, new { @class = "col-md-3 control-label" })
+                    <div class="col-md-6">
+                        @Html.TextBoxFor(m => m.FirstName, new { @class = "form-control" })
+                    </div>
+                </div>
+                <div class="form-group row">
+                    @Html.LabelFor(m => m.LastName, new { @class = "col-md-3 control-label" })
+                    <div class="col-md-6">
+                        @Html.TextBoxFor(m => m.LastName, new { @class = "form-control" })
+                    </div>
+                </div>
+                <div class="form-group row">
+                    @Html.LabelFor(m => m.Email, new { @class = "col-md-3 control-label" })
+                    <div class="col-md-6">
+                        @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
+                    </div>
+                </div>
+                <div class="form-group row">
+                    @Html.LabelFor(m => m.Username, new { @class = "col-md-3 control-label" })
+                    <div class="col-md-6">
+                        @Html.TextBoxFor(m => m.Username, new { @class = "form-control" })
+                    </div>
+                </div>
+                <div class="form-group row">
+                    @Html.LabelFor(m => m.PhoneNumber, new { @class = "col-md-3 control-label" })
+                    <div class="col-md-6">
+                        @Html.TextBoxFor(m => m.PhoneNumber, new { @class = "form-control" })
+                    </div>
+                </div>
+                <div class="form-group row">
+                    @Html.LabelFor(m => m.Password, new { @class = "col-md-3 control-label" })
+                    <div class="col-md-6">
+                        @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
+                    </div>
+                </div>
+                <div class="form-group row">
+                    @Html.LabelFor(m => m.ConfirmPassword, new { @class = "col-md-3 control-label" })
+                    <div class="col-md-6">
+                        @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control" })
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="offset-md-3 col-md-6">
+                        <input type="submit" class="btn btn-primary" id="btnSave" value="Register" />
+                        <input type="button" class="btn btn-default" value="Reset" id="btnReset" />
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+    <div id="LoginFooter">
+        <span>Powered By : ZE0 Company Limited</span>
+    </div>
+
+    <script src="~/Scripts/jQuery.js"></script>
+    <script src="~/Scripts/FASM.js"></script>
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+
+            if ($(".HidDiv").val != "") {
+                function HideDiv() {
+                    $(".HidDiv").hide();
+                }
+                setTimeout(HideDiv, 3000);
+            }
+
+            $("#btnReset").click(function () {
+                $(".form-control").val("");
+            })
+
+            $("#btnSave").click(function () {
+                var ValidateMsg = IsValidData();
+                if (ValidateMsg != "") {
+                    ShowNotice('#status-area',ValidateMsg,'Failure');
+                    return false;
+                }
+
+                function IsValidData() {
+                    var Password = $("#ConfirmPassword").val().toString();
+                    var ConfirmPassword = $("#Password").val().toString();
+
+                    if ($("#FirstName").val() == "") {
+                        return "Please fill in the first name.";
+                    } else if ($("#LastName").val() == "") {
+                        return "Please fill in the last name  .";
+                    } else if ($("#Email").val() == "") {
+                        return "Please fill in the Email  .";
+                    } else if ($("#PhoneNumber").val() == "") {
+                        return "Please fill in the Phone number  .";
+                    } else if ($("#Password").val() == "") {
+                        return "Please fill in the Password  .";
+                    } else if ($("#ConfirmPassword").val() == "") {
+                        return "Please fill in the Confirm password  .";
+                    } else if (Password != ConfirmPassword) {
+                        return "Password must match confirm password";
+                    }
+                    return "";
+                }
+            })
+        });
+    </script>
+</body>
+</html>
+

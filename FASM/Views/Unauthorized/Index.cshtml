@@ -1,0 +1,72 @@
+﻿
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="~/Content/bootstrapLumen.min.css" rel="stylesheet" />
+    <link href="~/fonts/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="~/Content/Site.css" rel="stylesheet" />
+    <title>FASM|Error 401</title>
+    <link rel="shortcut icon" href="~/siteIcon.ico" type="image/x-icon" />
+    <link rel="icon" href="~/siteIcon.ico" type="image/ico" />
+    <style>
+      
+        h1{
+            font-family:Georgia;
+            font-size:50px;
+            font-weight:bolder;
+        }
+        #container{
+            position:absolute;
+            top:10vh;
+            left:10%;
+            color:white;
+            z-index:2;
+            text-align:center;
+        }
+        #errorBody{
+            overflow:hidden;
+           
+        }
+        #img-bck{
+            height:50vh;
+        }
+        #shadow{
+            position:absolute;
+            top:0;
+            left:0;
+            height:100vh;
+            width:100%;
+            background-color:black;
+            opacity:0.5;
+        }
+       
+    </style>
+</head>
+<body id="errorBody">
+    
+    <img src="~/images/bckgnd.jpg"/>
+    <div id="shadow"></div>
+
+    <div id="container">
+        <div class="col-md-12">
+            <img src="~/images/jerry.gif" id="img-bck"/>
+        </div>
+
+        <div class="col-md-12" style="text-align:center">
+            <h1>Error 401 : Unauthorised Request</h1>
+            <h2>
+                You do not have permission to access the requested resource due to security restrictions.<br/>
+                In order to gain access, please contact your system administrator.
+            </h2>
+        </div>
+    </div>
+
+</body>
+</html>

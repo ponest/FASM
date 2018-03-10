@@ -1,0 +1,117 @@
+﻿
+@model FASM_EN.User.Users
+@using FASM.GeneralObjects
+@{
+    ViewBag.Title = "Edit Users";
+    ViewBag.HeaderText = "Edit Users";
+}
+
+@section Styles{
+    
+
+}
+@section breadcrumb{
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="@Url.Action("Index",ControllerName.Accounts)">Home</a></li>
+        <li class="breadcrumb-item"><a href="@Url.Action("IndexUsers",ControllerName.Accounts)">Users</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Edit User</li>
+    </ol>
+}
+
+<div class="tile">
+    <div class="container">
+        <div id="status-area"></div>
+        <div id="registrationFormBody" class="col-md-8">
+            @using (Html.BeginForm("EditUsers", "Accounts", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+            {
+                if (ViewBag.ReturnMsg == "Success")
+                {
+                    @Html.ValidationSummary("", new { @class = "alert-success HidDiv" })
+                }
+                else if (ViewBag.ReturnMsg == "Failed")
+                { @Html.ValidationSummary("", new { @class = "alert-danger HidDiv" })}
+             
+                <div class="form-group row">
+                    @Html.LabelFor(m => m.FirstName, new { @class = "col-md-3 control-label" })
+                    <div class="col-md-6">
+                        @Html.TextBoxFor(m => m.FirstName, new { @class = "form-control" })
+                    </div>
+                </div>
+                <div class="form-group row">
+                    @Html.LabelFor(m => m.LastName, new { @class = "col-md-3 control-label" })
+                    <div class="col-md-6">
+                        @Html.TextBoxFor(m => m.LastName, new { @class = "form-control" })
+                    </div>
+                </div>
+                <div class="form-group row">
+                    @Html.LabelFor(m => m.Email, new { @class = "col-md-3 control-label" })
+                    <div class="col-md-6">
+                        @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
+                    </div>
+                </div>
+                <div class="form-group row">
+                    @Html.LabelFor(m => m.Username, new { @class = "col-md-3 control-label" })
+                    <div class="col-md-6">
+                        @Html.TextBoxFor(m => m.Username, new { @class = "form-control" })
+                    </div>
+                </div>
+                <div class="form-group row">
+                    @Html.LabelFor(m => m.PhoneNumber, new { @class = "col-md-3 control-label" })
+                    <div class="col-md-6">
+                        @Html.TextBoxFor(m => m.PhoneNumber, new { @class = "form-control" })
+                    </div>
+                </div>
+                @Html.HiddenFor(m => m.Password)
+                @Html.HiddenFor(m => m.UserId)
+                <div class="form-group row">
+                    <div class="offset-md-3 col-md-6">
+                        <input type="submit" class="btn btn-primary" id="btnSave" value="Save" />
+                        <input type="button" class="btn btn-default" value="Reset" id="btnReset" />
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+@section Scripts{
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+
+            if ($(".HidDiv").val != "") {
+                function HideDiv() {
+                    $(".HidDiv").hide();
+                }
+                setTimeout(HideDiv, 3000);
+            }
+
+            $("#btnReset").click(function () {
+                $(".form-control").val("");
+            })
+
+            $("#btnSave").click(function () {
+                var ValidateMsg = IsValidData();
+                if (ValidateMsg != "") {
+                    ShowNotice('#status-area',ValidateMsg,'Failure');
+                    return false;
+                }
+
+                function IsValidData() {
+
+                    if ($("#FirstName").val() == "") {
+                        return "Please fill in the first name.";
+                    } else if ($("#LastName").val() == "") {
+                        return "Please fill in the last name  .";
+                    } else if ($("#Email").val() == "") {
+                        return "Please fill in the Email  .";
+                    } else if ($("#PhoneNumber").val() == "") {
+                        return "Please fill in the Phone number  .";
+                    }
+                    return "";
+                }
+            })
+        });
+    </script>
+
+}
+

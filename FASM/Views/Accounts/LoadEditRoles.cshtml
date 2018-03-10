@@ -1,0 +1,11 @@
+﻿@model FASM_EN.User.Roles
+
+<div id="Editstatus-area"></div>
+<form class="form" role="form">
+    <div class="form-group">
+        @Html.LabelFor(m => m.RoleName, new { @class = "col-md-6 control-label" })
+        @Html.TextBoxFor(m => m.RoleName, new { @class = "form-control", id = "EditRoleName" })
+        @Html.HiddenFor(m => m.RoleId, new { id = "EditRoleId" })
+    </div>
+</form>
+

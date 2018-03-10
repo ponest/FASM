@@ -1,24 +1,158 @@
-﻿body {
-    padding-top: 50px;
-    padding-bottom: 20px;
+﻿#topNav{
+    background-color:dodgerblue;
+    height:8vh;
+    color:white;
+    text-align:center;
+    padding-top:10px;
+}
+#topNav > span{
+    font-family:'Cambria Math';
+    font-size:x-large;
+    font-weight:700;
+    text-align:center;
+}
+#loginFormBody{
+    margin-top:20vh;
+    margin-left:30%;
+    background-color:whitesmoke;
+    padding:30px 1px 20px 30px;
+    border:2px solid dodgerblue;
+    border-radius:5px;
+}
+#btn-login{
+    background-color:dodgerblue;
+    color:white;
+}
+#registerLink{
+    margin-left:30px;
+}
+.Links, .Links:hover{
+    text-decoration:none;
+}   
+#LoginFooter{
+    background-color:black;
+    height:6vh;
+    width:100%;
+    color:white;
+    position:absolute;
+    bottom:0;
+    left:0;
+    text-align:center;
+    padding-top:10px;
+    clear:both;
+}
+#LoginFooter > span{
+    font-weight:700;
+    font-family:Georgia;
+    font-size:12px; 
+}
+#hrLine{
+    margin-top:-5px !important;
+}
+.form-horizontal .control-label{
+    text-align:right !important;
+}
+#registrationFormBody{
+    margin-top:5vh;
+}
+#registrationFormBody h4{
+    font-size:30px;
+    font-weight:bolder;
+
+}
+.ErrroMessage{
+    margin-top:3vh;
+    background-color:red;
+    color:white;
+   padding-left:12px;
+   font-family:Arial;
+   font-weight:bold;
+}
+.SuccessMsg{
+    margin-top:3vh;
+    background-color:forestgreen;
+    color:white;
+   padding-left:12px;
+   font-family:Arial;
+   font-weight:bold;
+}
+.HidDiv{
+    color:white;
+    font-family:Arial;
+   font-weight:bold;
+    z-index:20;
+}
+#loginFormBody #ErrorMsg{
+color:red;
+padding-left:60px;
+font-weight:bold;
+font-family:Arial;
+font-style:italic;
+}
+#loginFormBody #ErrorMsg ul li{
+    list-style-type:none;
+}
+.UserBtnSuccess{
+    background-color:whitesmoke;
+    border: 1px ridge  #26B99A;
+    color:#26B99A;
+    border-radius:4px;
+}
+.UserBtnDanger{
+    background-color:whitesmoke;
+    border: 1px ridge  #FF2820;
+    color:#FF2820;
+    border-radius:4px;
+}
+.UserBtnPrimary{
+    background-color:whitesmoke !important;
+    border: 1px solid #1E90FF !important;
+    color:dodgerblue !important;
+    font-weight:bold !important;
+}
+.btn-xs{
+    padding:0 5px;
 }
 
-/* Set padding to keep content from hitting the edges */
-.body-content {
-    padding-left: 15px;
-    padding-right: 15px;
-}
 
-/* Override the default bootstrap behavior where horizontal description lists 
-   will truncate terms that are too long to fit in the left column 
-*/
-.dl-horizontal dt {
-    white-space: normal;
+.breadcrumb > .active{
+    color:black !important;
+    font-weight:bold;
 }
-
-/* Set width on the form input elements since they're 100% wide by default */
-input,
-select,
-textarea {
-    max-width: 280px;
+.right_col{
+    background-color:white !important;
+}
+footer{
+    background-color:whitesmoke;
+}
+table.dataTable.no-footer {
+    border-bottom: 1px solid #ddd !important;
+}
+.horizontal-line{
+    margin-top:0 !important;
+}
+.addBtns{
+    padding:3px 4px !important;
+    font-weight:bold;
+    margin-bottom:2vh;
+    text-transform:none !important;
+}
+.breadcrumb{
+    height:3vh;
+    background-color: transparent!important;
+    margin-top:4vh;
+    border: none!important;
+}
+ol > li > a{
+    text-decoration:none !important;
+}
+ul > li{
+    list-style-type:none;
+}
+#LogoutBtn{
+    margin-top:8px;
+}
+.modal-header{
+    background-color:#009688 !important;
+    color:white !important;
 }

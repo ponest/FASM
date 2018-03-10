@@ -44,6 +44,17 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.EntityFramework">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.EntityFramework.2.2.1\lib\net45\Microsoft.AspNet.Identity.EntityFramework.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
       <Private>True</Private>
@@ -117,10 +128,18 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Action Filters\FASMAttribute.cs" />
+    <Compile Include="Action Filters\FASMUser.cs" />
+    <Compile Include="Action Filters\FASM_ExtendedMethods.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\AccountsController.cs" />
+    <Compile Include="Controllers\AssetManagementController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\SetupsController.cs" />
+    <Compile Include="Controllers\UnauthorizedController.cs" />
+    <Compile Include="GeneralObjects\General.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -128,25 +147,34 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.css" />
-    <Content Include="Content\bootstrap.min.css" />
-    <Content Include="favicon.ico" />
+    <Content Include="Content\bootstrapLumen.min.css" />
+    <Content Include="Content\Datatable.bootstrap.css" />
+    <Content Include="Content\daterangepicker.css" />
+    <Content Include="Content\main.css" />
+    <Content Include="Content\Site.css" />
+    <Content Include="Content\sweetalert.css" />
+    <Content Include="DataTables\buttons.bootstrap.css" />
+    <Content Include="DataTables\buttons.dataTables.css" />
+    <Content Include="DataTables\buttons.print.js" />
+    <Content Include="DataTables\datatable.js" />
+    <Content Include="DataTables\dataTables.bootstrap.css" />
+    <Content Include="DataTables\dataTables.buttons.js" />
+    <Content Include="DataTables\datatables.css" />
+    <Content Include="DataTables\datatables.js" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
-    <Content Include="Content\Site.css" />
+    <Content Include="images\bckgnd.jpg" />
+    <Content Include="images\favicon.ico" />
+    <Content Include="images\favicon.jpg" />
+    <Content Include="images\img.jpg" />
+    <Content Include="images\jerry.gif" />
     <Content Include="Scripts\bootstrap.js" />
-    <Content Include="Scripts\bootstrap.min.js" />
-    <None Include="Scripts\jquery-1.10.2.intellisense.js" />
-    <Content Include="Scripts\jquery-1.10.2.js" />
-    <Content Include="Scripts\jquery-1.10.2.min.js" />
-    <None Include="Scripts\jquery.validate-vsdoc.js" />
-    <Content Include="Scripts\jquery.validate.js" />
-    <Content Include="Scripts\jquery.validate.min.js" />
-    <Content Include="Scripts\jquery.validate.unobtrusive.js" />
-    <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
-    <Content Include="Scripts\modernizr-2.6.2.js" />
-    <Content Include="Scripts\respond.js" />
-    <Content Include="Scripts\respond.min.js" />
-    <Content Include="Scripts\_references.js" />
+    <Content Include="Scripts\Datatable.bootstrap.js" />
+    <Content Include="Scripts\FASM.js" />
+    <Content Include="Scripts\JQuery.js" />
+    <Content Include="Scripts\main.js" />
+    <Content Include="Scripts\sweetalert.min.js" />
+    <Content Include="siteIcon.ico" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -161,9 +189,18 @@
     <Content Include="Views\Home\About.cshtml" />
     <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\Accounts\Login.cshtml" />
+    <Content Include="Views\Accounts\Index.cshtml" />
+    <Content Include="Views\Unauthorized\Index.cshtml" />
+    <Content Include="Views\Setups\IndexCategories.cshtml" />
+    <Content Include="Views\Setups\IndexDistrict.cshtml" />
+    <Content Include="Views\Setups\IndexLocation.cshtml" />
+    <Content Include="Views\Setups\LoadEditDistrict.cshtml" />
+    <Content Include="Views\Setups\LoadEditLocation.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="fonts\font-awesome\" />
     <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
@@ -172,7 +209,35 @@
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <Content Include="packages.config" />
     <None Include="Project_Readme.html" />
-    <Content Include="Scripts\jquery-1.10.2.min.map" />
+    <Content Include="Views\Accounts\Register.cshtml" />
+    <Content Include="Views\Setups\LoadEditCategory.cshtml" />
+    <Content Include="Views\Accounts\Permission.cshtml" />
+    <Content Include="Views\Accounts\IndexUsers.cshtml" />
+    <Content Include="Views\Accounts\CreateUsers.cshtml" />
+    <Content Include="Views\Accounts\EditUsers.cshtml" />
+    <Content Include="Views\Accounts\IndexRoles.cshtml" />
+    <Content Include="Views\Accounts\LoadEditRoles.cshtml" />
+    <Content Include="Views\Accounts\AssignPermissions.cshtml" />
+    <Content Include="Views\Setups\IndexRegions.cshtml" />
+    <Content Include="Views\Setups\LoadEditRegions.cshtml" />
+    <Content Include="Views\Setups\IndexSuppliers.cshtml" />
+    <Content Include="Views\Setups\LoadEditSuppliers.cshtml" />
+    <Content Include="Views\AssetManagement\IndexAssetDefinition.cshtml" />
+    <Content Include="Views\AssetManagement\LoadEditAssetDefinition.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\FASM_BI\FASM_BI.csproj">
+      <Project>{b1db04d7-c469-416f-ac56-880e210768b9}</Project>
+      <Name>FASM_BI</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FASM_EN\FASM_EN.csproj">
+      <Project>{d5b7d40e-613a-4827-a1fb-387672af7531}</Project>
+      <Name>FASM_EN</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FASM_GN\FASM_GN.csproj">
+      <Project>{2d53a0c7-f7d6-4aab-befe-c9dde3a3f699}</Project>
+      <Name>FASM_GN</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

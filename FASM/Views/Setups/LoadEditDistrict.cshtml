@@ -1,0 +1,14 @@
+﻿@model FASM_EN.Setups.Districts
+
+<div id="Editstatus-area"></div>
+<form class="form" role="form">
+    <div class="form-group">
+        @Html.LabelFor(m => m.DistrictName, new { @class = "col-md-6 control-label" })
+        @Html.TextBoxFor(m => m.DistrictName, new { @class = "form-control", id = "EditDistrictName" })
+        @Html.HiddenFor(m => m.DistrictId, new { id = "EditDistrictId" })
+    </div>
+</form>
+
+
+
+

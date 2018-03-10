@@ -1,0 +1,380 @@
+﻿@model FASM_EN.Setups.Suppliers
+@using FASM.GeneralObjects
+@{
+    ViewBag.Title = "Index Suppliers";
+    ViewBag.HeaderText = "Suppliers";
+}
+
+@section Styles{
+
+    @Styles.Render("~/plugin/sweetAlertStyles")
+
+}
+@section breadcrumb{
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="@Url.Action("Index",ControllerName.Accounts)">Home</a></li>
+        <li class="breadcrumb-item"><a href="#">Setups</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Suppliers</li>
+    </ol>
+}
+<div class="tile">
+    <div>@ViewBag.CatchedMsg</div>
+    @if (ViewBag.AllowAdd)
+    {
+        <button type="button" class="btn btn-info btn-sm addBtns" data-toggle="modal" data-target="#SuppliersModal"><i class="fa fa-plus-circle fa-lg"></i>New Supplier</button>
+    }
+    <table class="table table-sm table-striped table-bordered" id="myTable">
+
+        <thead class="thead-dark">
+            <tr>
+                <th style="display:none">Id</th>
+                <th>Supplier Full Name</th>
+                <th>Company Name</th>
+                <th>Website</th>
+                <th>Job Position</th>
+                <th>Phone Number</th>
+                <th>Email</th>
+                <th>District</th>
+                <th>Region</th>
+                <th width="14%">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (System.Data.DataRow item in Model.dtSuppliers.Rows)
+            {
+                <tr>
+                    <td style="display:none">@Html.DisplayTextFor(modelItem => item["SupplierId"])</td>
+                    <td>@Html.DisplayTextFor(ModelItem => item["SupplierFullName"])</td>
+                    <td>@Html.DisplayTextFor(ModelItem => item["CompanyName"])</td>
+                    <td>@Html.DisplayTextFor(ModelItem => item["Website"])</td>
+                    <td>@Html.DisplayTextFor(ModelItem => item["JobPosition"])</td>
+                    <td>@Html.DisplayTextFor(ModelItem => item["Phone"])</td>
+                    <td>@Html.DisplayTextFor(ModelItem => item["Email"])</td>
+                    <td>@Html.DisplayTextFor(ModelItem => item["DistrictId"])</td>
+                    <td>@Html.DisplayTextFor(ModelItem => item["RegionId"])</td>
+                    <td>
+                        @using (Html.BeginForm("LoadEditSuppliers", ControllerName.Setups, FormMethod.Post, new { @class = "EditSupplier" }))
+                        {
+                            if (ViewBag.AllowLoadEdit)
+                            {
+                                <button class="btn-success btn-xs UserBtnSuccess" type="submit"><i class="fa fa-pencil-square-o"></i> Edit</button>
+                            }
+                            @Html.HiddenFor(m => m.SupplierId, new { @Value = item["SupplierId"] });
+                        }
+                        @if (ViewBag.AllowDelete)
+                        {
+                            <button type="button" SupplierIdentifier="@item["SupplierId"]" class="btn-danger btn-xs UserBtnDanger pull-right btnDelete" style="margin-top:-23px;margin-right:10px"><i class="fa fa-trash-o"></i>  Delete</button>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<div class="modal fade" id="SuppliersModal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">New Supplier</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="status-area"></div>
+                <form class="form" role="form">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                @Html.LabelFor(m => m.SupplierFullName, new { @class = "col-md-6 control-label" })
+                                @Html.TextBoxFor(m => m.SupplierFullName, new { @class = "form-control" })
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                @Html.LabelFor(m => m.CompanyName, new { @class = "col-md-6 control-label" })
+                                @Html.TextBoxFor(m => m.CompanyName, new { @class = "form-control" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                @Html.LabelFor(m => m.JobPosition, new { @class = "col-md-6 control-label" })
+                                @Html.TextBoxFor(m => m.JobPosition, new { @class = "form-control" })
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                @Html.LabelFor(m => m.Phone, new { @class = "col-md-6 control-label" })
+                                @Html.TextBoxFor(m => m.Phone, new { @class = "form-control" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                @Html.LabelFor(m => m.Email, new { @class = "col-md-6 control-label" })
+                                @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                @Html.LabelFor(m => m.Website, new { @class = "col-md-6 control-label" })
+                                @Html.TextBoxFor(m => m.Website, new { @class = "form-control" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                @Html.LabelFor(m => m.RegionId, new { @class = "col-md-6 control-label" })
+                                @Html.DropDownListFor(m => m.RegionId, (IEnumerable<SelectListItem>)ViewData["RegionName"] ,new { @class = "form-control" })
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                @Html.LabelFor(m => m.DistrictId, new { @class = "col-md-6 control-label" })
+                                @Html.DropDownListFor(m => m.DistrictId, (IEnumerable<SelectListItem>)ViewData["DistrictName"], new { @class = "form-control" })
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-info" id="SaveSupplier">Save</button>
+                <button type="button" class="btn btn-default btnClose" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="EditSupplierModal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Edit Supplier</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+            </div>
+            <div class="modal-footer">
+                @if (ViewBag.AllowEdit)
+                {
+                    <button type="submit" class="btn btn-info Supplier" id="Supplier">Save</button>
+                }
+                <button type="button" class="btn btn-default btnClose" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts
+{
+    @Scripts.Render("~/DataTables/js")
+    @Scripts.Render("~/plugin/sweetAlert")
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            //claer the values of text field SuppliersName
+            function clearValues() {
+                $("#SupplierFullName").val('');
+                $("#Email").val('');
+                $("#Phone").val('');
+                $("#JobPosition").val('');
+                $("#Website").val('');
+                $("#CompanyName").val('');
+                $("#RegionId").val(0);
+                $("#DistrictId").val(0);
+            }
+
+            //putting focus on SuppliersName text field after the modal pop up
+            $('#SuppliersModal').on('shown.bs.modal', function () {
+                $('#SupplierFullName').focus();
+            })
+
+            //clear value and reload the page
+            $(".btnClose").click(function () {
+                clearValues();
+                location.reload();
+            });
+
+            //Cheking the validity of text fields
+            function IsValidData() {
+                if ($("#SupplierFullName").val() == "") {
+                    return "Please fill in the Supplier name";
+                } else if ($("#Phone").val() == "") {
+                    return "Please fill in the phone number";
+                } else if ($("#Email").val() == "") {
+                    return "Please fill in the Email";
+                } else if ($("#RegionId").val() == 0) {
+                    return "Please select the region";
+                } else if ($("#DistrictId").val() == 0) {
+                    return "Please select the District";
+                }
+                return "";
+            }
+
+            //Cheking the validity of text fields
+            function IsValidEditData() {
+                if ($("#EditSupplierFullName").val() == "") {
+                    return "Please fill in the Region name";
+                } else if ($("#EditPhone").val() == "") {
+                    return "Please fill in the phone number";
+                } else if ($("#EditEmail").val() == "") {
+                    return "Please fill in the Email";
+                } else if ($("#EditRegionId").val() == 0) {
+                    return "Please select the region";
+                } else if ($("#EditDistrictId").val() == 0) {
+                    return "Please select the District";
+                }
+                return "";
+            }
+
+            // for editing purpose
+            $(".Supplier").click(function () {
+
+                var ValidateMsg = IsValidEditData();
+                if (ValidateMsg != "") {
+                    ShowNotice('#Editstatus-area', ValidateMsg, "Failure");
+                    return false;
+                }
+
+                var SupplierData = {
+                    SupplierId:$("#EditSupplierId").val(),
+                    SupplierFullName: $("#EditSupplierFullName").val(),
+                    phone: $("#EditPhone").val(),
+                    Email: $("#EditEmail").val(),
+                    CompanyName: $("#EditCompanyName").val(),
+                    RegionId: $("#EditRegionId").val(),
+                    DistrictId: $("#EditDistrictId").val(),
+                    Website: $("#EditWebsite").val(),
+                    JobPosition: $("#EditJobPosition").val()
+                };
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("PostEditSuppliers",ControllerName.Setups)',
+                    data: SupplierData,
+                    dataType: "json",
+                    success: function (data) {
+                        if (data.msg.toString() == "@FASM_GN.FASM_Msg.Updated") {
+                            ShowNotice("#Editstatus-area", data.msg,"Success");
+                        }
+                        else {
+                            ShowNotice('#Editstatus-area',data.msg,"Failure");
+                        }
+                        clearValues();
+
+                    },
+                    error: function () {
+                        ShowNotice('#Editstatus-area',"Error occured!!","Failure");
+                        clearValues();
+                    }
+                });
+            })
+
+            //for saving purpose
+            $("#SaveSupplier").click(function () {
+
+                var ValidateMsg = IsValidData();
+                if (ValidateMsg != "") {
+                    ShowNotice('#status-area', ValidateMsg, "Failure");
+                    return false;
+                }
+
+                var SupplierData = {
+                    SupplierFullName: $("#SupplierFullName").val(),
+                    phone: $("#Phone").val(),
+                    Email: $("#Email").val(),
+                    CompanyName: $("#CompanyName").val(),
+                    RegionId: $("#RegionId").val(),
+                    DistrictId: $("#DistrictId").val(),
+                    Website: $("#Website").val(),
+                    JobPosition: $("#JobPosition").val()
+                };
+
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("CreateSuppliers",ControllerName.Setups)',
+                    data: SupplierData,
+                    dataType: "json",
+                    success: function (data) {
+                        if (data.msg.toString() == "@FASM_GN.FASM_Msg.SuccessfulSaved") {
+                            ShowNotice('#status-area', data.msg, "Success");
+                        }
+                        else {
+                            ShowNotice('#status-area', data.msg, "Failure");
+                        }
+                        clearValues();
+                    },
+                    error: function () {
+                        ShowNotice('#status-area', "Error occured!!", "Failure");
+                        clearValues();
+                    }
+                });
+            })
+            $('#myTable').DataTable();
+
+            //loading edit Supplier modal
+            $('.EditSupplier').submit(function (e) {
+                e.preventDefault();
+                var $form = $(this);
+
+                $.post($form.attr("action"), $form.serialize()).done(function (res) {
+                    $mymodal = $("#EditSupplierModal");
+                    //update the modal's body with the response received
+                    $mymodal.find("div.modal-body").html(res);
+                    // Show the modal
+                    $mymodal.modal("show");
+                });
+            });
+
+            //Deleting Supplier
+            $("button.btnDelete").click(function () {
+                var Id = $(this).attr("SupplierIdentifier");
+                DeleteItem(Id);
+
+            });
+
+            function DeleteItem(Id){
+                DataObject = { SupplierId: Id };
+
+                swal({
+                    title: "Confirm Deletion",
+                    text: "Are you sure that you want to delete this Supplier?",
+                    type: "warning",
+                    showCancelButton: true,
+                    closeOnConfirm: false,
+                    confirmButtonText: "Yes, delete it!",
+                    confirmButtonColor: "#ec6c62"
+                }, function() {
+                    $.ajax({
+                        url: '@Url.Action("DeleteSuppliers",ControllerName.Setups)',
+                        type: "POST",
+                        data: DataObject,
+                        dataType: "json",
+                        success: function (data) {
+                            swal("Deleted!", data, "success");
+                            swal({ title: "Deleted!", text:data, type: "success" }, function () {location.reload();});
+                        },
+                        error: function (data) {
+                            swal("Oops", data, "error");
+                        }
+                    })
+
+                });
+            }
+                });
+    </script>
+}
+
+
+
+
+
+
+
+
