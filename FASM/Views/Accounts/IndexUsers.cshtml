@@ -52,6 +52,15 @@
                     <td>@Html.DisplayTextFor(ModelItem => item["Email"])</td>
                     <td>@Html.DisplayTextFor(ModelItem => item["PhoneNumber"])</td>
                     <td>
+                    @using (Html.BeginForm("ViewRoles", ControllerName.Accounts, FormMethod.Post))
+                    {
+                        if (ViewBag.AssignRoles)
+                        {
+                            <button class="btn-primary btn-xs UserBtnPrimary" type="submit">Assign Roles</button>
+                        }
+                        @Html.HiddenFor(m => m.UserId, new { @Value = item["UserId"] });
+                        @Html.HiddenFor(m => m.Username, new { @Value = item["Username"] });
+                    }
                     @if (ViewBag.AllowEdit)
                     {
                         <a class="btn-success btn-xs UserBtnSuccess" type="submit" href="@Url.Action("EditUsers",ControllerName.Accounts,new { id = item["UserId"]})"><i class="fa fa-pencil-square-o"></i> Edit</a>

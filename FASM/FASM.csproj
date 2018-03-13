@@ -217,13 +217,14 @@
     <Content Include="Views\Accounts\EditUsers.cshtml" />
     <Content Include="Views\Accounts\IndexRoles.cshtml" />
     <Content Include="Views\Accounts\LoadEditRoles.cshtml" />
-    <Content Include="Views\Accounts\AssignPermissions.cshtml" />
     <Content Include="Views\Setups\IndexRegions.cshtml" />
     <Content Include="Views\Setups\LoadEditRegions.cshtml" />
     <Content Include="Views\Setups\IndexSuppliers.cshtml" />
     <Content Include="Views\Setups\LoadEditSuppliers.cshtml" />
     <Content Include="Views\AssetManagement\IndexAssetDefinition.cshtml" />
     <Content Include="Views\AssetManagement\LoadEditAssetDefinition.cshtml" />
+    <Content Include="Views\Accounts\ViewPermissions.cshtml" />
+    <Content Include="Views\Accounts\ViewRoles.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\FASM_BI\FASM_BI.csproj">

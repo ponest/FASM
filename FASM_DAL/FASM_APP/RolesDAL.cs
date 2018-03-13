@@ -19,6 +19,19 @@ namespace FASM_DAL.User
             return data.FillData();
         }
 
+        public DataTable ShowRoles(Int32 UserId)
+        {
+            query = "SELECT R.RoleId,RoleName, CASE WHEN ext.RoleId IS NULL THEN '' ELSE 'checked' END isChecked FROM Roles R";
+            query += " LEFT JOIN (SELECT MUR.UserId,RoleId FROM MapUserRole MUR INNER JOIN Users U ON U.UserId = MUR.UserId WHERE";
+            query += " MUR.UserId = @UserId) ext ON ext.RoleId =  R.RoleId";
+
+            data.SetSqlStatement(query, CommandType.Text);
+            data.Parameter("@UserId", SqlDbType.Int, UserId);
+
+            return data.FillData();
+        }
+
+
         public void LoadRoles(ref Roles eRoles)
         {
             query = "SELECT RoleId,RoleName,IsSysAdmin FROM Roles WHERE RoleId=@RoleId";

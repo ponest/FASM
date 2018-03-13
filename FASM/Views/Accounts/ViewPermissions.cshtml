@@ -1,0 +1,131 @@
+﻿@model FASM_EN.User.Permissions
+@using FASM.GeneralObjects
+@{
+    ViewBag.Title = "Assing Permission";
+    ViewBag.HeaderText = "Assign Permissions";
+}
+
+@section Styles{
+    <style>
+        h4{
+            color:#009688 !important;
+            }
+        span{
+            font-weight:bold;
+            font-size:14px;
+        }
+    </style>
+    
+    @Styles.Render("~/plugin/sweetAlertStyles")
+}
+
+@section breadcrumb{
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="@Url.Action("Index",ControllerName.Accounts)">Home</a></li>
+        <li class="breadcrumb-item"><a href="#">Setups</a></li>
+        <li class="breadcrumb-item"><a href="@Url.Action("IndexRoles",ControllerName.Accounts)">Roles</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Assign Permissions</li>
+    </ol>
+}
+
+<div class="tile">
+    <div id="status-area"></div>
+    <div class="row">
+        <div class="col-md-8">
+            <h4 id="rolNameAttr">RoleName: @ViewBag.RoleName</h4>
+        </div>
+        <div class="col-md-4">
+            <span><input type="checkbox" id="chkCheckAll" />&nbsp;Check All</span>
+            <button class="btn btn-primary btn-sm float-right" id="btnAssignPermissions">Assign Permissions</button>
+        </div>
+    </div><hr class="hrLine"/>
+    <h4>Setups</h4><hr class="hrLine" />
+    <div class="row">
+        @foreach (System.Data.DataRow item in Model.dtPermissions.Rows)
+            {
+                if (item["ModName"].ToString() == "Setups")
+                {
+                <div class="col-md-3">
+                    <p class="para"><input type="checkbox" @item["isChecked"] class="chkPermit" name="checkboxpermit"/>   @item["Description"]  @Html.HiddenFor(m => m.PermissionId, new { @Value = @item["Permissionid"], @class = "PermissionId" })</p>
+                </div>
+            }
+        }
+    </div>
+    <h4>Accounts</h4><hr class="hrLine" />
+    <div class="row">
+        @foreach (System.Data.DataRow item in Model.dtPermissions.Rows)
+            {
+                if (item["ModName"].ToString() == "Accounts")
+                {
+                <div class="col-md-3">
+                    <p><input type="checkbox" @item["isChecked"] class="chkPermit" name="checkboxpermit"/>   @item["Description"]  @Html.HiddenFor(m => m.PermissionId, new { @Value = @item["Permissionid"], @class = "PermissionId" })</p>
+                </div>
+            }
+        }
+    </div>
+    <div class="clearfix"></div>
+    <h4>Asset Management</h4><hr class="hrLine" />
+    <div class="row">
+        @foreach (System.Data.DataRow item in Model.dtPermissions.Rows)
+            {
+                if (item["ModName"].ToString() == "AssetManagement")
+                {
+                <div class="col-md-3">
+                    <p><input type="checkbox" @item["isChecked"] class="chkPermit" name="checkboxpermit" />   @item["Description"]  @Html.HiddenFor(m => m.PermissionId, new { @Value = @item["Permissionid"], @class = "PermissionId" })</p>
+                </div>
+            }
+        }
+    </div>
+    <div class="clearfix"></div>
+</div>
+
+@section Scripts{
+@Scripts.Render("~/plugin/sweetAlert")
+    <script type="text/javascript">
+
+        $("#btnAssignPermissions").click(function () {
+            SavePermissions();
+        });
+
+        $("#chkCheckAll").click(function () {
+            $('input:checkbox').not(this).prop('checked', this.checked);
+        })
+
+        $("input[name='checkboxpermit']").click(function(){
+            if($("input[name='checkboxpermit']:checked").length == $("input[name='checkboxpermit']").length){
+                $("#chkCheckAll").prop("checked",true);
+            }else{
+                $("#chkCheckAll").prop("checked",false);
+            }
+        });
+       
+
+        function SavePermissions() {
+            var $tweets = $(".PermissionId");
+            var ePermissions = [];
+            $tweets.each(function (i, current) {
+                if ($(this).closest("p").find('input[type=checkbox]').is(":checked")== true){
+                    var PermissionsDetails = {
+                        RoleId: @ViewBag.RoleId,
+                        PermissionId: $(current).val()
+                    }
+                    ePermissions.push(PermissionsDetails);
+                }
+            });
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("AssignPermissions",ControllerName.Accounts)',
+                contentType: 'application/json; charset=utf-8',
+                data: JSON.stringify(ePermissions),
+                dataType: "json",
+                success: function (data) {
+                    swal("Successfully Assigned Permissions");
+                },
+                error: function () {
+                    swal("Sorry An error occured!!");
+                }
+            });
+        }
+        </script>
+}
+

@@ -1,5 +1,6 @@
 
 using FASM_DAL.User;
+using System;
 using System.Data;
 
 namespace FASM_BL.User
@@ -8,9 +9,9 @@ namespace FASM_BL.User
     {
         private PermissionsDAL PermissionsDAL = new PermissionsDAL();
 
-        public DataTable GetPermissions()
+        public DataTable GetPermissions(Int32 RoleId)
         {
-            return PermissionsDAL.GetPermissions();
+            return PermissionsDAL.GetPermissions(RoleId);
         }
     }
 }

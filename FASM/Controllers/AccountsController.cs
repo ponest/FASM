@@ -4,6 +4,9 @@ using FASM_BI.User;
 using FASM_EN.User;
 using FASM_GN;
 using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Web.Mvc;
@@ -133,7 +136,7 @@ namespace FASM.Controllers
             ViewBag.AllowEdit = this.HasPermission(ControllerName.Accounts + "-PostEditRoles");
             ViewBag.AllowLoadEdit = this.HasPermission(ControllerName.Accounts + "-LoadEditRoles");
             ViewBag.AllowDelete = this.HasPermission(ControllerName.Accounts + "-DeleteRoles");
-            ViewBag.AssignPermissions = this.HasPermission(ControllerName.Accounts + "-AssignPermissions");
+            ViewBag.AssignPermissions = this.HasPermission(ControllerName.Accounts + "-ViewPermissions");
 
             FASM_EN.User.Roles eRoles = new FASM_EN.User.Roles();
             eRoles.dtRoles = RolesBI.GetRoles();
@@ -237,12 +240,12 @@ namespace FASM.Controllers
         #endregion
 
         #region Permissions
-        public ActionResult Permission()
-        {
-            Permissions ePermissions = new Permissions();
-            ePermissions.dtPermissions = PermissionsBI.GetPermissions();
-            return View(ePermissions);
-        }
+        //public ActionResult Permission()
+        //{
+        //    Permissions ePermissions = new Permissions();
+        //    ePermissions.dtPermissions = PermissionsBI.GetPermissions();
+        //    return View(ePermissions);
+        //}
         #endregion
 
         #region Users
@@ -251,6 +254,7 @@ namespace FASM.Controllers
             ViewBag.AllowAdd = this.HasPermission(ControllerName.Accounts + "-CreateUsers");
             ViewBag.AllowEdit = this.HasPermission(ControllerName.Accounts + "-EditUsers");
             ViewBag.AllowDelete = this.HasPermission(ControllerName.Accounts + "-DeleteUsers");
+            ViewBag.AssignRoles = this.HasPermission(ControllerName.Accounts + "-AssignRoles");
             Users eUsers = new Users();
             eUsers.dtUsers = UsersBI.GetUsers();
             return View(eUsers);
@@ -383,19 +387,134 @@ namespace FASM.Controllers
 
         #region Assign Permissions
         [HttpPost]
-        public ActionResult AssignPermissions()
+        public ActionResult ViewPermissions()
         {
-            Permissions ePermissions = new Permissions();
-            ePermissions.dtPermissions = PermissionsBI.GetPermissions();
+            int RoleId = Convert.ToInt32(Request.Params["roleId"]);
             ViewBag.RoleId = Convert.ToInt32(Request.Params["roleId"]);
+            ViewBag.RoleName = Request.Params["RoleName"].ToString();
+            Permissions ePermissions = new Permissions();
+            ePermissions.dtPermissions = PermissionsBI.GetPermissions(RoleId);
             return View(ePermissions);
         }
 
-       
-        public ActionResult AssignPermissions(int m)
+
+        public ActionResult AssignPermissions(IEnumerable<MapRolePermission> eMapRolePermissions)
         {
-            return View();
+            if (eMapRolePermissions != null)
+            {
+                string message = "";
+                try
+                {
+                    DataTable dt = ReturnPermissionsDetails(eMapRolePermissions);
+                    FASM_Enums.InfoMessages Results = MapRolePermissionBI.InsertMapRolePermission(dt);
+
+                    switch (Results)
+                    {
+                        case FASM_Enums.InfoMessages.Success:
+                            message = FASM_Msg.SuccessfulSaved;
+                            break;
+                    }
+                    return Json(new { msg = message, JsonRequestBehavior.AllowGet });
+                }
+                catch (Exception ex)
+                {
+                    ViewBag.CatchedMsg = ex.Message;
+                }
+            }
+            else
+            {
+                return RedirectToAction("ViewPermissions");
+            }
+            return View(eMapRolePermissions);
+        }
+
+        private DataTable ReturnPermissionsDetails(IEnumerable<MapRolePermission> eMapRolePermissions)
+        {
+            DataTable dtPermission = General.GetdtParams();
+
+            MapRolePermission eMapRolePermission = new MapRolePermission();
+            if (eMapRolePermissions != null)
+            {
+                for (int i = 0; i < eMapRolePermissions.Count(); i++)
+                {
+                    eMapRolePermission = eMapRolePermissions.ElementAt(i);
+                    DataRow dr = dtPermission.NewRow();
+                    dr["Int1"] = eMapRolePermission.RoleId;
+                    dr["Int2"] = eMapRolePermission.PermissionId;
+                    dtPermission.Rows.Add(dr);
+                }
+            }
+            return dtPermission;
         }
         #endregion
+
+        #region Assign Roles
+        public ActionResult ViewRoles()
+        {
+            int UserId = Convert.ToInt32(Request.Params["UserId"]);
+            ViewBag.UserId = Convert.ToInt32(Request.Params["UserId"]);
+            ViewBag.Username = Request.Params["Username"].ToString();
+            
+            FASM_EN.User.Roles eRoles = new FASM_EN.User.Roles();
+            eRoles.dtRoles = RolesBI.ShowRoles(UserId);
+            return View(eRoles);
+        }
+
+
+        public ActionResult AssignRoles(IEnumerable<MapUserRole> eMapUserRoles)
+        {
+            if (eMapUserRoles != null)
+            {
+                string message = "";
+                try
+                {
+                    DataTable dt = ReturnRolesDetails(eMapUserRoles);
+                    FASM_Enums.InfoMessages Results = MapUserRoleBI.InsertMapUserRole(dt);
+
+                    switch (Results)
+                    {
+                        case FASM_Enums.InfoMessages.Success:
+                            message = FASM_Msg.SuccessfulSaved;
+                            break;
+                    }
+                    return Json(new { msg = message, JsonRequestBehavior.AllowGet });
+                }
+                catch (Exception ex)
+                {
+                    ViewBag.CatchedMsg = ex.Message;
+                }
+            }
+            else
+            {
+                return RedirectToAction("ViewRoles");
+            }
+            return View(eMapUserRoles);
+        }
+
+        private DataTable ReturnRolesDetails(IEnumerable<MapUserRole> eMapUserRoles)
+        {
+            DataTable dtPermission = General.GetdtParams();
+
+            MapUserRole eMapUserRole = new MapUserRole();
+            if (eMapUserRoles != null)
+            {
+                for (int i = 0; i < eMapUserRoles.Count(); i++)
+                {
+                    eMapUserRole = eMapUserRoles.ElementAt(i);
+                    DataRow dr = dtPermission.NewRow();
+                    dr["Int1"] = eMapUserRole.UserId;
+                    dr["Int2"] = eMapUserRole.RoleId;
+                    dtPermission.Rows.Add(dr);
+                }
+            }
+            return dtPermission;
+        }
+        #endregion
+
+
+
     }
 }
+
+
+

@@ -1,5 +1,5 @@
 ﻿@model FASM_EN.Setups.Categories
-    @using FASM.GeneralObjects
+@using FASM.GeneralObjects
 @{
     ViewBag.Title = "IndexCategories";
     ViewBag.HeaderText = "Categories";
@@ -17,252 +17,257 @@
         <li class="breadcrumb-item active" aria-current="page">Categories</li>
     </ol>
 }
-<div class="tile">
-    <div>@ViewBag.CatchedMsg</div>
-    @if (ViewBag.AllowAdd)
-    {
-        <button type="button" class="btn btn-info btn-sm addBtns" data-toggle="modal" data-target="#CategoryModal"><i class="fa fa-plus-circle fa-lg"></i>New Category</button>
-    }
-    <table class="table table-sm table-striped table-bordered" id="myTable">
+<div class="row">
+    <div class="col-md-12">
+        <div class="tile">
+            <div class="tile-body">
+                    @if (ViewBag.AllowAdd)
+                    {
+                        <button type="button" class="btn btn-info btn-sm addBtns" data-toggle="modal" data-target="#CategoryModal"><i class="fa fa-plus-circle fa-lg"></i>New Category</button>
+                    }
+                    <table class="table table-sm table-striped table-bordered" id="myTable">
 
-        <thead class="thead-dark">
-            <tr>
-                <th style="display:none">Id</th>
-                <th>Category Name</th>
-                <th width="14%">Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (System.Data.DataRow item in Model.dtCategory.Rows)
+                        <thead class="thead-dark">
+                            <tr>
+                                <th style="display:none">Id</th>
+                                <th>Category Name</th>
+                                <th width="14%">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (System.Data.DataRow item in Model.dtCategory.Rows)
             {
-                <tr>
-                    <td style="display:none">@Html.DisplayTextFor(modelItem => item["CategoryId"])</td>
-                    <td>@Html.DisplayTextFor(ModelItem => item["CategoryName"])</td>
-                    <td>
-                        @using (Html.BeginForm("LoadEditCategory", ControllerName.Setups, FormMethod.Post, new { @class = "EditCategory" }))
-                        {
-                            if (ViewBag.AllowLoadEdit)
-                            {
-                                <button class="btn-success btn-xs UserBtnSuccess" type="submit"><i class="fa fa-pencil-square-o"></i> Edit</button>
+                                <tr>
+                                    <td style="display:none">@Html.DisplayTextFor(modelItem => item["CategoryId"])</td>
+                                    <td>@Html.DisplayTextFor(ModelItem => item["CategoryName"])</td>
+                                    <td>
+                                        @using (Html.BeginForm("LoadEditCategory", ControllerName.Setups, FormMethod.Post, new { @class = "EditCategory" }))
+                                        {
+                                            if (ViewBag.AllowLoadEdit)
+                                            {
+                                                <button class="btn-success btn-xs UserBtnSuccess" type="submit"><i class="fa fa-pencil-square-o"></i> Edit</button>
+                                            }
+                                            @Html.HiddenFor(m => m.CategoryId, new { @Value = item["CategoryId"] });
+                                        }
+                                        @if (ViewBag.AllowDelete)
+                                        {
+                                            <button type="button" categoryIdentifier="@item["CategoryId"]" class="btn-danger btn-xs UserBtnDanger pull-right btnDelete" style="margin-top:-23px;margin-right:10px"><i class="fa fa-trash-o"></i>  Delete</button>
+                                        }
+                                    </td>
+                                </tr>
                             }
-                            @Html.HiddenFor(m => m.CategoryId, new { @Value = item["CategoryId"] });
-                        }
-                        @if (ViewBag.AllowDelete)
-                        {
-                            <button type="button" categoryIdentifier="@item["CategoryId"]" class="btn-danger btn-xs UserBtnDanger pull-right btnDelete" style="margin-top:-23px;margin-right:10px"><i class="fa fa-trash-o"></i>  Delete</button>
-                        }
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
-</div>
-
-<div class="modal fade" id="CategoryModal">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">New Category</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+                        </tbody>
+                    </table>
+                </div>
             </div>
-            <div class="modal-body">
-                <div id="status-area"></div>
-                <form class="form" role="form">
-                    <div class="form-group">
-                        @Html.LabelFor(m => m.CategoryName, new { @class = "col-md-6 control-label" })
-                        @Html.TextBoxFor(m => m.CategoryName, new { @class = "form-control" })
+            </div>
+        </div>
+
+            <div class="modal fade" id="CategoryModal">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">New Category</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div id="status-area"></div>
+                            <form class="form" role="form">
+                                <div class="form-group">
+                                    @Html.LabelFor(m => m.CategoryName, new { @class = "col-md-6 control-label" })
+                                    @Html.TextBoxFor(m => m.CategoryName, new { @class = "form-control" })
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-info" id="SaveCategory">Save</button>
+                            <button type="button" class="btn btn-default btnClose" data-dismiss="modal">Close</button>
+
+                            <div id="status-area" class="ErrorMsg">@ViewBag.CatchedMsg</div>
+                        </div>
                     </div>
-                </form>
+                </div>
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-info" id="SaveCategory">Save</button>
-                <button type="button" class="btn btn-default btnClose" data-dismiss="modal">Close</button>
 
-                <div id="status-area" class="ErrorMsg">@ViewBag.CatchedMsg</div>
-            </div>
-        </div>
-    </div>
-</div>
+            <div class="modal fade" id="EditCategoryModal">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Edit Category</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
 
-<div class="modal fade" id="EditCategoryModal">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Edit Category</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+                        </div>
+                        <div class="modal-footer">
+                            @if (ViewBag.AllowEdit)
+                            {
+                                <button type="submit" class="btn btn-info Category" id="Category">Save</button>
+                            }
+                            <button type="button" class="btn btn-default btnClose" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="modal-body">
-
-            </div>
-            <div class="modal-footer">
-                @if (ViewBag.AllowEdit)
-                {
-                    <button type="submit" class="btn btn-info Category" id="Category">Save</button>
-                }
-                <button type="button" class="btn btn-default btnClose" data-dismiss="modal">Close</button>
-            </div>
-        </div>
-    </div>
-</div>
-@section Scripts
+            @section Scripts
 {
-    @Scripts.Render("~/DataTables/js")
-    @Scripts.Render("~/plugin/sweetAlert")
-    <script type="text/javascript">
+                @Scripts.Render("~/DataTables/js")
+                @Scripts.Render("~/plugin/sweetAlert")
+                <script type="text/javascript">
 
-        $(document).ready(function () {
-            //claer the values of text field CategoryName
-            function clearValues() {
-                $("#CategoryName").val('');
+                    $(document).ready(function () {
+                        //claer the values of text field CategoryName
+                        function clearValues() {
+                            $("#CategoryName").val('');
+                        }
+
+                        //putting focus on CategoryName text field after the modal pop up
+                        $('#CategoryModal').on('shown.bs.modal', function () {
+                            $('#CategoryName').focus();
+                        })
+
+                        //clear value and reload the page
+                        $(".btnClose").click(function () {
+                            clearValues();
+                            location.reload();
+                        });
+
+                        //Cheking the validity of text fields
+                        function IsValidData() {
+                            if ($("#CategoryName").val() == "") {
+                                return "Please fill in the Category name";
+                            }
+                            return "";
+                        }
+
+                        //Cheking the validity of text fields
+                        function IsValidEditData() {
+                            if ($("#EditCategoryName").val() == "") {
+                                return "Please fill in the Category name.";
+                            }
+                            return "";
+                        }
+
+                        // for editing purpose
+                        $(".Category").click(function () {
+
+                            var ValidateMsg = IsValidEditData();
+                            if (ValidateMsg != "") {
+                                ShowNotice('#Editstatus-area', ValidateMsg, "Failure");
+                                return false;
+                            }
+
+                            var CategoryData = { CategoryName: $("#EditCategoryName").val(), CategoryId: $("#EditCategoryId").val() };
+                            $.ajax({
+                                type: "POST",
+                                url: '@Url.Action("PostEditCategory",ControllerName.Setups)',
+                                data: CategoryData,
+                                dataType: "json",
+                                success: function (data) {
+                                    if (data.msg.toString() == "@FASM_GN.FASM_Msg.Updated") {
+                                        ShowNotice("#Editstatus-area", data.msg, "Success");
+                                    }
+                                    else {
+                                        ShowNotice('#Editstatus-area', data.msg, "Failure");
+                                    }
+                                    clearValues();
+
+                                },
+                                error: function () {
+                                    ShowNotice('#Editstatus-area', "Error occured!!", "Failure");
+                                    clearValues();
+                                }
+                            });
+                        })
+
+                        //for saving purpose
+                        $("#SaveCategory").click(function () {
+
+                            var ValidateMsg = IsValidData();
+                            if (ValidateMsg != "") {
+                                ShowNotice('#status-area', ValidateMsg, "Failure");
+                                return false;
+                            }
+
+                            var CategoryData = { CategoryName: $("#CategoryName").val() };
+
+                            $.ajax({
+                                type: "POST",
+                                url: '@Url.Action("CreateCategory",ControllerName.Setups)',
+                                data: CategoryData,
+                                dataType: "json",
+                                success: function (data) {
+                                    if (data.msg.toString() == "@FASM_GN.FASM_Msg.SuccessfulSaved") {
+                                        ShowNotice('#status-area', data.msg, "Success");
+                                    }
+                                    else {
+                                        ShowNotice('#status-area', data.msg, "Failure");
+                                    }
+                                    clearValues();
+                                },
+                                error: function () {
+                                    ShowNotice('#status-area', "Error occured!!", "Failure");
+                                    clearValues();
+                                }
+                            });
+                        })
+                        $('#myTable').DataTable();
+
+                        //loading edit category modal
+                        $('.EditCategory').submit(function (e) {
+                            e.preventDefault();
+                            var $form = $(this);
+
+                            $.post($form.attr("action"), $form.serialize()).done(function (res) {
+                                $mymodal = $("#EditCategoryModal");
+                                //update the modal's body with the response received
+                                $mymodal.find("div.modal-body").html(res);
+                                // Show the modal
+                                $mymodal.modal("show");
+                            });
+                        });
+
+                        //Deleting Category
+                        $("button.btnDelete").click(function () {
+                            var Id = $(this).attr("categoryIdentifier");
+                            DeleteItem(Id);
+
+                        });
+
+                        function DeleteItem(Id) {
+                            DataObject = { CategoryId: Id };
+
+                            swal({
+                                title: "Confirm Deletion",
+                                text: "Are you sure that you want to delete this Category?",
+                                type: "warning",
+                                showCancelButton: true,
+                                closeOnConfirm: false,
+                                confirmButtonText: "Yes, delete it!",
+                                confirmButtonColor: "#ec6c62"
+                            }, function () {
+                                $.ajax({
+                                    url: '@Url.Action("DeleteCategory",ControllerName.Setups)',
+                                    type: "POST",
+                                    data: DataObject,
+                                    dataType: "json",
+                                    success: function (data) {
+                                        swal("Deleted!", data, "success");
+                                        swal({ title: "Deleted!", text: data, type: "success" }, function () { location.reload(); });
+                                    },
+                                    error: function (data) {
+                                        swal("Oops", data, "error");
+                                    }
+                                })
+
+                            });
+
+                        }
+
+                    });
+                </script>
             }
-
-            //putting focus on CategoryName text field after the modal pop up
-            $('#CategoryModal').on('shown.bs.modal', function () {
-                $('#CategoryName').focus();
-            })
-
-            //clear value and reload the page
-            $(".btnClose").click(function () {
-                clearValues();
-                location.reload();
-            });
-
-            //Cheking the validity of text fields
-            function IsValidData() {
-                if ($("#CategoryName").val() == "") {
-                    return "Please fill in the Category name";
-                } 
-                return "";
-            }
-
-            //Cheking the validity of text fields
-            function IsValidEditData() {
-                if ($("#EditCategoryName").val() == "") {
-                    return "Please fill in the Category name.";
-                }
-                return "";
-            }
-
-            // for editing purpose
-            $(".Category").click(function () {
-
-                var ValidateMsg = IsValidEditData();
-                if (ValidateMsg != "") {
-                    ShowNotice('#Editstatus-area', ValidateMsg, "Failure");
-                    return false;
-                }
-
-                var CategoryData = { CategoryName: $("#EditCategoryName").val(), CategoryId: $("#EditCategoryId").val() };
-                $.ajax({
-                    type: "POST",
-                    url: '@Url.Action("PostEditCategory",ControllerName.Setups)',
-                    data: CategoryData,
-                    dataType: "json",
-                    success: function (data) {
-                        if (data.msg.toString() == "@FASM_GN.FASM_Msg.Updated") {
-                            ShowNotice("#Editstatus-area", data.msg,"Success");
-                        }
-                        else {
-                            ShowNotice('#Editstatus-area',data.msg,"Failure");
-                        }
-                        clearValues();
-
-                    },
-                    error: function () {
-                        ShowNotice('#Editstatus-area',"Error occured!!","Failure");
-                        clearValues();
-                    }
-                });
-            })
-
-            //for saving purpose
-            $("#SaveCategory").click(function () {
-
-                var ValidateMsg = IsValidData();
-                if (ValidateMsg != "") {
-                    ShowNotice('#status-area', ValidateMsg, "Failure");
-                    return false;
-                }
-
-                var CategoryData = { CategoryName: $("#CategoryName").val() };
-
-                $.ajax({
-                    type: "POST",
-                    url: '@Url.Action("CreateCategory",ControllerName.Setups)',
-                    data: CategoryData,
-                    dataType: "json",
-                    success: function (data) {
-                        if (data.msg.toString() == "@FASM_GN.FASM_Msg.SuccessfulSaved") {
-                            ShowNotice('#status-area', data.msg, "Success");
-                        }
-                        else {
-                            ShowNotice('#status-area', data.msg, "Failure");
-                        }
-                        clearValues();
-                    },
-                    error: function () {
-                        ShowNotice('#status-area', "Error occured!!", "Failure");
-                        clearValues();
-                    }
-                });
-            })
-            $('#myTable').DataTable();
-
-            //loading edit category modal
-            $('.EditCategory').submit(function (e) {
-                e.preventDefault();
-                var $form = $(this);
-
-                $.post($form.attr("action"), $form.serialize()).done(function (res) {
-                    $mymodal = $("#EditCategoryModal");
-                    //update the modal's body with the response received
-                    $mymodal.find("div.modal-body").html(res);
-                    // Show the modal
-                    $mymodal.modal("show");
-                });
-            });
-
-            //Deleting Category
-            $("button.btnDelete").click(function () {
-                var Id = $(this).attr("categoryIdentifier");
-                DeleteItem(Id);
-
-            });
-
-            function DeleteItem(Id){
-                DataObject = { CategoryId: Id };
-
-                swal({
-                    title: "Confirm Deletion",
-                    text: "Are you sure that you want to delete this Category?",
-                    type: "warning",
-                    showCancelButton: true,
-                    closeOnConfirm: false,
-                    confirmButtonText: "Yes, delete it!",
-                    confirmButtonColor: "#ec6c62"
-                }, function() {
-                    $.ajax({
-                        url: '@Url.Action("DeleteCategory",ControllerName.Setups)',
-                        type: "POST",
-                        data: DataObject,
-                        dataType: "json",
-                        success: function (data) {
-                            swal("Deleted!", data, "success");
-                            swal({ title: "Deleted!", text:data, type: "success" }, function () {location.reload();});
-                        },
-                        error: function (data) {
-                            swal("Oops", data, "error");
-                        }
-                    })
-
-                });
-
-            }
-
-                });
-    </script>
-}

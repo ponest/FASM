@@ -15,6 +15,11 @@ namespace FASM_BL.User
             return RolesDAL.GetRoles();
         }
 
+        public DataTable ShowRoles(Int32 UserId)
+        {
+            return RolesDAL.ShowRoles(UserId);
+        }
+
         public void LoadRoles(ref Roles eRoles)
         {
             RolesDAL.LoadRoles(ref eRoles);

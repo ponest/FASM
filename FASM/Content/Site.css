@@ -46,7 +46,7 @@
     font-family:Georgia;
     font-size:12px; 
 }
-#hrLine{
+.hrLine{
     margin-top:-5px !important;
 }
 .form-horizontal .control-label{

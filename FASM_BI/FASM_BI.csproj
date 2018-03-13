@@ -55,6 +55,8 @@
     <Compile Include="FASM_APP\DistrictsBI.cs" />
     <Compile Include="FASM_APP\LocationBI.cs" />
     <Compile Include="FASM_APP\LoginBI.cs" />
+    <Compile Include="FASM_APP\MapRolePermissionBI.cs" />
+    <Compile Include="FASM_APP\MapUserRoleBI.cs" />
     <Compile Include="FASM_APP\PermissionsBI.cs" />
     <Compile Include="FASM_APP\RegionsBI.cs" />
     <Compile Include="FASM_APP\RolesBI.cs" />

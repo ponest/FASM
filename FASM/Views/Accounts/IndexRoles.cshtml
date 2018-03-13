@@ -44,13 +44,14 @@
                     <td style="display:none">@Html.DisplayTextFor(modelItem => item["RoleId"])</td>
                     <td>@Html.DisplayTextFor(ModelItem => item["RoleName"])</td>
                     <td>
-                        @using (Html.BeginForm("AssignPermissions", ControllerName.Accounts, FormMethod.Post))
+                        @using (Html.BeginForm("ViewPermissions", ControllerName.Accounts, FormMethod.Post))
                         {
                             if (ViewBag.AssignPermissions)
                             {
                                 <button class="btn-primary btn-xs UserBtnPrimary" type="submit">Assign Permissions</button>
                             }
                             @Html.HiddenFor(m => m.RoleId, new { @Value = item["RoleId"] });
+                            @Html.HiddenFor(m => m.RoleName, new { @Value = item["RoleName"] });
                         }
                         @using (Html.BeginForm("LoadEditRoles", ControllerName.Accounts, FormMethod.Post, new { @class = "EditRole" }))
                         {

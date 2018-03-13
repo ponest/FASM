@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Data;
 using System.Web.Mvc;
+using System;
 
 namespace FASM.GeneralObjects
 {
@@ -56,6 +57,30 @@ namespace FASM.GeneralObjects
             dt.Rows.Add("D", "Doubling declining balance");
             dt.Rows.Add("Y", "Sum of years digits ");
             return dt;
+        }
+
+        public static DataTable GetdtParams()
+        {
+            DataTable dtParams = new DataTable();
+            dtParams.Columns.Add("String1", typeof(string));
+            dtParams.Columns.Add("String2", typeof(string));
+            dtParams.Columns.Add("Int1", typeof(Int32));
+            dtParams.Columns.Add("Dec1", typeof(decimal));
+            dtParams.Columns.Add("Dec2", typeof(decimal));
+            dtParams.Columns.Add("BigInt1", typeof(Int64));
+            dtParams.Columns.Add("DateTime1", typeof(DateTime));
+            dtParams.Columns.Add("Int2", typeof(Int32));
+            dtParams.Columns.Add("Int3", typeof(Int32));
+            dtParams.Columns.Add("Int4", typeof(Int32));
+            dtParams.Columns.Add("Int5", typeof(Int32));
+            dtParams.Columns.Add("Int6", typeof(Int32));
+            dtParams.Columns.Add("String3", typeof(string));
+            dtParams.Columns.Add("String4", typeof(string));
+            dtParams.Columns.Add("String5", typeof(string));
+            dtParams.Columns.Add("DateTime2", typeof(DateTime));
+            dtParams.Columns.Add("BigInt2", typeof(Int64));
+
+            return dtParams;
         }
     }
     

@@ -55,6 +55,8 @@
     <Compile Include="FASM_APP\DistrictsDAL.cs" />
     <Compile Include="FASM_APP\LocationDAL.cs" />
     <Compile Include="FASM_APP\LoginDAL.cs" />
+    <Compile Include="FASM_APP\MapRolePermissionDAL.cs" />
+    <Compile Include="FASM_APP\MapUserRoleDAL.cs" />
     <Compile Include="FASM_APP\PermissionsDAL.cs" />
     <Compile Include="FASM_APP\RegionsDAL.cs" />
     <Compile Include="FASM_APP\RolesDAL.cs" />
@@ -67,6 +69,10 @@
     <ProjectReference Include="..\FASM_EN\FASM_EN.csproj">
       <Project>{d5b7d40e-613a-4827-a1fb-387672af7531}</Project>
       <Name>FASM_EN</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FASM_GN\FASM_GN.csproj">
+      <Project>{2d53a0c7-f7d6-4aab-befe-c9dde3a3f699}</Project>
+      <Name>FASM_GN</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
