@@ -1,7 +1,7 @@
 ﻿@model FASM_EN.Setups.Districts
-    @using FASM.GeneralObjects
+@using FASM.GeneralObjects
 @{
-    ViewBag.Title = "IndexDistrict";
+    ViewBag.Title = "Index District";
     ViewBag.HeaderText = "Districts";
 }
 
@@ -20,8 +20,8 @@
 <div class="tile">
     @if (ViewBag.AllowAdd)
     {
-        <button type="button" class="btn btn-info btn-sm addBtns" data-toggle="modal" data-target="#DistrictModal"><i class="fa fa-plus-circle fa-lg"></i>New District</button>
-    }    
+        <button type="button" class="btn btn-primary btn-sm addBtns" data-toggle="modal" data-target="#DistrictModal"><i class="fa fa-plus-circle fa-lg"></i>New District</button>
+    }
     <table class="table table-sm table-striped table-bordered" id="myTable">
 
         <thead class="thead-dark">
@@ -38,17 +38,17 @@
                     <td style="display:none">@Html.DisplayTextFor(modelItem => item["DistrictId"])</td>
                     <td>@Html.DisplayTextFor(ModelItem => item["DistrictName"])</td>
                     <td>
-                        @using (Html.BeginForm("LoadEditDistrict", ControllerName.Setups, FormMethod.Post, new { @class = "EditDistrict" }))
+                        @using (Html.BeginForm("EditDistrict", ControllerName.Setups, FormMethod.Post, new { @class = "EditDistrict" }))
                         {
-                            if (ViewBag.AllowLoadEdit)
+                            if (ViewBag.AllowEdit)
                             {
                                 <button class="btn-success btn-xs UserBtnSuccess" type="submit"><i class="fa fa-pencil-square-o"></i> Edit</button>
                             }
+                            if (ViewBag.AllowDelete)
+                            {
+                                <button type="button" DistrictIdentifier="@item["DistrictId"]" class="btn-danger btn-xs UserBtnDanger btnDelete"><i class="fa fa-trash-o"></i>  Delete</button>
+                            }
                             @Html.HiddenFor(m => m.DistrictId, new { @Value = item["DistrictId"] });
-                        }
-                        @if (ViewBag.AllowDelete)
-                        {
-                            <button type="button" DistrictIdentifier="@item["DistrictId"]" class="btn-danger btn-xs UserBtnDanger pull-right btnDelete" style="margin-top:-23px;margin-right:10px"><i class="fa fa-trash-o"></i>  Delete</button>
                         }
                     </td>
                 </tr>
@@ -76,7 +76,7 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-info" id="SaveDistrict">Save</button>
+                <button type="button" class="btn btn-primary" id="SaveDistrict">Save</button>
                 <button type="button" class="btn btn-default btnClose" data-dismiss="modal">Close</button>
             </div>
         </div>
@@ -96,10 +96,7 @@
 
             </div>
             <div class="modal-footer">
-                @if (ViewBag.AllowEdit)
-                {
-                    <button type="submit" class="btn btn-info District" id="District">Save</button>
-                }
+                <button type="submit" class="btn btn-primary District" id="District">Update</button>
                 <button type="button" class="btn btn-default btnClose" data-dismiss="modal">Close</button>
             </div>
         </div>
@@ -107,8 +104,8 @@
 </div>
 @section Scripts
 {
-@Scripts.Render("~/DataTables/js")
-@Scripts.Render("~/plugin/sweetAlert")
+    @Scripts.Render("~/DataTables/js")
+    @Scripts.Render("~/plugin/sweetAlert")
     <script type="text/javascript">
 
         $(document).ready(function () {
@@ -145,17 +142,20 @@
             //For Edit Purposes
             $(".District").click(function () {
 
-               
+
                 var ValidateMsg = IsValidEditData();
                 if (ValidateMsg != "") {
                     ShowNotice('#Editstatus-area', ValidateMsg, "Failure");
                     return false;
                 }
 
-                var DistrictData = { DistrictName: $("#EditDistrictName").val(), DistrictId: $("#EditDistrictId").val() };
+                var DistrictData = {
+                    DistrictName: $("#EditDistrictName").val(), DistrictId: $("#EditDistrictId").val(),
+                    isLoad:$("#isLoad").val()
+                };
                 $.ajax({
                     type: "POST",
-                    url: '@Url.Action("PostEditDistrict",ControllerName.Setups)',
+                    url: '@Url.Action("EditDistrict",ControllerName.Setups)',
                     data: DistrictData,
                     dataType: "json",
                     success: function (data) {

@@ -14,6 +14,8 @@ namespace FASM_EN.Setups
         [StringLength(maximumLength: 50)]
         public string CategoryName { get; set; }
 
+        public bool isLoad { get; set; }
+
         public System.Data.DataTable dtCategory { get; set; }
     }
 }

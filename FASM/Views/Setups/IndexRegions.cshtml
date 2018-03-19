@@ -21,7 +21,7 @@
     <div>@ViewBag.CatchedMsg</div>
     @if (ViewBag.AllowAdd)
     {
-        <button type="button" class="btn btn-info btn-sm addBtns" data-toggle="modal" data-target="#RegionsModal"><i class="fa fa-plus-circle fa-lg"></i>New Region</button>
+        <button type="button" class="btn btn-primary btn-sm addBtns" data-toggle="modal" data-target="#RegionsModal"><i class="fa fa-plus-circle fa-lg"></i>New Region</button>
     }
     <table class="table table-sm table-striped table-bordered" id="myTable">
 
@@ -39,17 +39,17 @@
                     <td style="display:none">@Html.DisplayTextFor(modelItem => item["RegionId"])</td>
                     <td>@Html.DisplayTextFor(ModelItem => item["RegionName"])</td>
                     <td>
-                        @using (Html.BeginForm("LoadEditRegions", ControllerName.Setups, FormMethod.Post, new { @class = "EditRegion" }))
+                        @using (Html.BeginForm("EditRegions", ControllerName.Setups, FormMethod.Post, new { @class = "EditRegion" }))
                         {
-                            if (ViewBag.AllowLoadEdit)
+                            if (ViewBag.AllowEdit)
                             {
                                 <button class="btn-success btn-xs UserBtnSuccess" type="submit"><i class="fa fa-pencil-square-o"></i> Edit</button>
                             }
+                            if (ViewBag.AllowDelete)
+                            {
+                                <button type="button" RegionIdentifier="@item["RegionId"]" class="btn-danger btn-xs UserBtnDanger btnDelete"><i class="fa fa-trash-o"></i>  Delete</button>
+                            }
                             @Html.HiddenFor(m => m.RegionId, new { @Value = item["RegionId"] });
-                        }
-                        @if (ViewBag.AllowDelete)
-                        {
-                            <button type="button" RegionIdentifier="@item["RegionId"]" class="btn-danger btn-xs UserBtnDanger pull-right btnDelete" style="margin-top:-23px;margin-right:10px"><i class="fa fa-trash-o"></i>  Delete</button>
                         }
                     </td>
                 </tr>
@@ -77,7 +77,7 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-info" id="SaveRegion">Save</button>
+                <button type="button" class="btn btn-primary" id="SaveRegion">Save</button>
                 <button type="button" class="btn btn-default btnClose" data-dismiss="modal">Close</button>
             </div>
         </div>
@@ -97,10 +97,7 @@
 
             </div>
             <div class="modal-footer">
-                @if (ViewBag.AllowEdit)
-                {
-                    <button type="submit" class="btn btn-info Region" id="Region">Save</button>
-                }
+                <button type="submit" class="btn btn-primary Region" id="Region">Update</button>
                 <button type="button" class="btn btn-default btnClose" data-dismiss="modal">Close</button>
             </div>
         </div>
@@ -154,10 +151,13 @@
                     return false;
                 }
 
-                var RegionData = { RegionName: $("#EditRegionName").val(), RegionId: $("#EditRegionId").val() };
+                var RegionData = {
+                    RegionName: $("#EditRegionName").val(), RegionId: $("#EditRegionId").val(),
+                    isLoad:$("#isLoad").val()
+                };
                 $.ajax({
                     type: "POST",
-                    url: '@Url.Action("PostEditRegions",ControllerName.Setups)',
+                    url: '@Url.Action("EditRegions",ControllerName.Setups)',
                     data: RegionData,
                     dataType: "json",
                     success: function (data) {

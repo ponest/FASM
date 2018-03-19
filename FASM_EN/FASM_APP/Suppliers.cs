@@ -19,8 +19,10 @@ namespace FASM_EN.Setups
         [StringLength(maximumLength: 100)]
         public string CompanyName { get; set; }
 
+        [Display(Name = "Region")]
         public int RegionId { get; set; }
 
+        [Display(Name = "District")]
         public int DistrictId { get; set; }
 
         [Display(Name = "Website")]
@@ -32,14 +34,16 @@ namespace FASM_EN.Setups
         public string JobPosition { get; set; }
 
         [Required]
-        [Display(Name = "Phone")]
+        [Display(Name = "Phone Number")]
         [StringLength(maximumLength: 20)]
         public string Phone { get; set; }
 
         [Required]
-        [Display(Name = "Email")]
+        [Display(Name = "Email Address")]
         [StringLength(maximumLength: 30)]
         public string Email { get; set; }
+
+        public bool isLoad { get; set; }
 
         public System.Data.DataTable dtSuppliers { get; set; }
 

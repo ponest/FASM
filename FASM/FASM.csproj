@@ -173,6 +173,8 @@
     <Content Include="Scripts\FASM.js" />
     <Content Include="Scripts\JQuery.js" />
     <Content Include="Scripts\main.js" />
+    <Content Include="Scripts\pace.min.js" />
+    <Content Include="Scripts\popper.min.js" />
     <Content Include="Scripts\sweetalert.min.js" />
     <Content Include="siteIcon.ico" />
     <Content Include="Web.config" />
@@ -195,8 +197,8 @@
     <Content Include="Views\Setups\IndexCategories.cshtml" />
     <Content Include="Views\Setups\IndexDistrict.cshtml" />
     <Content Include="Views\Setups\IndexLocation.cshtml" />
-    <Content Include="Views\Setups\LoadEditDistrict.cshtml" />
-    <Content Include="Views\Setups\LoadEditLocation.cshtml" />
+    <Content Include="Views\Setups\EditDistrict.cshtml" />
+    <Content Include="Views\Setups\EditLocation.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -210,21 +212,19 @@
     <Content Include="packages.config" />
     <None Include="Project_Readme.html" />
     <Content Include="Views\Accounts\Register.cshtml" />
-    <Content Include="Views\Setups\LoadEditCategory.cshtml" />
-    <Content Include="Views\Accounts\Permission.cshtml" />
+    <Content Include="Views\Setups\EditCategory.cshtml" />
     <Content Include="Views\Accounts\IndexUsers.cshtml" />
-    <Content Include="Views\Accounts\CreateUsers.cshtml" />
-    <Content Include="Views\Accounts\EditUsers.cshtml" />
     <Content Include="Views\Accounts\IndexRoles.cshtml" />
-    <Content Include="Views\Accounts\LoadEditRoles.cshtml" />
+    <Content Include="Views\Accounts\EditRoles.cshtml" />
     <Content Include="Views\Setups\IndexRegions.cshtml" />
-    <Content Include="Views\Setups\LoadEditRegions.cshtml" />
+    <Content Include="Views\Setups\EditRegions.cshtml" />
     <Content Include="Views\Setups\IndexSuppliers.cshtml" />
-    <Content Include="Views\Setups\LoadEditSuppliers.cshtml" />
+    <Content Include="Views\Setups\EditSuppliers.cshtml" />
     <Content Include="Views\AssetManagement\IndexAssetDefinition.cshtml" />
     <Content Include="Views\AssetManagement\LoadEditAssetDefinition.cshtml" />
     <Content Include="Views\Accounts\ViewPermissions.cshtml" />
     <Content Include="Views\Accounts\ViewRoles.cshtml" />
+    <Content Include="Views\Accounts\EditUsers.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\FASM_BI\FASM_BI.csproj">

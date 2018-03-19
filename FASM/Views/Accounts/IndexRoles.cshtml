@@ -1,19 +1,13 @@
 ﻿@model FASM_EN.User.Roles
 @using FASM.GeneralObjects
 @{
-    ViewBag.Title = "IndexRoles";
+    ViewBag.Title = "Index Roles";
     ViewBag.HeaderText = "Roles";
 }
 
 @section Styles{
 
     @Styles.Render("~/plugin/sweetAlertStyles")
-<style>
-    .UserBtnSuccess{
-        margin-left:150px;
-        margin-top:-200px !important;
-    }
-    </style>
 
 }
 @section breadcrumb{
@@ -26,7 +20,7 @@
 <div class="tile">
     @if (ViewBag.AllowAdd)
     {
-        <button type="button" class="btn btn-info btn-sm addBtns" data-toggle="modal" data-target="#RoleModal"><i class="fa fa-plus-circle fa-lg"></i>New Role</button>
+        <button type="button" class="btn btn-primary btn-sm addBtns" data-toggle="modal" data-target="#RoleModal"><i class="fa fa-plus-circle fa-lg"></i>New Role</button>
     }
     <table class="table table-sm table-striped table-bordered" id="myTable">
 
@@ -34,7 +28,7 @@
             <tr>
                 <th style="display:none">Id</th>
                 <th>Role Name</th>
-                <th width="40%">Actions</th>
+                <th width="26%">Actions</th>
             </tr>
         </thead>
         <tbody>
@@ -44,28 +38,22 @@
                     <td style="display:none">@Html.DisplayTextFor(modelItem => item["RoleId"])</td>
                     <td>@Html.DisplayTextFor(ModelItem => item["RoleName"])</td>
                     <td>
-                        @using (Html.BeginForm("ViewPermissions", ControllerName.Accounts, FormMethod.Post))
+                        @using (Html.BeginForm("EditRoles", ControllerName.Accounts, FormMethod.Post, new { @class = "EditRole" }))
                         {
-                            if (ViewBag.AssignPermissions)
-                            {
-                                <button class="btn-primary btn-xs UserBtnPrimary" type="submit">Assign Permissions</button>
-                            }
-                            @Html.HiddenFor(m => m.RoleId, new { @Value = item["RoleId"] });
-                            @Html.HiddenFor(m => m.RoleName, new { @Value = item["RoleName"] });
-                        }
-                        @using (Html.BeginForm("LoadEditRoles", ControllerName.Accounts, FormMethod.Post, new { @class = "EditRole" }))
-                        {
-                            if (ViewBag.AllowLoadEdit)
+                            if (ViewBag.AllowEdit)
                             {
                                 <button class="btn-success btn-xs UserBtnSuccess" type="submit"><i class="fa fa-pencil-square-o"></i> Edit</button>
                             }
+                            if (ViewBag.AllowDelete)
+                            {
+                                <button type="button" RoleIdentifier="@item["RoleId"]" class="btn-danger btn-xs UserBtnDanger btnDelete"><i class="fa fa-trash-o"></i>  Delete</button>
+                            }
+                            if (ViewBag.AssignPermissions)
+                            {
+                            <a href="@Url.Action("ViewPermissions", ControllerName.Accounts, new { id = item["RoleId"] }, null)" class="btn-info btn-xs UserBtnInfo EditRole">Assign Permission</a>
+                            }
                             @Html.HiddenFor(m => m.RoleId, new { @Value = item["RoleId"] });
                         }
-                        @*@if (ViewBag.AllowDelete)
-                        {
-                            <button type="button" RoleIdentifier="@item["RoleId"]" class="btn-danger btn-xs UserBtnDanger pull-right btnDelete" style="margin-top:-40px;margin-right:10px"><i class="fa fa-trash-o"></i>  Delete</button>
-                        }*@
-                        
                     </td>
                 </tr>
             }
@@ -92,7 +80,7 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-info" id="SaveRole">Save</button>
+                <button type="button" class="btn btn-primary" id="SaveRole">Save</button>
                 <button type="button" class="btn btn-default btnClose" data-dismiss="modal">Close</button>
             </div>
         </div>
@@ -112,10 +100,7 @@
 
             </div>
             <div class="modal-footer">
-                @if (ViewBag.AllowEdit)
-                {
-                    <button type="submit" class="btn btn-info Role" id="Role">Save</button>
-                }
+                <button type="submit" class="btn btn-primary Role" id="Role">Update</button>
                 <button type="button" class="btn btn-default btnClose" data-dismiss="modal">Close</button>
             </div>
         </div>
@@ -168,10 +153,10 @@
                     return false;
                 }
 
-                var RoleData = { RoleName: $("#EditRoleName").val(), RoleId: $("#EditRoleId").val() };
+                var RoleData = { RoleName: $("#EditRoleName").val(), RoleId: $("#EditRoleId").val(), isLoad: $("#isLoad").val() };
                 $.ajax({
                     type: "POST",
-                    url: '@Url.Action("PostEditRoles",ControllerName.Accounts)',
+                    url: '@Url.Action("EditRoles",ControllerName.Accounts)',
                     data: RoleData,
                     dataType: "json",
                     success: function (data) {

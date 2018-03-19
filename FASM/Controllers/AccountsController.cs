@@ -133,8 +133,7 @@ namespace FASM.Controllers
         public ActionResult IndexRoles()
         {
             ViewBag.AllowAdd = this.HasPermission(ControllerName.Accounts + "-CreateRoles");
-            ViewBag.AllowEdit = this.HasPermission(ControllerName.Accounts + "-PostEditRoles");
-            ViewBag.AllowLoadEdit = this.HasPermission(ControllerName.Accounts + "-LoadEditRoles");
+            ViewBag.AllowEdit = this.HasPermission(ControllerName.Accounts + "-EditRoles");
             ViewBag.AllowDelete = this.HasPermission(ControllerName.Accounts + "-DeleteRoles");
             ViewBag.AssignPermissions = this.HasPermission(ControllerName.Accounts + "-ViewPermissions");
 
@@ -172,40 +171,50 @@ namespace FASM.Controllers
             return View(eRoles);
         }
 
-        [HttpPost]
-        public ActionResult LoadEditRoles(FASM_EN.User.Roles eRoles)
-        {
-            eRoles.RoleId = Convert.ToInt32(Request.Params["RoleId"]);
-            RolesBI.LoadRoles(ref eRoles);
-            return PartialView(eRoles);
-        }
+       
+        //public ActionResult LoadEditRoles()
+        //{
+        //    FASM_EN.User.Roles eRoles = new FASM_EN.User.Roles();
+        //    eRoles.RoleId = Convert.ToInt32(Request.Params["RoleId"]);
+        //    RolesBI.LoadRoles(ref eRoles);
+        //    return PartialView(eRoles);
+        //}
 
         [HttpPost]
-        public ActionResult PostEditRoles(FASM_EN.User.Roles eRoles)
+        public ActionResult EditRoles(FASM_EN.User.Roles eRoles)
         {
-            string message = "";
-            if (ModelState.IsValid)
+            if(eRoles.isLoad == false)
             {
-                try
+                eRoles.RoleId = Convert.ToInt32(Request.Params["RoleId"]);
+                RolesBI.LoadRoles(ref eRoles);
+                return PartialView(eRoles);
+            }else
+            {
+                string message = "";
+                if (ModelState.IsValid)
                 {
-                    FASM_Enums.InfoMessages Results = RolesBI.SaveRoles(ref eRoles);
-
-                    switch (Results)
+                    try
                     {
-                        case FASM_Enums.InfoMessages.Success:
-                            message = FASM_Msg.Updated;
-                            break;
-                        case FASM_Enums.InfoMessages.AlreadyExist:
-                            message = "Sorry! the district " + eRoles.RoleName + " " + FASM_Msg.AlreadyExist;
-                            break;
+                        FASM_Enums.InfoMessages Results = RolesBI.SaveRoles(ref eRoles);
+
+                        switch (Results)
+                        {
+                            case FASM_Enums.InfoMessages.Success:
+                                message = FASM_Msg.Updated;
+                                break;
+                            case FASM_Enums.InfoMessages.AlreadyExist:
+                                message = "Sorry! the district " + eRoles.RoleName + " " + FASM_Msg.AlreadyExist;
+                                break;
+                        }
+                        return Json(new { msg = message, JsonRequestBehavior.AllowGet });
                     }
-                    return Json(new { msg = message, JsonRequestBehavior.AllowGet });
-                }
-                catch (Exception ex)
-                {
-                    ViewBag.CatchedMsg = ex.Message;
+                    catch (Exception ex)
+                    {
+                        ViewBag.CatchedMsg = ex.Message;
+                    }
                 }
             }
+            
             return View(eRoles);
         }
 
@@ -238,16 +247,7 @@ namespace FASM.Controllers
             return View();
         }
         #endregion
-
-        #region Permissions
-        //public ActionResult Permission()
-        //{
-        //    Permissions ePermissions = new Permissions();
-        //    ePermissions.dtPermissions = PermissionsBI.GetPermissions();
-        //    return View(ePermissions);
-        //}
-        #endregion
-
+               
         #region Users
         public ActionResult IndexUsers()
         {
@@ -260,11 +260,6 @@ namespace FASM.Controllers
             return View(eUsers);
         }
 
-        public ActionResult CreateUsers()
-        {
-            return View();
-        }
-
         [HttpPost]
         public ActionResult CreateUsers(Users eUsers)
         {
@@ -272,6 +267,7 @@ namespace FASM.Controllers
             {
                 try
                 {
+                    string message = "";
                     if (eUsers.Password == eUsers.ConfirmPassword)
                     {
                         eUsers.Password = encryption(eUsers.Password);
@@ -279,51 +275,23 @@ namespace FASM.Controllers
                         switch (SaveResult)
                         {
                             case FASM_Enums.InfoMessages.Success:
-                                ModelState.AddModelError("Success", "Successfully created!");
-                                ViewBag.ReturnMsg = "Success";
+                                message = "Successfully created!";
                                 break;
                             case FASM_Enums.InfoMessages.AlreadyExist:
-                                ModelState.AddModelError("Success", "The username already exist!");
-                                ViewBag.ReturnMsg = "Failed";
+                                message = "The username already exist!";
                                 break;
                         }
                     }
                     else
                     {
-                        ModelState.AddModelError("Success", "Password does not match confirm password");
-                        ViewBag.ReturnMsg = "Failed";
+                        message = "Password does not match confirm password";
                     }
+                    return Json(new { msg = message, JsonRequestBehavior.AllowGet });
                 }
                 catch (Exception ex)
                 {
-                    ModelState.AddModelError("", ex.Message);
+                    ViewBag.CatchedMsg = ex.Message;
                 }
-            }
-            return View();
-        }
-
-        public ActionResult EditUsers()
-        {
-            Users eUsers = new Users();
-            try
-            {
-                string IdVal = Url.RequestContext.RouteData.Values["Id"].ToString();
-
-                if (General.IsNumeric(IdVal))
-                {
-                    eUsers.UserId = int.Parse(IdVal);
-                }
-
-                if (eUsers.UserId > 0)
-                {
-                    UsersBI.LoadUsers(ref eUsers);
-                }
-                if (eUsers.UserId == 0)
-                    return RedirectToAction("IndexUsers", ControllerName.Accounts);
-            }
-            catch (Exception ex)
-            {
-                ModelState.AddModelError("", ex.Message);
             }
             return View(eUsers);
         }
@@ -331,28 +299,37 @@ namespace FASM.Controllers
         [HttpPost]
         public ActionResult EditUsers(Users eUsers)
         {
-            if (ModelState.IsValid)
+            if (eUsers.isLoad == false)
             {
-                try
+                eUsers.UserId = Convert.ToInt32(Request.Params["UserId"]);
+                UsersBI.LoadUsers(ref eUsers);
+                return PartialView(eUsers);
+            }else
+            {
+                if (ModelState.IsValid)
                 {
-                    FASM_Enums.InfoMessages SaveResult = UsersBI.SaveUsers(ref eUsers);
-                    switch (SaveResult)
+                    try
                     {
-                        case FASM_Enums.InfoMessages.Success:
-                            ModelState.AddModelError("Success", "Successfully Updated!");
-                            ViewBag.ReturnMsg = "Success";
-                            break;
-                        case FASM_Enums.InfoMessages.AlreadyExist:
-                            ModelState.AddModelError("Success", "The username already exist!");
-                            ViewBag.ReturnMsg = "Failed";
-                            break;
+                        string message = "";
+                        FASM_Enums.InfoMessages SaveResult = UsersBI.SaveUsers(ref eUsers);
+                        switch (SaveResult)
+                        {
+                            case FASM_Enums.InfoMessages.Success:
+                                message = FASM_Msg.Updated;
+                                break;
+                            case FASM_Enums.InfoMessages.AlreadyExist:
+                                message = "The username already exist!";
+                                break;
+                        }
+                        return Json(new { msg = message, JsonRequestBehavior.AllowGet });
+                    }
+                    catch (Exception ex)
+                    {
+                        ModelState.AddModelError("", ex.Message);
                     }
                 }
-                catch (Exception ex)
-                {
-                    ModelState.AddModelError("", ex.Message);
-                }
             }
+            
             return View();
         }
 
@@ -386,18 +363,20 @@ namespace FASM.Controllers
         #endregion
 
         #region Assign Permissions
-        [HttpPost]
+       
         public ActionResult ViewPermissions()
         {
-            int RoleId = Convert.ToInt32(Request.Params["roleId"]);
-            ViewBag.RoleId = Convert.ToInt32(Request.Params["roleId"]);
-            ViewBag.RoleName = Request.Params["RoleName"].ToString();
+            FASM_EN.User.Roles eRoles = new FASM_EN.User.Roles();
+            int RoleId = Convert.ToInt32(Url.RequestContext.RouteData.Values["Id"]);
+            ViewBag.RoleId = RoleId; eRoles.RoleId = RoleId;
+            RolesBI.LoadRoles(ref eRoles);
+            ViewBag.RoleName = eRoles.RoleName;
             Permissions ePermissions = new Permissions();
             ePermissions.dtPermissions = PermissionsBI.GetPermissions(RoleId);
             return View(ePermissions);
         }
 
-
+        [HttpPost]
         public ActionResult AssignPermissions(IEnumerable<MapRolePermission> eMapRolePermissions)
         {
             if (eMapRolePermissions != null)
@@ -451,10 +430,11 @@ namespace FASM.Controllers
         #region Assign Roles
         public ActionResult ViewRoles()
         {
-            int UserId = Convert.ToInt32(Request.Params["UserId"]);
-            ViewBag.UserId = Convert.ToInt32(Request.Params["UserId"]);
-            ViewBag.Username = Request.Params["Username"].ToString();
-            
+            Users eUsers = new Users();
+            int UserId = Convert.ToInt32(Url.RequestContext.RouteData.Values["Id"]);
+            ViewBag.UserId = UserId;eUsers.UserId = UserId;
+            UsersBI.LoadUsers(ref eUsers);
+            ViewBag.Username = eUsers.Username;
             FASM_EN.User.Roles eRoles = new FASM_EN.User.Roles();
             eRoles.dtRoles = RolesBI.ShowRoles(UserId);
             return View(eRoles);

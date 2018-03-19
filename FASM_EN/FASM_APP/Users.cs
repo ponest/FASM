@@ -44,6 +44,8 @@ namespace FASM_EN.User
         [StringLength(maximumLength: 50)]
         public string ConfirmPassword { get; set; }
 
+        public bool isLoad { get; set; }
+
         public System.Data.DataTable dtUsers { get; set; }
 
     }

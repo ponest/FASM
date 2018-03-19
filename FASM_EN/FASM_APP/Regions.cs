@@ -15,6 +15,8 @@ namespace FASM_EN.Setups
         [StringLength(maximumLength: 100)]
         public string RegionName { get; set; }
 
+        public bool isLoad { get; set; }
+
         public System.Data.DataTable dtRegion { get; set; }
 
     }

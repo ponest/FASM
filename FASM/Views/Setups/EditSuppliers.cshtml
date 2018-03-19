@@ -5,28 +5,29 @@
     <div class="row">
         <div class="col-md-6">
             <div class="form-group">
-                @Html.LabelFor(m => m.SupplierFullName, new { @class = "col-md-6 control-label" })
+                @Html.LabelFor(m => m.SupplierFullName, new { @class = "col-md-12 control-label" })
                 @Html.TextBoxFor(m => m.SupplierFullName, new { @class = "form-control" ,id = "EditSupplierFullName"})
                 @Html.HiddenFor(m => m.SupplierId, new { id = "EditSupplierId" })
+                @Html.HiddenFor(m => m.isLoad, new { @Value = "true" })
             </div>
         </div>
         <div class="col-md-6">
             <div class="form-group">
-                @Html.LabelFor(m => m.CompanyName, new { @class = "col-md-6 control-label" })
-                @Html.TextBoxFor(m => m.CompanyName, new { @class = "form-control", id = "EditCompanyName" })
+                @Html.LabelFor(m => m.CompanyName, new { @class = "col-md-12 control-label" })
+                @Html.TextBoxFor(m => m.CompanyName, new { @class = "form-control", id = "EditCompanyName", placeholder = "Optional" })
             </div>
         </div>
     </div>
     <div class="row">
         <div class="col-md-6">
             <div class="form-group">
-                @Html.LabelFor(m => m.JobPosition, new { @class = "col-md-6 control-label" })
-                @Html.TextBoxFor(m => m.JobPosition, new { @class = "form-control" ,id = "EditJobPosition" })
+                @Html.LabelFor(m => m.JobPosition, new { @class = "col-md-12 control-label" })
+                @Html.TextBoxFor(m => m.JobPosition, new { @class = "form-control" ,id = "EditJobPosition", placeholder = "Optional" })
             </div>
         </div>
         <div class="col-md-6">
             <div class="form-group">
-                @Html.LabelFor(m => m.Phone, new { @class = "col-md-6 control-label" })
+                @Html.LabelFor(m => m.Phone, new { @class = "col-md-12 control-label" })
                 @Html.TextBoxFor(m => m.Phone, new { @class = "form-control", id = "EditPhone"})
             </div>
         </div>
@@ -34,27 +35,27 @@
     <div class="row">
         <div class="col-md-6">
             <div class="form-group">
-                @Html.LabelFor(m => m.Email, new { @class = "col-md-6 control-label" })
+                @Html.LabelFor(m => m.Email, new { @class = "col-md-12 control-label" })
                 @Html.TextBoxFor(m => m.Email, new { @class = "form-control" , id = "EditEmail"})
             </div>
         </div>
         <div class="col-md-6">
             <div class="form-group">
-                @Html.LabelFor(m => m.Website, new { @class = "col-md-6 control-label" })
-                @Html.TextBoxFor(m => m.Website, new { @class = "form-control" , id = "EditWebsite"})
+                @Html.LabelFor(m => m.Website, new { @class = "col-md-12 control-label" })
+                @Html.TextBoxFor(m => m.Website, new { @class = "form-control" , id = "EditWebsite", placeholder = "Optional" })
             </div>
         </div>
     </div>
     <div class="row">
         <div class="col-md-6">
             <div class="form-group">
-                @Html.LabelFor(m => m.RegionId, new { @class = "col-md-6 control-label" })
+                @Html.LabelFor(m => m.RegionId, new { @class = "col-md-12 control-label" })
                 @Html.DropDownListFor(m => m.RegionId, (IEnumerable<SelectListItem>)ViewData["RegionName"], new { @class = "form-control" , id = "EditRegionId"})
             </div>
         </div>
         <div class="col-md-6">
             <div class="form-group">
-                @Html.LabelFor(m => m.DistrictId, new { @class = "col-md-6 control-label" })
+                @Html.LabelFor(m => m.DistrictId, new { @class = "col-md-12 control-label" })
                 @Html.DropDownListFor(m => m.DistrictId, (IEnumerable<SelectListItem>)ViewData["DistrictName"], new { @class = "form-control", id = "EditDistrictId" })
             </div>
         </div>

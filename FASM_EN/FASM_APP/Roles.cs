@@ -19,6 +19,8 @@ namespace FASM_EN.User
         [Display(Name = "Is Sys Admin")]
         public bool IsSysAdmin { get; set; }
 
+        public bool isLoad { get; set; }
+
         public System.Data.DataTable dtRoles { get; set; }
 
     }

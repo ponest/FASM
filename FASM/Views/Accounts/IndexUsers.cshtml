@@ -1,20 +1,12 @@
 ﻿@model FASM_EN.User.Users
 @using FASM.GeneralObjects
 @{
-    ViewBag.Title = "IndexUsers";
+    ViewBag.Title = "Index Users";
     ViewBag.HeaderText = "Users";
 }
 
 @section Styles{
-
     @Styles.Render("~/plugin/sweetAlertStyles")
-<style>
-    .UserBtnSuccess:hover{
-        text-decoration:none !important;
-        padding:5px !important;
-    }
-    </style>
-
 }
 @section breadcrumb{
     <ol class="breadcrumb">
@@ -26,7 +18,7 @@
 <div class="tile">
     @if (ViewBag.AllowAdd)
     {
-        <a  class="btn btn-info btn-sm addBtns" href="@Url.Action("CreateUsers",ControllerName.Accounts)"><i class="fa fa-plus-circle fa-lg"></i>New User</a>
+        <button type="button" class="btn btn-primary btn-sm addBtns" data-toggle="modal" data-target="#UsersModal"><i class="fa fa-plus-circle fa-lg"></i>New User</button>
     }
     <table class="table table-sm table-striped table-bordered" id="myTable">
 
@@ -38,7 +30,7 @@
                 <th>Last Name</th>
                 <th>Email</th>
                 <th>Phone Number</th>
-                <th width="14%">Actions</th>
+                <th width="23%">Actions</th>
             </tr>
         </thead>
         <tbody>
@@ -52,31 +44,121 @@
                     <td>@Html.DisplayTextFor(ModelItem => item["Email"])</td>
                     <td>@Html.DisplayTextFor(ModelItem => item["PhoneNumber"])</td>
                     <td>
-                    @using (Html.BeginForm("ViewRoles", ControllerName.Accounts, FormMethod.Post))
-                    {
-                        if (ViewBag.AssignRoles)
+                        @using (Html.BeginForm("EditUsers", ControllerName.Accounts, FormMethod.Post, new{ @class = "EditUser" }))
                         {
-                            <button class="btn-primary btn-xs UserBtnPrimary" type="submit">Assign Roles</button>
+                            if (ViewBag.AllowEdit)
+                            {
+                                <button class="btn-success btn-xs UserBtnSuccess" type="submit"><i class="fa fa-pencil-square-o"></i> Edit</button>
+                            }
+                            if (ViewBag.AllowDelete)
+                            {
+                                <button type="button" UserIdentifier="@item["UserId"]" class="btn-danger btn-xs UserBtnDanger btnDelete"><i class="fa fa-trash-o"></i>  Delete</button>
+                            }
+                            if (ViewBag.AssignRoles)
+                            {
+                                <a class="btn-info btn-xs UserBtnInfo" href="@Url.Action("ViewRoles",ControllerName.Accounts,new { id = item["UserId"]})">Assign Roles</a>
+                            }
+                            @Html.HiddenFor(m => m.UserId, new { @Value = item["UserId"] });
                         }
-                        @Html.HiddenFor(m => m.UserId, new { @Value = item["UserId"] });
-                        @Html.HiddenFor(m => m.Username, new { @Value = item["Username"] });
-                    }
-                    @if (ViewBag.AllowEdit)
-                    {
-                        <a class="btn-success btn-xs UserBtnSuccess" type="submit" href="@Url.Action("EditUsers",ControllerName.Accounts,new { id = item["UserId"]})"><i class="fa fa-pencil-square-o"></i> Edit</a>
-                    }
-                    @if (ViewBag.AllowDelete)
-                    {
-                        <button type="button" UserIdentifier="@item["UserId"]" class="btn-danger btn-xs UserBtnDanger btnDelete"><i class="fa fa-trash-o"></i>  Delete</button>
-                    }
-                        
                     </td>
                 </tr>
             }
         </tbody>
     </table>
 </div>
+<div class="modal fade" id="UsersModal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">New User</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="status-area"></div>
+                <form class="form" role="form">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                @Html.LabelFor(m => m.FirstName, new { @class = "col-md-12 control-label" })
+                                @Html.TextBoxFor(m => m.FirstName, new { @class = "form-control" })
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                @Html.LabelFor(m => m.LastName, new { @class = "col-md-12 control-label" })
+                                @Html.TextBoxFor(m => m.LastName, new { @class = "form-control" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                @Html.LabelFor(m => m.Email, new { @class = "col-md-12 control-label" })
+                                @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                @Html.LabelFor(m => m.Username, new { @class = "col-md-12 control-label" })
+                                @Html.TextBoxFor(m => m.Username, new { @class = "form-control" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                @Html.LabelFor(m => m.PhoneNumber, new { @class = "col-md-12 control-label" })
+                                @Html.TextBoxFor(m => m.PhoneNumber, new { @class = "form-control" })
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                @Html.LabelFor(m => m.Password, new { @class = "col-md-12 control-label" })
+                                @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                @Html.LabelFor(m => m.ConfirmPassword, new { @class = "col-md-12 control-label" })
+                                @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control" })
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="SaveUser">Save</button>
+                <button type="button" class="btn btn-default btnClose" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="EditUserModal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Edit User</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
 
+            </div>
+            <div class="modal-footer">
+                @if (ViewBag.AllowEdit)
+                {
+                    <button type="submit" class="btn btn-primary" id="UpdateUser">Update</button>
+                }
+                <button type="button" class="btn btn-default btnClose" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
 @section Scripts
 {
     @Scripts.Render("~/DataTables/js")
@@ -86,24 +168,114 @@
         $(document).ready(function () {
             //clear the text field UserName
             function clearValues() {
-                $("#UserName").val('');
+                $("#Username").val('');
+                $("#FirstName").val('');
+                $("#LastName").val('');
+                $("#Email").val('');
+                $("#PhoneNumber").val('');
+                $("#Password").val('');
+                $("#ConfirmPassword").val('');
             }
+
+            $("#UpdateUser").click(function () {
+
+                var ValidateMsg = IsValidEditData();
+                if (ValidateMsg != "") {
+                    ShowNotice('#Editstatus-area', ValidateMsg, "Failure");
+                    return false;
+                }
+
+                var UsersData = {
+                    UserId: $("#EditUserId").val(), UserName: $("#EditUserName").val(), FirstName: $("#EditFirstName").val(),
+                    LastName: $("#EditLastName").val(), Email: $("#EditEmail").val(), PhoneNumber: $("#EditPhoneNumber").val(),
+                    isLoad: $("#isLoad").val(), Password: $("#EditPassword").val()
+                };
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("EditUsers", ControllerName.Accounts)',
+                    data: UsersData,
+                    dataType: "json",
+                    success: function (data) {
+                        if (data.msg.toString() == "@FASM_GN.FASM_Msg.Updated") {
+                            ShowNotice("#Editstatus-area", data.msg, "Success");
+                        }
+                        else {
+                            ShowNotice('#Editstatus-area', data.msg, "Failure");
+                        }
+                        clearValues();
+
+                    },
+                    error: function () {
+                        ShowNotice('#Editstatus-area', "Error occured!!", "Failure");
+                    }
+                });
+            })
+            //Checking the validity of email
+            //function ValidateEmail(email) {
+            //    var expr = /^([\w-\.]+)@@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
+            //    return expr.test(email);
+            //};
+            //$("#Email").change(function () {
+            //    if (!ValidateEmail($("#Email").val())) {
+            //        alert("Invalid email address.");
+            //    }
+            //    else {
+            //        alert("Valid email address.");
+            //    }
+            //});
+
 
             //Cheking the validity of text fields
             function IsValidData() {
-                if ($("#UserName").val() == "") {
-                    return "Please fill in the User name";
+                if ($("#FirstName").val() == "") {
+                    return "Please fill in the first name";
+                } else if ($("#LastName").val() == "") {
+                    return "Please fill in the last name";
+                }if ($("#Username").val() == "") {
+                    return "Please fill in the user name";
+                } else if ($("#PhoneNumber").val() == "") {
+                    return "Please fill in the phone number";
+                } else if ($("#Password").val() == "") {
+                    return "Please fill in the password";
+                } else if ($("#ConfirmPassword").val() == "") {
+                    return "Please fill in the confirm password";
+                } 
+                return "";
+            }
+
+            function IsValidEditData() {
+                if ($("#EditUserName").val() == "") {
+                    return "Please fill in the user name";
+                } else if ($("#EditFirstName").val() == "") {
+                    return "Please fill in the first name";
+                } else if ($("#EditLastName").val() == "") {
+                    return "Please fill in the last name";
+                } else if ($("#EditPassword").val() == "") {
+                    return "Please fill in the password";
+                } else if ($("#EditPhoneNumber").val() == "") {
+                    return "Please fill in the phone number";
                 }
                 return "";
             }
 
-          
             //Clear text fields and reload the page
             $(".btnClose").click(function () {
                 clearValues();
                 location.reload();
             });
 
+            $('.EditUser').submit(function (e) {
+                e.preventDefault();
+                var $form = $(this);
+
+                $.post($form.attr("action"), $form.serialize()).done(function (res) {
+                    $mymodal = $("#EditUserModal");
+                    //update the modal's body with the response received
+                    $mymodal.find("div.modal-body").html(res);
+                    // Show the modal
+                    $mymodal.modal("show");
+                });
+            });
 
             //For Saving Purposes
             $("#SaveUser").click(function () {
@@ -114,34 +286,36 @@
                     return false;
                 }
 
-                var UserData = { UserName: $("#UserName").val() };
+                var UsersData = {
+                    UserName: $("#Username").val(), FirstName: $("#FirstName").val(),
+                    LastName: $("#LastName").val(), Email: $("#Email").val(), PhoneNumber: $("#PhoneNumber").val(),
+                    Password: $("#Password").val(), ConfirmPassword: $("#ConfirmPassword").val()
+                };
 
                 $.ajax({
                     type: "POST",
-                    url: '@Url.Action("CreateUsers",ControllerName.Setups)',
-                    data: UserData,
+                    url: '@Url.Action("CreateUsers",ControllerName.Accounts)',
+                    data: UsersData,
                     dataType: "json",
                     success: function (data) {
-                        if (data.msg.toString() == "@FASM_GN.FASM_Msg.SuccessfulSaved") {
+                        if (data.msg.toString() == "Successfully created!") {
                             ShowNotice('#status-area', data.msg, "Success");
+                            clearValues();
                         }
                         else {
                             ShowNotice('#status-area', data.msg, "Failure");
                         }
-                        clearValues();
                     },
                     error: function () {
                         ShowNotice('#status-area', "Error occured!!", "Failure");
-                        clearValues();
                     }
                 });
             })
             $('#myTable').DataTable();
 
-          
+
             //Delete Users
             $("button.btnDelete").click(function () {
-                alert(1);
                 var Id = $(this).attr("UserIdentifier");
                 DeleteItem(Id);
 

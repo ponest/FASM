@@ -6,6 +6,7 @@
         @Html.LabelFor(m => m.DistrictName, new { @class = "col-md-6 control-label" })
         @Html.TextBoxFor(m => m.DistrictName, new { @class = "form-control", id = "EditDistrictName" })
         @Html.HiddenFor(m => m.DistrictId, new { id = "EditDistrictId" })
+        @Html.HiddenFor(m => m.isLoad, new { @Value = "true" })
     </div>
 </form>
 

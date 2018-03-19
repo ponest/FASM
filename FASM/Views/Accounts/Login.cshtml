@@ -4,93 +4,94 @@
     Layout = "";
 }
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en-us">
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link href="~/Content/bootstrapLumen.min.css" rel="stylesheet" />
+    <!-- Main CSS-->
+    <link rel="stylesheet" type="text/css" href="~/Content/main.css">
+    <!-- Font-icon css-->
     <link href="~/fonts/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
-    <link href="~/Content/Site.css" rel="stylesheet" />
+    <style>
+        .ErrorMsg{
+            color:red;
+            font-style:italic;
+            font-weight:bold;
+            margin-top:10px;
+        }
+        .ErrorMsg ul li{
+            list-style-type:none;
+        }
+        label{
+            text-transform:uppercase;
+        }
+    </style>
     <title>FASM|Login</title>
-    <link rel="shortcut icon" href="~/siteIcon.ico" type="image/x-icon" />
-    <link rel="icon" href="~/siteIcon.ico" type="image/ico" />
 </head>
 <body>
-    <div id="topNav">
-        <span>Fixed Assets Management System</span>
-    </div>
-
-    <div class="container">
-        <div id="loginFormBody" class="col-md-5">
-            @using (Html.BeginForm("Login", "Accounts", FormMethod.Post, new { role = "form", @class = "form-horizontal" }))
+    <section class="material-half-bg">
+        <div class="cover"></div>
+    </section>
+    <section class="login-content">
+        <div class="logo">
+            <h1>Fixed Assets Management</h1>
+        </div>
+        <div class="login-box">
+            @using (Html.BeginForm("Login", "Accounts", FormMethod.Post, new { role = "form", @class = "login-form" }))
             {
-                <fieldset>
-                    <legend>Login Form</legend><hr id="hrLine" />
-                    <div class="form-group row">
-                        @Html.LabelFor(m => m.Username, new { @class = "col-md-2 control-label" })
-                        <div class="col-md-8">
-                            @Html.TextBoxFor(d => d.Username, new { @class = "form-control" })
-                        </div>
-                    </div>
-
-                    <div class="form-group row">
-                        @Html.LabelFor(m => m.Password, new { @class = "col-md-2 control-label" })
-                        <div class="col-md-8">
-                            @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
-                        </div>
-                    </div>
-
-                    <div class="form-group row">
-                        <div class="offset-md-2 col-md-5">
-                            <input type="submit" value="Log in" class="btn btn-default" id="btn-login" />
-                        </div>
-                        <div class="col-md-3">
-                            <span id="registerLink">@Html.ActionLink("Register", "Register", "AccountsController", new { @class = "Links" })</span>
-                        </div>
-                    </div>
-                </fieldset>
+                <h3 class="login-head"><i class="fa fa-lg fa-fw fa-user"></i>SIGN IN</h3>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.Username, new { @class = "control-label" })
+                    @Html.TextBoxFor(d => d.Username, new { @class = "form-control", placeholder = "Email", autofocus = "autofocus" })
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.Password, new { @class = "control-label" })
+                    @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
+                </div>
+                <div class="form-group btn-container">
+                    <button class="btn btn-primary btn-block" id="btn-login"><i class="fa fa-sign-in fa-lg fa-fw"></i>SIGN IN</button>
+                </div>
                 if (ViewBag.ReturnMsg == "Failed")
                 {
-                    @Html.ValidationSummary("", new { id = "ErrorMsg" })
+                    @Html.ValidationSummary("", new { @class = "ErrorMsg" })
                 }
-                <p id="ErrorMsg" style="padding-left:26%"></p>
+                <p class="ErrorMsg" style="padding-left:26%"></p>
             }
         </div>
-    </div>
-
-    <div id="LoginFooter">
-        <span>Powered By:ZE0 Company Limited</span>
-    </div>
-    @*<script src="~/Scripts/jQuery.js"></script>
-    <script src="~/Scripts/FASM.js"></script>*@
-    <script type="text/javascript">
-
-
-        $("#btn-login").click(function () {
-            var ValidateMsg = IsValidData();
-            if (ValidateMsg != "") {
-                FlashMsg();
-                $('#ErrorMsg').flash_message({
-                    text: ValidateMsg,
-                    how: 'append'
-                });
-                return false;
-            }
-
-            function IsValidData() {
-                var Password = $("#Password").val().toString();
-                if ($("#Username").val() == "") {
-                    return "Please fill in the username";
-                } else if (Password == "") {
-                    return "Please fill in the password.";
-                }
-                return "";
-            }
-        })
-    </script>
+    </section>
 </body>
 </html>
 
+<script src="~/Scripts/JQuery.js"></script>
+<script src="~/Scripts/popper.min.js"></script>
+<script src="~/Scripts/bootstrap.js"></script>
+<script src="~/Scripts/main.js"></script>
+<!-- The javascript plugin to display page loading on top-->
+<script src="~/Scripts/pace.min.js"></script>
+<script src="~/Scripts/FASM.js"></script>
 
+<script type="text/javascript">
+    $("#btn-login").click(function () {
+        var ValidateMsg = IsValidData();
+        if (ValidateMsg != "") {
+            FlashMsg();
+            $('.ErrorMsg').flash_message({
+                text: ValidateMsg,
+                how: 'append'
+            });
+            return false;
+        }
+
+        function IsValidData() {
+            var Password = $("#Password").val().toString();
+            if ($("#Username").val() == "") {
+                return "Please fill in the username";
+            } else if (Password == "") {
+                return "Please fill in the password.";
+            }
+            return "";
+        }
+    })
+
+</script>

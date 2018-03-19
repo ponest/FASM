@@ -21,7 +21,7 @@
     <div>@ViewBag.CatchedMsg</div>
     @if (ViewBag.AllowAdd)
     {
-        <button type="button" class="btn btn-info btn-sm addBtns" data-toggle="modal" data-target="#SuppliersModal"><i class="fa fa-plus-circle fa-lg"></i>New Supplier</button>
+        <button type="button" class="btn btn-primary btn-sm addBtns" data-toggle="modal" data-target="#SuppliersModal"><i class="fa fa-plus-circle fa-lg"></i>New Supplier</button>
     }
     <table class="table table-sm table-striped table-bordered" id="myTable">
 
@@ -53,17 +53,17 @@
                     <td>@Html.DisplayTextFor(ModelItem => item["DistrictId"])</td>
                     <td>@Html.DisplayTextFor(ModelItem => item["RegionId"])</td>
                     <td>
-                        @using (Html.BeginForm("LoadEditSuppliers", ControllerName.Setups, FormMethod.Post, new { @class = "EditSupplier" }))
+                        @using (Html.BeginForm("EditSuppliers", ControllerName.Setups, FormMethod.Post, new { @class = "EditSupplier" }))
                         {
-                            if (ViewBag.AllowLoadEdit)
+                            if (ViewBag.AllowEdit)
                             {
                                 <button class="btn-success btn-xs UserBtnSuccess" type="submit"><i class="fa fa-pencil-square-o"></i> Edit</button>
                             }
+                            if (ViewBag.AllowDelete)
+                            {
+                                <button type="button" SupplierIdentifier="@item["SupplierId"]" class="btn-danger btn-xs UserBtnDanger btnDelete"><i class="fa fa-trash-o"></i>  Delete</button>
+                            }
                             @Html.HiddenFor(m => m.SupplierId, new { @Value = item["SupplierId"] });
-                        }
-                        @if (ViewBag.AllowDelete)
-                        {
-                            <button type="button" SupplierIdentifier="@item["SupplierId"]" class="btn-danger btn-xs UserBtnDanger pull-right btnDelete" style="margin-top:-23px;margin-right:10px"><i class="fa fa-trash-o"></i>  Delete</button>
                         }
                     </td>
                 </tr>
@@ -83,71 +83,63 @@
             </div>
             <div class="modal-body">
                 <div id="status-area"></div>
-                <form class="form" role="form">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                @Html.LabelFor(m => m.SupplierFullName, new { @class = "col-md-6 control-label" })
-                                @Html.TextBoxFor(m => m.SupplierFullName, new { @class = "form-control" })
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                @Html.LabelFor(m => m.CompanyName, new { @class = "col-md-6 control-label" })
-                                @Html.TextBoxFor(m => m.CompanyName, new { @class = "form-control" })
-                            </div>
+                <form class="form-horizontal" role="form" style="margin-right:20px">
+                    <div class="form-group row">
+                        @Html.LabelFor(m => m.SupplierFullName, new { @class = "col-md-4 control-label float-right" })
+                        <div class="col-md-8">
+                            @Html.TextBoxFor(m => m.SupplierFullName, new { @class = "form-control" })
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                @Html.LabelFor(m => m.JobPosition, new { @class = "col-md-6 control-label" })
-                                @Html.TextBoxFor(m => m.JobPosition, new { @class = "form-control" })
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                @Html.LabelFor(m => m.Phone, new { @class = "col-md-6 control-label" })
-                                @Html.TextBoxFor(m => m.Phone, new { @class = "form-control" })
-                            </div>
+                    <div class="form-group row">
+                        @Html.LabelFor(m => m.CompanyName, new { @class = "col-md-4 control-label" })
+                        <div class="col-md-8">
+                            @Html.TextBoxFor(m => m.CompanyName, new { @class = "form-control", placeholder = "Optional" })
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                @Html.LabelFor(m => m.Email, new { @class = "col-md-6 control-label" })
-                                @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                @Html.LabelFor(m => m.Website, new { @class = "col-md-6 control-label" })
-                                @Html.TextBoxFor(m => m.Website, new { @class = "form-control" })
-                            </div>
+                    <div class="form-group row">
+                        @Html.LabelFor(m => m.JobPosition, new { @class = "col-md-4 control-label" })
+                        <div class="col-md-8">
+                            @Html.TextBoxFor(m => m.JobPosition, new { @class = "form-control", placeholder = "Optional" })
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                @Html.LabelFor(m => m.RegionId, new { @class = "col-md-6 control-label" })
-                                @Html.DropDownListFor(m => m.RegionId, (IEnumerable<SelectListItem>)ViewData["RegionName"] ,new { @class = "form-control" })
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                @Html.LabelFor(m => m.DistrictId, new { @class = "col-md-6 control-label" })
-                                @Html.DropDownListFor(m => m.DistrictId, (IEnumerable<SelectListItem>)ViewData["DistrictName"], new { @class = "form-control" })
-                            </div>
+                    <div class="form-group row">
+                        @Html.LabelFor(m => m.Phone, new { @class = "col-md-4 control-label" })
+                        <div class="col-md-8">
+                            @Html.TextBoxFor(m => m.Phone, new { @class = "form-control" })
                         </div>
                     </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-info" id="SaveSupplier">Save</button>
-                <button type="button" class="btn btn-default btnClose" data-dismiss="modal">Close</button>
-            </div>
+                    <div class="form-group row">
+                        @Html.LabelFor(m => m.Email, new { @class = "col-md-4 control-label" })
+                        <div class="col-md-8">
+                            @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        @Html.LabelFor(m => m.Website, new { @class = "col-md-4 control-label" })
+                        <div class="col-md-8">
+                            @Html.TextBoxFor(m => m.Website, new { @class = "form-control", placeholder = "Optional" })
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        @Html.LabelFor(m => m.RegionId, new { @class = "col-md-4 control-label" })
+                        <div class="col-md-8">
+                            @Html.DropDownListFor(m => m.RegionId, (IEnumerable<SelectListItem>)ViewData["RegionName"], new { @class = "form-control" })
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        @Html.LabelFor(m => m.DistrictId, new { @class = "col-md-4 control-label" })
+                        <div class="col-md-8">
+                            @Html.DropDownListFor(m => m.DistrictId, (IEnumerable<SelectListItem>)ViewData["DistrictName"], new { @class = "form-control" })
+                        </div>
+                    </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-primary" id="SaveSupplier">Save</button>
+            <button type="button" class="btn btn-default btnClose" data-dismiss="modal">Close</button>
         </div>
     </div>
+</div>
 </div>
 
 <div class="modal fade" id="EditSupplierModal">
@@ -163,10 +155,7 @@
 
             </div>
             <div class="modal-footer">
-                @if (ViewBag.AllowEdit)
-                {
-                    <button type="submit" class="btn btn-info Supplier" id="Supplier">Save</button>
-                }
+                <button type="submit" class="btn btn-primary Supplier" id="Supplier">Update</button>
                 <button type="button" class="btn btn-default btnClose" data-dismiss="modal">Close</button>
             </div>
         </div>
@@ -244,7 +233,7 @@
                 }
 
                 var SupplierData = {
-                    SupplierId:$("#EditSupplierId").val(),
+                    SupplierId: $("#EditSupplierId").val(),
                     SupplierFullName: $("#EditSupplierFullName").val(),
                     phone: $("#EditPhone").val(),
                     Email: $("#EditEmail").val(),
@@ -252,25 +241,26 @@
                     RegionId: $("#EditRegionId").val(),
                     DistrictId: $("#EditDistrictId").val(),
                     Website: $("#EditWebsite").val(),
-                    JobPosition: $("#EditJobPosition").val()
+                    JobPosition: $("#EditJobPosition").val(),
+                    isLoad:$("#isLoad").val()
                 };
                 $.ajax({
                     type: "POST",
-                    url: '@Url.Action("PostEditSuppliers",ControllerName.Setups)',
+                    url: '@Url.Action("EditSuppliers",ControllerName.Setups)',
                     data: SupplierData,
                     dataType: "json",
                     success: function (data) {
                         if (data.msg.toString() == "@FASM_GN.FASM_Msg.Updated") {
-                            ShowNotice("#Editstatus-area", data.msg,"Success");
+                            ShowNotice("#Editstatus-area", data.msg, "Success");
                         }
                         else {
-                            ShowNotice('#Editstatus-area',data.msg,"Failure");
+                            ShowNotice('#Editstatus-area', data.msg, "Failure");
                         }
                         clearValues();
 
                     },
                     error: function () {
-                        ShowNotice('#Editstatus-area',"Error occured!!","Failure");
+                        ShowNotice('#Editstatus-area', "Error occured!!", "Failure");
                         clearValues();
                     }
                 });
@@ -339,7 +329,7 @@
 
             });
 
-            function DeleteItem(Id){
+            function DeleteItem(Id) {
                 DataObject = { SupplierId: Id };
 
                 swal({
@@ -350,7 +340,7 @@
                     closeOnConfirm: false,
                     confirmButtonText: "Yes, delete it!",
                     confirmButtonColor: "#ec6c62"
-                }, function() {
+                }, function () {
                     $.ajax({
                         url: '@Url.Action("DeleteSuppliers",ControllerName.Setups)',
                         type: "POST",
@@ -358,7 +348,7 @@
                         dataType: "json",
                         success: function (data) {
                             swal("Deleted!", data, "success");
-                            swal({ title: "Deleted!", text:data, type: "success" }, function () {location.reload();});
+                            swal({ title: "Deleted!", text: data, type: "success" }, function () { location.reload(); });
                         },
                         error: function (data) {
                             swal("Oops", data, "error");
@@ -367,7 +357,7 @@
 
                 });
             }
-                });
+        });
     </script>
 }
 

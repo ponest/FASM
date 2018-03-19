@@ -16,6 +16,8 @@ namespace FASM_EN.Setups
         [StringLength(maximumLength: 100)]
         public string LocationName { get; set; }
 
+        public bool isLoad { get; set; }
+
         public System.Data.DataTable dtLocation { get; set; }
 
     }

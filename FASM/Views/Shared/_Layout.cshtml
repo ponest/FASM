@@ -42,7 +42,7 @@
             </div>
         </div>
         <ul class="app-menu">
-            <li><a class="app-menu__item" href="index.html"><i class="app-menu__icon fa fa-dashboard"></i><span class="app-menu__label">Dashboard</span></a></li>
+            <li><a class="app-menu__item" href="@Url.Action("Index","Accounts")"><i class="app-menu__icon fa fa-dashboard"></i><span class="app-menu__label">Dashboard</span></a></li>
             <li class="treeview">
                 <a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-wrench"></i><span class="app-menu__label">Setups</span><i class="treeview-indicator fa fa-angle-right"></i></a>
                 <ul class="treeview-menu">
@@ -50,14 +50,13 @@
                     <li><a class="treeview-item" href="@Url.Action("IndexLocation","Setups")"><i class="icon fa fa-life-ring"></i> Locations</a></li>
                     <li><a class="treeview-item" href="@Url.Action("IndexDistrict","Setups")"><i class="icon fa fa-life-ring"></i> Districts</a></li>
                     <li><a class="treeview-item" href="@Url.Action("IndexRoles","Accounts")"><i class="icon fa fa-life-ring"></i> Roles</a></li>
-                    <li><a class="treeview-item" href="@Url.Action("Permission","Accounts")"><i class="icon fa fa-life-ring"></i> Permissions</a></li>
                     <li><a class="treeview-item" href="@Url.Action("IndexRegions","Setups")"><i class="icon fa fa-life-ring"></i> Regions</a></li>
                     <li><a class="treeview-item" href="@Url.Action("IndexSuppliers","Setups")"><i class="icon fa fa-life-ring"></i>Suppliers</a></li>
                 </ul>
             </li>
             <li><a class="app-menu__item" href="@Url.Action("IndexUsers","Accounts")"><i class="app-menu__icon fa fa-user"></i><span class="app-menu__label"> Manage Users</span></a></li>
             <li class="treeview">
-                <a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-edit"></i><span class="app-menu__label">Manage Users</span><i class="treeview-indicator fa fa-angle-right"></i></a>
+                <a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-edit"></i><span class="app-menu__label">Manage Assets</span><i class="treeview-indicator fa fa-angle-right"></i></a>
                 <ul class="treeview-menu">
                     <li><a class="treeview-item" href="@Url.Action("IndexAssetDefinition","AssetManagement")"><i class="icon fa fa-circle-o"></i> Asset Definition</a></li>
                     <li><a class="treeview-item" href="form-custom.html"><i class="icon fa fa-circle-o"></i> Custom Components</a></li>
