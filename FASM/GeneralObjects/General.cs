@@ -59,6 +59,43 @@ namespace FASM.GeneralObjects
             return dt;
         }
 
+        public static DataTable GetGender()
+        {
+            DataTable dt = new DataTable();
+            dt.Columns.Add("Value");
+            dt.Columns.Add("Text");
+
+            dt.Rows.Add("M", "Male");
+            dt.Rows.Add("F", "Female");
+            return dt;
+        }
+
+        public static DataTable GetAssetConditions()
+        {
+            DataTable dt = new DataTable();
+            dt.Columns.Add("Value");
+            dt.Columns.Add("Text");
+
+            dt.Rows.Add("N", "New");
+            dt.Rows.Add("G", "Good");
+            dt.Rows.Add("F", "Fair");
+            dt.Rows.Add("P", "Poor");
+            return dt;
+        }
+
+        public static DataTable GetAssetStatus()
+        {
+            DataTable dt = new DataTable();
+            dt.Columns.Add("Value");
+            dt.Columns.Add("Text");
+
+            dt.Rows.Add("U", "In Use");
+            dt.Rows.Add("S", "In Storage");
+            dt.Rows.Add("R", "Out for Repair");
+            dt.Rows.Add("D", "Disposed");
+            return dt;
+        }
+
         public static DataTable GetdtParams()
         {
             DataTable dtParams = new DataTable();

@@ -1,0 +1,240 @@
+﻿@model FASM_EN.AssetManagement.AssetRegister
+@using FASM.GeneralObjects
+@{
+    ViewBag.Title = "Create Asset Register";
+    ViewBag.HeaderText = "New Asset Register";
+}
+
+@section Styles{
+
+    @Styles.Render("~/plugin/sweetAlertStyles")
+    <link href="~/Content/datepicker.css" rel="stylesheet" />
+    <style>
+        #status-area{
+            margin-bottom:5px;
+            width:85.5%;
+            margin-left:11.5%;
+        }
+        .alert-success{
+            background-color:#23a127 !important;
+        }
+        .alert-danger{
+            background-color:red !important;
+        }
+        .alert-success, .alert-danger{
+             color:white !important;
+             width:85.5% !important;
+            margin-left:11.5% !important;
+            font-weight:bold;
+        }
+        #uploadFile{
+            width:205px;
+        }
+    </style>
+}
+
+@section breadcrumb{
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="@Url.Action("Index",ControllerName.Accounts)">Home</a></li>
+        <li class="breadcrumb-item"><a href="#">Manage Assets</a></li>
+        <li class="breadcrumb-item"><a href="@Url.Action("IndexAssetRegister",ControllerName.AssetManagement)">Asset Register</a></li>
+        <li class="breadcrumb-item active" aria-current="page">New Asset Register</li>
+    </ol>
+}
+<div class="tile">
+    @using (Html.BeginForm("CreateAssetRegister", ControllerName.AssetManagement, FormMethod.Post, new { @class = "form-horizontal", role = "form", enctype = "multipart/form-data" }))
+    {
+        if (ViewBag.ReturnMsg == "Success")
+        {@Html.ValidationSummary("", new { @class = "alert-success" }) }
+        else if (ViewBag.ReturnMsg == "Failed")
+        { @Html.ValidationSummary("", new { @class = "alert-danger" })}
+
+        <div id="status-area"></div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group row">
+                    @Html.LabelFor(m => m.AssetCode, new { @class = "col-md-3 control-label LabelAlign" })
+                    @Html.TextBoxFor(m => m.AssetCode, new { @class = "col-md-8  form-control", autofocus = "autofocus" })
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group row">
+                    @Html.LabelFor(m => m.AssetDefinitionId, new { @class = "col-md-3 control-label LabelAlign" })
+                    @Html.DropDownListFor(m => m.AssetDefinitionId, (IEnumerable<SelectListItem>)ViewData["AssetName"], new { @class = "col-md-8 form-control" })
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group row">
+                    @Html.LabelFor(m => m.SerialNumber, new { @class = "col-md-3 control-label LabelAlign" })
+                    @Html.TextBoxFor(m => m.SerialNumber, new { @class = "col-md-8 form-control" })
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group row">
+                    @Html.LabelFor(m => m.Model, new { @class = "col-md-3 control-label LabelAlign" })
+                    @Html.TextBoxFor(m => m.Model, new { @class = "col-md-8 form-control" })
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group row">
+                    @Html.LabelFor(m => m.Condition, new { @class = "col-md-3 control-label LabelAlign" })
+                    @Html.DropDownListFor(m => m.Condition, (IEnumerable<SelectListItem>)ViewData["AssetConditions"], new { @class = "col-md-8 form-control" })
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group row">
+                    @Html.LabelFor(m => m.AssetStatus, new { @class = "col-md-3 control-label LabelAlign" })
+                    @Html.DropDownListFor(m => m.AssetStatus, (IEnumerable<SelectListItem>)ViewData["AssetStatuses"], new { @class = "col-md-8 form-control" })
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group row">
+                    @Html.LabelFor(m => m.SupplierId, new { @class = "col-md-3 control-label LabelAlign" })
+                    @Html.DropDownListFor(m => m.SupplierId, (IEnumerable<SelectListItem>)ViewData["SupplierName"], new { @class = "col-md-8 form-control" })
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group row">
+                    @Html.LabelFor(m => m.PurchaseDate, new { @class = "col-md-3 control-label LabelAlign" })
+                    @Html.TextBoxFor(m => m.PurchaseDate, new { @class = "col-md-8 form-control datepicker", @Value = ViewBag.PreloadDate })
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group row">
+                    @Html.LabelFor(m => m.PurchaseCost, new { @class = "col-md-3 control-label LabelAlign" })
+                    @Html.TextBoxFor(m => m.PurchaseCost, new { @class = "col-md-8 form-control Numeric" })
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group row">
+                    @Html.LabelFor(m => m.WarrantyExpiry, new { @class = "col-md-3 control-label LabelAlign" })
+                    @Html.TextBoxFor(m => m.WarrantyExpiry, new { @class = "col-md-8 form-control datepicker" })
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group row">
+                    @Html.LabelFor(m => m.SalvageValue, new { @class = "col-md-3 control-label LabelAlign" })
+                    @Html.TextBoxFor(m => m.SalvageValue, new { @class = "col-md-8 form-control Numeric" })
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group row">
+                    @Html.LabelFor(m => m.LocationId, new { @class = "col-md-3 control-label LabelAlign" })
+                    @Html.DropDownListFor(m => m.LocationId, (IEnumerable<SelectListItem>)ViewData["LocationName"], new { @class = "col-md-8 form-control" })
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group row">
+                    @Html.LabelFor(m => m.LifeTime, new { @class = "col-md-3 control-label LabelAlign" })
+                    @Html.TextBoxFor(m => m.LifeTime, new { @class = "col-md-8 form-control NumericInt" })
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group row">
+                    @Html.LabelFor(m => m.DepartmentId, new { @class = "col-md-3 control-label LabelAlign" })
+                    @Html.DropDownListFor(m => m.DepartmentId, (IEnumerable<SelectListItem>)ViewData["DepartmentName"], new { @class = "col-md-8 form-control" })
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group row">
+                    @Html.LabelFor(m => m.CustodianId, new { @class = "col-md-3 control-label LabelAlign" })
+                    @Html.DropDownListFor(m => m.CustodianId, (IEnumerable<SelectListItem>)ViewData["CustodianName"], new { @class = "col-md-8 form-control" })
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="row">
+                    <div class="col-md-3 offset-md-3">
+                        <div class="Uploadbtn">
+                            <input type="file" class="input-upload" id="ImageFile" name="ImageFile" />
+                            <span>Browse</span>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <input id="uploadFile" placeholder="Choose File" disabled="disabled" />
+                    </div>
+                </div>
+            </div>
+        </div>
+        <hr class="horizontal-line" />
+        <button type="submit" class="btn btn-primary" style="margin-left:130px;" id="SaveAssetRegister">Save</button>
+        <button type="reset" class="btn btn-default">Reset</button>
+        <button type="button" id="ClearFields" class="btn btn-primary">New Asset</button>
+    }
+    </div>
+
+    @section Scripts
+{
+        <script src="~/Scripts/bootstrap-datepicker.js"></script>
+        @Scripts.Render("~/plugin/sweetAlert")
+        <script type="text/javascript">
+
+            document.getElementById("ImageFile").onchange = function () {
+                document.getElementById("uploadFile").value = this.value;
+            };
+            var DateToday = new Date();
+            $('.datepicker').datepicker({
+             
+            });
+
+            $("#ClearFields").click(function () {
+                $(".form-control").val("");
+                $(".alert-success").css("display", "none");
+            });
+
+            $("#SaveAssetRegister").click(function () {
+                var ValidateMsg = IsValidData();
+                if (ValidateMsg != "") {
+                    ShowNotice('#status-area', ValidateMsg, "Failure");
+                    return false;
+                }
+            });
+
+            function IsValidData() {
+                if ($("#AssetDefinitionId").val() == 0) {
+                    return "Please select the Asset Name";
+                } else if ($("#Condition").val() == 0) {
+                    return "Please Select condition";
+                } else if ($("#AssetStatus").val() == 0) {
+                    return "Please Select the  Asset status";
+                } else if ($("#SupplierId").val() == 0) {
+                    return "Please Select the Supplier";
+                } else if ($("#PurchaseDate").val() == "") {
+                    return "Please fill in the Purchase date";
+                } else if ($("#PurchaseCost").val() == 0) {
+                    return "Please fill in the Purchase Cost";
+                } else if ($("#LocationId").val() == 0) {
+                    return "Please Select the  Location";
+                } else if ($("#LifeTime").val() == 0) {
+                    return "Please fill in the Life time";
+                } else if ($("#DepartmentId").val() == 0) {
+                    return "Please select the department";
+                } else if ($("#CustodianId").val() == 0) {
+                    return "Please select the custodian";
+                }
+                return "";
+            }
+        </script>
+    }
+

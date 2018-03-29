@@ -30,6 +30,7 @@
                 <th style="display:none">Id</th>
                 <th>Asset Name</th>
                 <th>Brand Name</th>
+                <th>Category Name</th>
                 <th>Depreciation Method</th>
                 <th width="14%">Actions</th>
             </tr>
@@ -41,19 +42,20 @@
                     <td style="display:none">@Html.DisplayTextFor(modelItem => item["AssetDefinitionId"])</td>
                     <td>@Html.DisplayTextFor(ModelItem => item["AssetName"])</td>
                     <td>@Html.DisplayTextFor(ModelItem => item["BrandName"])</td>
+                    <td>@Html.DisplayTextFor(ModelItem => item["CategoryName"])</td>
                     <td>@Html.DisplayTextFor(ModelItem => item["DepreciationMethod"])</td>
                     <td>
-                        @using (Html.BeginForm("LoadEditAssetDefinition", ControllerName.AssetManagement, FormMethod.Post, new { @class = "EditAssetDefinition" }))
+                        @using (Html.BeginForm("EditAssetDefinition", ControllerName.AssetManagement, FormMethod.Post, new { @class = "EditAssetDefinition" }))
                         {
-                            if (ViewBag.AllowLoadEdit)
+                            if (ViewBag.AllowEdit)
                             {
                                 <button class="btn-success btn-xs UserBtnSuccess" type="submit"><i class="fa fa-pencil-square-o"></i> Edit</button>
                             }
+                            if (ViewBag.AllowDelete)
+                            {
+                                <button type="button" AssetDefinitionIdentifier="@item["AssetDefinitionId"]" class="btn-danger btn-xs UserBtnDanger btnDelete"><i class="fa fa-trash-o"></i>  Delete</button>
+                            }
                             @Html.HiddenFor(m => m.AssetDefinitionId, new { @Value = item["AssetDefinitionId"] });
-                        }
-                        @if (ViewBag.AllowDelete)
-                        {
-                            <button type="button" AssetDefinitionIdentifier="@item["AssetDefinitionId"]" class="btn-danger btn-xs UserBtnDanger pull-right btnDelete" style="margin-top:-23px;margin-right:10px"><i class="fa fa-trash-o"></i>  Delete</button>
                         }
                     </td>
                 </tr>
@@ -113,10 +115,7 @@
 
             </div>
             <div class="modal-footer">
-                @if (ViewBag.AllowEdit)
-                {
-                    <button type="submit" class="btn btn-primary AssetDefinition" id="AssetDefinition">Update</button>
-                }
+                <button type="submit" class="btn btn-primary AssetDefinition" id="AssetDefinition">Update</button>
                 <button type="button" class="btn btn-default btnClose" data-dismiss="modal">Close</button>
             </div>
         </div>
@@ -134,6 +133,7 @@
                 $("#AssetName").val('');
                 $("#BrandName").val('');
                 $("#DepreciationMethod").val('');
+                $("#CategoryId").val('');
             }
 
             //putting focus on Asset Name text field after the modal pop up
@@ -151,7 +151,9 @@
             function IsValidData() {
                 if ($("#AssetName").val() == "") {
                     return "Please fill in the Asset Name";
-                }  else if ($("#DepreciationMethod").val() == "") {
+                } else if ($("#CategoryId").val() == 0) {
+                    return "Please Select the category";
+                } else if ($("#DepreciationMethod").val() == 0) {
                     return "Please Select the depreciation method";
                 } 
                 return "";
@@ -161,7 +163,9 @@
             function IsValidEditData() {
                 if ($("#EditAssetName").val() == "") {
                     return "Please fill in the Asset Name";
-                } else if ($("#EditDepreciationMethod").val() == "") {
+                } else if ($("#EditCategoryId").val() == 0) {
+                    return "Please Select the category";
+                } else if ($("#EditDepreciationMethod").val() == 0) {
                     return "Please Select the depreciation method";
                 }
                 return "";
@@ -181,11 +185,12 @@
                     AssetName: $("#EditAssetName").val(),
                     BrandName: $("#EditBrandName").val(),
                     DepreciationMethod: $("#EditDepreciationMethod").val(),
-                    CategoryId: $("#EditCategoryId").val()
+                    CategoryId: $("#EditCategoryId").val(),
+                    isLoad: $("#isLoad").val()
                 };
                 $.ajax({
                     type: "POST",
-                    url: '@Url.Action("PostEditAssetDefinition",ControllerName.AssetManagement)',
+                    url: '@Url.Action("EditAssetDefinition",ControllerName.AssetManagement)',
                     data: AssetDefinitionData,
                     dataType: "json",
                     success: function (data) {
@@ -229,11 +234,11 @@
                     success: function (data) {
                         if (data.msg.toString() == "@FASM_GN.FASM_Msg.SuccessfulSaved") {
                             ShowNotice('#status-area', data.msg, "Success");
+                            clearValues();
                         }
                         else {
                             ShowNotice('#status-area', data.msg, "Failure");
                         }
-                        clearValues();
                     },
                     error: function () {
                         ShowNotice('#status-area', "Error occured!!", "Failure");

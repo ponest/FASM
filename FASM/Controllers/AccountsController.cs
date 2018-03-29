@@ -157,7 +157,7 @@ namespace FASM.Controllers
                             message = FASM_Msg.SuccessfulSaved;
                             break;
                         case FASM_Enums.InfoMessages.AlreadyExist:
-                            message = FASM_Msg.AlreadyExist;
+                            message = "Sorry! the role name already exist";
                             break;
                     }
                     return Json(new { msg = message, JsonRequestBehavior.AllowGet });
@@ -170,15 +170,6 @@ namespace FASM.Controllers
 
             return View(eRoles);
         }
-
-       
-        //public ActionResult LoadEditRoles()
-        //{
-        //    FASM_EN.User.Roles eRoles = new FASM_EN.User.Roles();
-        //    eRoles.RoleId = Convert.ToInt32(Request.Params["RoleId"]);
-        //    RolesBI.LoadRoles(ref eRoles);
-        //    return PartialView(eRoles);
-        //}
 
         [HttpPost]
         public ActionResult EditRoles(FASM_EN.User.Roles eRoles)
@@ -203,7 +194,7 @@ namespace FASM.Controllers
                                 message = FASM_Msg.Updated;
                                 break;
                             case FASM_Enums.InfoMessages.AlreadyExist:
-                                message = "Sorry! the district " + eRoles.RoleName + " " + FASM_Msg.AlreadyExist;
+                                message = "Sorry! the role name already exist";
                                 break;
                         }
                         return Json(new { msg = message, JsonRequestBehavior.AllowGet });
@@ -402,7 +393,8 @@ namespace FASM.Controllers
             }
             else
             {
-                return RedirectToAction("ViewPermissions");
+                string message = "You have not assigned any permission please choose one and try again";
+                return Json(new { msg = message, JsonRequestBehavior.AllowGet });
             }
             return View(eMapRolePermissions);
         }

@@ -1,0 +1,16 @@
+﻿@model FASM_EN.Setups.Departments
+
+<div id="Editstatus-area"></div>
+<form class="form" role="form">
+    <div class="form-group">
+        @Html.LabelFor(m => m.DepartmentName, new { @class = "col-md-6 control-label" })
+        @Html.TextBoxFor(m => m.DepartmentName, new { @class = "form-control", id = "EditDepartmentName" })
+        @Html.HiddenFor(m => m.DepartmentId, new { id = "EditDepartmentId" })
+        @Html.HiddenFor(m => m.isLoad, new { @Value = "true" })
+    </div>
+</form>
+
+
+
+
+

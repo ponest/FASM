@@ -12,7 +12,11 @@ namespace FASM_DAL.AssetManagement
 
         public DataTable GetAssetDefinition()
         {
-            query = "SELECT AssetDefinitionId,AssetName,CategoryId,BrandName,DepreciationMethod FROM AssetDefinition";
+            query = "SELECT AssetDefinitionId,AssetName,C.CategoryName,BrandName,CASE DepreciationMethod  WHEN 'S' THEN 'Straight Line' ";
+            query += " WHEN 'Y' THEN 'Sum of Year Digits' WHEN 'D'  THEN 'Double Declining Method' END ";
+            query += " DepreciationMethod FROM AssetDefinition AD INNER JOIN Categories C ON C.CategoryId = AD.CategoryId";
+
+
 
             data.SetSqlStatement(query, CommandType.Text);
 
@@ -21,7 +25,8 @@ namespace FASM_DAL.AssetManagement
 
         public void LoadAssetDefinition(ref AssetDefinition eAssetDefinition)
         {
-            query = "SELECT AssetDefinitionId,AssetName,CategoryId,BrandName,DepreciationMethod FROM AssetDefinition WHERE AssetDefinitionId=@AssetDefinitionId";
+            query = "SELECT AssetDefinitionId,AssetName,CategoryId,BrandName,DepreciationMethod FROM AssetDefinition"; 
+            query += " WHERE AssetDefinitionId=@AssetDefinitionId";
 
             data.SetSqlStatement(query, CommandType.Text);
 
@@ -45,7 +50,8 @@ namespace FASM_DAL.AssetManagement
                
         public void InsertAssetDefinition(ref AssetDefinition eAssetDefinition)
         {
-            query = "INSERT INTO AssetDefinition(AssetName,CategoryId,BrandName,DepreciationMethod) VALUES(@AssetName,@CategoryId,@BrandName,@DepreciationMethod); SELECT @AssetDefinitionId = SCOPE_IDENTITY()";
+            query = "INSERT INTO AssetDefinition(AssetName,CategoryId,BrandName,DepreciationMethod)";
+            query+= " VALUES(@AssetName,@CategoryId,@BrandName,@DepreciationMethod); SELECT @AssetDefinitionId = SCOPE_IDENTITY()";
 
             data.SetSqlStatement(query, CommandType.Text);
 
@@ -62,7 +68,8 @@ namespace FASM_DAL.AssetManagement
 
         public void UpdateAssetDefinition(AssetDefinition eAssetDefinition)
         {
-            query = "UPDATE AssetDefinition SET AssetName = @AssetName,CategoryId = @CategoryId,BrandName = @BrandName,DepreciationMethod = @DepreciationMethod WHERE AssetDefinitionId= @AssetDefinitionId";
+            query = "UPDATE AssetDefinition SET AssetName = @AssetName,CategoryId = @CategoryId,BrandName = @BrandName,";
+            query+= "DepreciationMethod = @DepreciationMethod WHERE AssetDefinitionId= @AssetDefinitionId";
 
             data.SetSqlStatement(query, CommandType.Text);
 

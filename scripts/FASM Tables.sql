@@ -83,3 +83,39 @@ CREATE TABLE [dbo].[AssetDefinition](
 ALTER TABLE [dbo].[AssetDefinition]  WITH CHECK ADD  CONSTRAINT [FK_AssetDefinition_Categories] FOREIGN KEY([CategoryId])
 REFERENCES [dbo].[Categories] ([CategoryId])
 ALTER TABLE [dbo].[AssetDefinition] CHECK CONSTRAINT [FK_AssetDefinition_Categories]
+
+-- Create table Departments
+CREATE TABLE [dbo].[Departments](
+[DepartmentId] [int] IDENTITY(1,1) NOT NULL,[DepartmentName] [nvarchar](100) NOT NULL,
+CONSTRAINT [PK_Departments] PRIMARY KEY CLUSTERED ([DepartmentId] ASC))
+
+-- Create table employees 
+CREATE TABLE [dbo].[Employees](
+[EmployeeId] [int] IDENTITY(1,1) NOT NULL,[FirstName] [nvarchar](30) NOT NULL,[MiddleName] [nvarchar](30) NULL,
+[LastName] [nvarchar](30) NOT NULL,[Gender] [char](1) NOT NULL,[PhoneNumber] [nvarchar](20) NULL,
+[Email] [nvarchar](100) NULL,
+CONSTRAINT [PK_Employees] PRIMARY KEY CLUSTERED ([EmployeeId] ASC))
+
+-- Create table Asset Register
+CREATE TABLE [dbo].[AssetRegister](
+[AssetRegisterId] [bigint] IDENTITY(1,1) NOT NULL,[SerialNumber] [nvarchar](100) NULL,[AssetCode] [nvarchar](200) NULL,
+[AssetDefinitionId] [bigint] NOT NULL,[Model] [nvarchar](50) NULL,[Condition] [char](1) NOT NULL,[AssetStatus] [char](1) NOT NULL,
+[SupplierId] [int] NULL,[PurchaseDate] [datetime] NULL,[PurchaseCost] [decimal](18, 2) NOT NULL,[WarrantyExpiry] [datetime] NULL,
+[SalvageValue] [decimal](18, 2) NULL,[LocationId] [int] NOT NULL,[LifeTime] [int] NOT NULL,[DepartmentId] [int] NULL,
+[CustodianId] [int] NULL,[DistributionDate] [datetime] NULL,[ReallocatedDate] [datetime] NULL,
+CONSTRAINT [PK_AssetRegisterId] PRIMARY KEY CLUSTERED ([AssetRegisterId] ASC))
+ALTER TABLE [dbo].[AssetRegister]  WITH CHECK ADD  CONSTRAINT [FK_AssetRegister_AssetDefinition] FOREIGN KEY([AssetDefinitionId])
+REFERENCES [dbo].[AssetDefinition] ([AssetDefinitionId])
+ALTER TABLE [dbo].[AssetRegister] CHECK CONSTRAINT [FK_AssetRegister_AssetDefinition]
+ALTER TABLE [dbo].[AssetRegister]  WITH CHECK ADD  CONSTRAINT [FK_AssetRegister_Location] FOREIGN KEY([LocationId])
+REFERENCES [dbo].[Location] ([LocationId])
+ALTER TABLE [dbo].[AssetRegister] CHECK CONSTRAINT [FK_AssetRegister_Location]
+ALTER TABLE [dbo].[AssetRegister]  WITH CHECK ADD  CONSTRAINT [FK_AssetRegister_Departments] FOREIGN KEY([DepartmentId])
+REFERENCES [dbo].[Departments] ([DepartmentId])
+ALTER TABLE [dbo].[AssetRegister] CHECK CONSTRAINT [FK_AssetRegister_Departments]
+ALTER TABLE [dbo].[AssetRegister]  WITH CHECK ADD  CONSTRAINT [FK_AssetRegister_Employees] FOREIGN KEY([CustodianId])
+REFERENCES [dbo].[Employees] ([EmployeeId])
+ALTER TABLE [dbo].[AssetRegister] CHECK CONSTRAINT [FK_AssetRegister_Employees]
+ALTER TABLE [dbo].[AssetRegister]  WITH CHECK ADD  CONSTRAINT [FK_AssetRegister_Suppliers] FOREIGN KEY([SupplierId])
+REFERENCES [dbo].[Suppliers] ([SupplierId])
+ALTER TABLE [dbo].[AssetRegister] CHECK CONSTRAINT [FK_AssetRegister_Suppliers]

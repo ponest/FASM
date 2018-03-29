@@ -149,6 +149,7 @@
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrapLumen.min.css" />
     <Content Include="Content\Datatable.bootstrap.css" />
+    <Content Include="Content\datepicker.css" />
     <Content Include="Content\daterangepicker.css" />
     <Content Include="Content\main.css" />
     <Content Include="Content\Site.css" />
@@ -168,6 +169,7 @@
     <Content Include="images\favicon.jpg" />
     <Content Include="images\img.jpg" />
     <Content Include="images\jerry.gif" />
+    <Content Include="Scripts\bootstrap-datepicker.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\Datatable.bootstrap.js" />
     <Content Include="Scripts\FASM.js" />
@@ -221,10 +223,17 @@
     <Content Include="Views\Setups\IndexSuppliers.cshtml" />
     <Content Include="Views\Setups\EditSuppliers.cshtml" />
     <Content Include="Views\AssetManagement\IndexAssetDefinition.cshtml" />
-    <Content Include="Views\AssetManagement\LoadEditAssetDefinition.cshtml" />
+    <Content Include="Views\AssetManagement\EditAssetDefinition.cshtml" />
     <Content Include="Views\Accounts\ViewPermissions.cshtml" />
     <Content Include="Views\Accounts\ViewRoles.cshtml" />
     <Content Include="Views\Accounts\EditUsers.cshtml" />
+    <Content Include="Views\Setups\IndexDepartment.cshtml" />
+    <Content Include="Views\Setups\EditDepartment.cshtml" />
+    <Content Include="Views\Setups\IndexEmployee.cshtml" />
+    <Content Include="Views\Setups\EditEmployee.cshtml" />
+    <Content Include="Views\AssetManagement\IndexAssetRegister.cshtml" />
+    <Content Include="Views\AssetManagement\CreateAssetRegister.cshtml" />
+    <Content Include="Views\AssetManagement\EditAssetRegister.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\FASM_BI\FASM_BI.csproj">

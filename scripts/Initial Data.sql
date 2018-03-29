@@ -9,7 +9,10 @@ INSERT INTO Permissions VALUES('Setups-IndexCategories','View Categories','Setup
 ('Accounts-LoadEditRoles','Load Edit Roles','Accounts'),('Accounts-PostEditRoles','Edit Roles','Accounts'),('Accounts-DeleteRoles','Delete Roles','Accounts'),('Accounts-AssignPermissions','Assign Permissions','Accounts'),
 ('Setups-IndexRegions','View Regions','Setups'),('Setups-CreateRegions','Create Regions','Setups'),('Setups-LoadEditRegions','Load Edit Regions','Setups'),('Setups-PostEditRegions','Edit Regions','Setups'),
 ('Setups-DeleteRegions','Delete Regions','Setups'),('Setups-IndexSuppliers','View Suppliers','Setups'),('Setups-CreateSuppliers','Create Suppliers','Setups'),('Setups-LoadEditSuppliers','Load Edit Suppliers','Setups'),
-('Setups-PostEditSuppliers','Edit Suppliers','Setups'),('Setups-DeleteSuppliers','Delete Suppliers','Setups'),('AssetManagement-IndexAssetDefinition','View Asset Definition','AssetManagement'),
+('Setups-PostEditSuppliers','Edit Suppliers','Setups'),('Setups-DeleteSuppliers','Delete Suppliers','Setups'),('Setups-IndexDepartment','View Departments','Setups'),('Setups-CreateDepartment','Create Departments','Setups'),
+('Setups-EditDepartment','Edit Departments','Setups'),('Setups-DeleteDepartment','Delete Departments','Setups'),('AssetManagement-IndexAssetDefinition','View Asset Definition','AssetManagement'),
 ('AssetManagement-CreateAssetDefinition','Create Asset Definition','AssetManagement'),('AssetManagement-LoadEditAssetDefinition','Load Edit Asset Definition','AssetManagement'),
 ('AssetManagement-PostEditAssetDefinition','Edit Asset Definition','AssetManagement'),('AssetManagement-DeleteAssetDefinition','Delete Asset Definition','AssetManagement'),('Accounts-ViewRoles','View Roles','Accounts')
-,('Accounts-AssignRoles','Assign Roles','Accounts')
+,('Accounts-AssignRoles','Assign Roles','Accounts'),('Setups-IndexEmployee','View Employees','Setups'),('Setups-CreateEmployee','Create Employees','Setups'),('Setups-EditEmployee','Edit Employees','Setups'),('Setups-DeleteEmployee','Delete Employees','Setups'),
+ ('AssetManagement-IndexAssetRegister','View Asset Register','AssetManagement'),('AssetManagement-CreateAssetRegister','Create Asset Register','AssetManagement'),('AssetManagement-EditAssetRegister','Edit Asset Register','AssetManagement'),
+('AssetManagement-DeleteAssetRegister','Delete Asset Register','AssetManagement')

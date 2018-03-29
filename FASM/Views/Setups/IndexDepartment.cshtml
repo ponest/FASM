@@ -1,0 +1,266 @@
+﻿@model FASM_EN.Setups.Departments
+@using FASM.GeneralObjects
+@{
+    ViewBag.Title = "Index Department";
+    ViewBag.HeaderText = "Departments";
+}
+
+@section Styles{
+
+    @Styles.Render("~/plugin/sweetAlertStyles")
+
+}
+@section breadcrumb{
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="@Url.Action("Index",ControllerName.Accounts)">Home</a></li>
+        <li class="breadcrumb-item">Setups</li>
+        <li class="breadcrumb-item active" aria-current="page">Department</li>
+    </ol>
+}
+<div class="tile">
+    @if (ViewBag.AllowAdd)
+    {
+        <button type="button" class="btn btn-primary btn-sm addBtns" data-toggle="modal" data-target="#DepartmentModal"><i class="fa fa-plus-circle fa-lg"></i>New Department</button>
+    }
+    <table class="table table-sm table-striped table-bordered" id="myTable">
+
+        <thead class="thead-dark">
+            <tr>
+                <th style="display:none">Id</th>
+                <th>Department Name</th>
+                <th width="14%">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (System.Data.DataRow item in Model.dtDepartment.Rows)
+            {
+                <tr>
+                    <td style="display:none">@Html.DisplayTextFor(modelItem => item["DepartmentId"])</td>
+                    <td>@Html.DisplayTextFor(ModelItem => item["DepartmentName"])</td>
+                    <td>
+                        @using (Html.BeginForm("EditDepartment", ControllerName.Setups, FormMethod.Post, new { @class = "EditDepartment" }))
+                        {
+                            if (ViewBag.AllowEdit)
+                            {
+                                <button class="btn-success btn-xs UserBtnSuccess" type="submit"><i class="fa fa-pencil-square-o"></i> Edit</button>
+                            }
+                            if (ViewBag.AllowDelete)
+                            {
+                                <button type="button" DepartmentIdentifier="@item["DepartmentId"]" class="btn-danger btn-xs UserBtnDanger btnDelete"><i class="fa fa-trash-o"></i>  Delete</button>
+                            }
+                            @Html.HiddenFor(m => m.DepartmentId, new { @Value = item["DepartmentId"] });
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<div class="modal fade" id="DepartmentModal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">New Department</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="status-area"></div>
+                <form class="form" role="form">
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.DepartmentName, new { @class = "col-md-6 control-label" })
+                        @Html.TextBoxFor(m => m.DepartmentName, new { @class = "form-control" })
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="SaveDepartment">Save</button>
+                <button type="button" class="btn btn-default btnClose" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="EditDepartmentModal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Edit Department</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-primary Department" id="Department">Update</button>
+                <button type="button" class="btn btn-default btnClose" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts
+{
+    @Scripts.Render("~/DataTables/js")
+    @Scripts.Render("~/plugin/sweetAlert")
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            //clear the text field DepartmentName
+            function clearValues() {
+                $("#DepartmentName").val('');
+            }
+
+            //Cheking the validity of text fields
+            function IsValidData() {
+                if ($("#DepartmentName").val() == "") {
+                    return "Please fill in the Department name";
+                }
+                return "";
+            }
+            //Cheking the validity of text fields
+            function IsValidEditData() {
+                if ($("#EditDepartmentName").val() == "") {
+                    return "Please fill in the Department name.";
+                }
+                return "";
+            }
+            //making the text field focused after the modal pop up
+            $('#DepartmentModal').on('shown.bs.modal', function () {
+                $('#DepartmentName').focus();
+            })
+
+            //Clear text fields and reload the page
+            $(".btnClose").click(function () {
+                clearValues();
+                location.reload();
+            });
+
+            //For Edit Purposes
+            $(".Department").click(function () {
+
+
+                var ValidateMsg = IsValidEditData();
+                if (ValidateMsg != "") {
+                    ShowNotice('#Editstatus-area', ValidateMsg, "Failure");
+                    return false;
+                }
+
+                var DepartmentData = {
+                    DepartmentName: $("#EditDepartmentName").val(), DepartmentId: $("#EditDepartmentId").val(),
+                    isLoad:$("#isLoad").val()
+                };
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("EditDepartment",ControllerName.Setups)',
+                    data: DepartmentData,
+                    dataType: "json",
+                    success: function (data) {
+                        if (data.msg.toString() == "@FASM_GN.FASM_Msg.Updated") {
+                            ShowNotice("#Editstatus-area", data.msg, "Success");
+                        }
+                        else {
+                            ShowNotice('#Editstatus-area', data.msg, "Failure");
+                        }
+                        clearValues();
+
+                    },
+                    error: function () {
+                        ShowNotice('#Editstatus-area', "Error occured!!", "Failure");
+                        clearValues();
+                    }
+                });
+            })
+
+            //For Saving Purposes
+            $("#SaveDepartment").click(function () {
+
+                var ValidateMsg = IsValidData();
+                if (ValidateMsg != "") {
+                    ShowNotice('#status-area', ValidateMsg, "Failure");
+                    return false;
+                }
+
+                var DepartmentData = { DepartmentName: $("#DepartmentName").val() };
+
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("CreateDepartment", ControllerName.Setups)',
+                    data: DepartmentData,
+                    dataType: "json",
+                    success: function (data) {
+                        if (data.msg.toString() == "@FASM_GN.FASM_Msg.SuccessfulSaved") {
+                            ShowNotice('#status-area', data.msg, "Success");
+                        }
+                        else {
+                            ShowNotice('#status-area', data.msg, "Failure");
+                        }
+                        clearValues();
+                    },
+                    error: function () {
+                        ShowNotice('#status-area', "Error occured!!", "Failure");
+                        clearValues();
+                    }
+                });
+            })
+            $('#myTable').DataTable();
+
+
+            $('.EditDepartment').submit(function (e) {
+                e.preventDefault();
+                var $form = $(this);
+
+                $.post($form.attr("action"), $form.serialize()).done(function (res) {
+                    $mymodal = $("#EditDepartmentModal");
+                    //update the modal's body with the response received
+                    $mymodal.find("div.modal-body").html(res);
+                    // Show the modal
+                    $mymodal.modal("show");
+                });
+            });
+
+            $("button.btnDelete").click(function () {
+                var Id = $(this).attr("DepartmentIdentifier");
+                DeleteItem(Id);
+
+            });
+
+            function DeleteItem(Id) {
+                DataObject = { DepartmentId: Id };
+
+                swal({
+                    title: "Confirm Deletion",
+                    text: "Are you sure that you want to delete this Department?",
+                    type: "warning",
+                    showCancelButton: true,
+                    closeOnConfirm: false,
+                    confirmButtonText: "Yes, delete it!",
+                    confirmButtonColor: "#ec6c62"
+                }, function () {
+                    $.ajax({
+                        url: '@Url.Action("DeleteDepartment",ControllerName.Setups)',
+                        type: "POST",
+                        data: DataObject,
+                        dataType: "json",
+                        success: function (data) {
+                            swal("Deleted!", data, "success");
+                            swal({ title: "Deleted!", text: data, type: "success" }, function () { location.reload(); });
+                        },
+                        error: function (data) {
+                            swal("Oops", data, "error");
+                        }
+                    })
+
+                });
+
+            }
+        });
+    </script>
+}
+
+
+
+

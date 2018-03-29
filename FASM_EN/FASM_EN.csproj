@@ -45,6 +45,7 @@
     <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data.Entity.Design" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -54,8 +55,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="FASM_APP\AssetDefinition.cs" />
+    <Compile Include="FASM_APP\AssetRegister.cs" />
     <Compile Include="FASM_APP\Categories.cs" />
+    <Compile Include="FASM_APP\Departments.cs" />
     <Compile Include="FASM_APP\Districts.cs" />
+    <Compile Include="FASM_APP\Employees.cs" />
     <Compile Include="FASM_APP\Location.cs" />
     <Compile Include="FASM_APP\Login.cs" />
     <Compile Include="FASM_APP\MapRolePermission.cs" />

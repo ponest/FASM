@@ -1,0 +1,46 @@
+﻿@model FASM_EN.Setups.Employees
+
+<div id="Editstatus-area"></div>
+@using (Html.BeginForm("EditEmployee", "Accounts", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+{
+        <div class="form-group row">
+            @Html.LabelFor(m => m.FirstName, new { @class = "col-md-3 control-label" })
+            <div class="col-md-8">
+                @Html.TextBoxFor(m => m.FirstName, new { @class = "form-control" , id = "EditFirstName" })
+            </div>
+        </div>
+        <div class="form-group row">
+            @Html.LabelFor(m => m.MiddleName, new { @class = "col-md-3 control-label" })
+            <div class="col-md-8">
+                @Html.TextBoxFor(m => m.MiddleName, new { @class = "form-control", id = "EditMiddleName" })
+            </div>
+        </div>
+        <div class="form-group row">
+            @Html.LabelFor(m => m.LastName, new { @class = "col-md-3 control-label" })
+            <div class="col-md-8">
+                @Html.TextBoxFor(m => m.LastName, new { @class = "form-control", id = "EditLastName" })
+            </div>
+        </div>
+        <div class="form-group row">
+            @Html.LabelFor(m => m.Gender, new { @class = "col-md-3 control-label" })
+            <div class="col-md-8">
+                @Html.DropDownListFor(m => m.Gender,(IEnumerable<SelectListItem>)ViewData["Genders"] ,new { @class = "form-control", id = "EditGender" })
+            </div>
+        </div>
+        <div class="form-group row">
+            @Html.LabelFor(m => m.Email, new { @class = "col-md-3 control-label" })
+            <div class="col-md-8">
+                @Html.TextBoxFor(m => m.Email, new { @class = "form-control", id = "EditEmail" })
+            </div>
+        </div>
+        <div class="form-group row">
+            @Html.LabelFor(m => m.PhoneNumber, new { @class = "col-md-3 control-label" })
+            <div class="col-md-8">
+                @Html.TextBoxFor(m => m.PhoneNumber, new { @class = "form-control", id = "EditPhoneNumber" })
+            </div>
+        </div>
+    @Html.HiddenFor(m => m.EmployeeId, new { id = "EditEmployeeId" })
+    @Html.HiddenFor(m => m.isLoad, new { @Value = "true" })
+}
+
+

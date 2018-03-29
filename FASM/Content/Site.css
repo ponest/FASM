@@ -19,16 +19,9 @@
     border:2px solid dodgerblue;
     border-radius:5px;
 }
-#btn-login{
-    background-color:dodgerblue;
-    color:white;
-}
-#registerLink{
-    margin-left:30px;
-}
-a, a:hover{
-    text-decoration:none !important;
-}   
+
+#registerLink{ margin-left:30px;}
+a, a:hover{ text-decoration:none !important;}   
 #LoginFooter{
     background-color:black;
     height:6vh;
@@ -46,20 +39,10 @@ a, a:hover{
     font-family:Georgia;
     font-size:12px; 
 }
-.hrLine{
-    margin-top:-5px !important;
-}
-.form-horizontal .control-label{
-    text-align:right !important;
-}
-#registrationFormBody{
-    margin-top:5vh;
-}
-#registrationFormBody h4{
-    font-size:30px;
-    font-weight:bolder;
-
-}
+.hrLine{margin-top:-5px !important;}
+.form-horizontal .control-label{text-align:right !important;}
+#registrationFormBody{ margin-top:5vh;}
+#registrationFormBody h4{ font-size:30px; font-weight:bolder;}
 .ErrroMessage{
     margin-top:3vh;
     background-color:red;
@@ -89,9 +72,9 @@ font-weight:bold;
 font-family:Arial;
 font-style:italic;
 }
-#loginFormBody #ErrorMsg ul li{
-    list-style-type:none;
-}
+#loginFormBody #ErrorMsg ul li{ list-style-type:none;}
+/*-------------Stystem buttons--------------------------------*/
+#btn-login{ background-color:dodgerblue; color:white;}
 .UserBtnSuccess{
     background-color:whitesmoke;
     border: 1px ridge  #26B99A;
@@ -116,34 +99,36 @@ font-style:italic;
     color:#17a2b8;
     border-radius:4px;
 }
-.btn-xs{
-    padding:0 5px;
-}
-
-
-.breadcrumb > .active{
-    color:black !important;
-    font-weight:bold;
-}
-.right_col{
-    background-color:white !important;
-}
-footer{
-    background-color:whitesmoke;
-}
-table.dataTable.no-footer {
-    border-bottom: 1px solid #ddd !important;
-}
-.horizontal-line{
-    margin-top:0 !important;
-}
+.btn-xs{  padding:0 5px;}
 .addBtns{
     padding:3px 4px !important;
     font-weight:bold;
     margin-bottom:2vh;
 }
-.btn{
-    text-transform:none !important;
+.btn{text-transform:none !important;}
+.Uploadbtn {
+    position: relative;
+    /*overflow: hidden;*/
+    padding: 3px 5px;
+    color: #fff;
+    background: #009688;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    width: 100px;
+    text-align: center;
+    cursor: pointer;
+}
+.Uploadbtn .input-upload {
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: 0;
+    padding: 0;
+    opacity: 0;
+    height: 100%;
+    width: 100%;
+    cursor: pointer;
 }
 .breadcrumb{
     height:3vh;
@@ -151,16 +136,15 @@ table.dataTable.no-footer {
     margin-top:4vh;
     border: none!important;
 }
-ol > li > a{
-    text-decoration:none !important;
-}
-ul > li{
-    list-style-type:none;
-}
-#LogoutBtn{
-    margin-top:8px;
-}
+.breadcrumb > .active{color:black !important; font-weight:bold;}
+.right_col{background-color:white !important;}
+table.dataTable.no-footer { border-bottom: 1px solid #ddd !important;}
+.horizontal-line{ margin-top:0 !important;}
+ol > li > a{text-decoration:none !important;}
+ul > li{ list-style-type:none;}
+#LogoutBtn{margin-top:8px;}
 .modal-header{
-    background-color:#009688 !important;
-    color:white !important;
-}
+    background-color:#009688 !important;  color:white !important;}
+.LabelAlign{  text-align:right !important; }
+/*.datepicker{z-index:1151 !important;}*/
+.datepicker{text-align:center;}

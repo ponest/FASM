@@ -1,0 +1,286 @@
+﻿@model FASM_EN.AssetManagement.AssetRegister
+@using FASM.GeneralObjects
+@{
+    ViewBag.Title = "Index Asset Register";
+    ViewBag.HeaderText = "Asset Register";
+}
+
+@section Styles{
+
+    @Styles.Render("~/plugin/sweetAlertStyles")
+    <link href="~/Content/datepicker.css" rel="stylesheet" />
+}
+@section breadcrumb{
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="@Url.Action("Index",ControllerName.Accounts)">Home</a></li>
+        <li class="breadcrumb-item"><a href="#">Manage Assets</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Asset Register</li>
+    </ol>
+}
+<div class="row">
+    <div class="col-md-12">
+        <div class="tile">
+            <div class="tile-body">
+                <div id="status-area">@ViewBag.ReturnMsg</div>
+                @if (ViewBag.AllowAdd)
+                {
+                    <a class="btn btn-primary btn-sm addBtns" href="@Url.Action("CreateAssetRegister",ControllerName.AssetManagement)"><i class="fa fa-plus-circle fa-lg"></i>New AssetRegister</a>
+                }
+                <table class="table table-sm table-striped table-bordered  table-sm" id="myTable">
+
+                    <thead class="thead-dark">
+                        <tr>
+                            <th style="display:none">Id</th>
+                            <th>Asset Name</th>
+                            <th>Asset Code</th>
+                            <th>Serial Number</th>
+                            <th>Custodian</th>
+                            <th>Location</th>
+                            <th>Department</th>
+                            <th width="14%">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (System.Data.DataRow item in Model.dtAssetRegister.Rows)
+                        {
+                            <tr>
+                                <td style="display:none">@Html.DisplayTextFor(modelItem => item["AssetRegisterId"])</td>
+                                <td>@Html.DisplayTextFor(ModelItem => item["AssetName"])</td>
+                                <td>@Html.DisplayTextFor(ModelItem => item["AssetCode"])</td>
+                                <td>@Html.DisplayTextFor(ModelItem => item["SerialNumber"])</td>
+                                <td>@Html.DisplayTextFor(ModelItem => item["Custodian"])</td>
+                                <td>@Html.DisplayTextFor(ModelItem => item["LocationName"])</td>
+                                <td>@Html.DisplayTextFor(ModelItem => item["DepartmentName"])</td>
+                                <td>
+                                    @if (ViewBag.AllowEdit)
+                                    {
+                                    <a class="btn btn-success btn-xs UserBtnSuccess"  href="@Url.Action("EditAssetRegister",ControllerName.AssetManagement, new {id = item["AssetRegisterId"]})"><i class="fa fa-pencil-square-o"></i>Edit</a>
+                                    }
+                                    @if (ViewBag.AllowDelete)
+                                    {
+                                    <button type="button" AssetRegisterIdentifier="@item["AssetRegisterId"]" class="btn-danger btn-xs UserBtnDanger btnDelete"><i class="fa fa-trash-o"></i>  Delete</button>
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="EditAssetRegisterModal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Edit AssetRegister</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-primary AssetRegister" id="AssetRegister">Update</button>
+                <button type="button" class="btn btn-default btnClose" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts
+{
+    <script src="~/Scripts/bootstrap-datepicker.js"></script>
+    @Scripts.Render("~/DataTables/js")
+    @Scripts.Render("~/plugin/sweetAlert")
+
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            //claer the values of text fields
+            function clearValues() {
+                $("#AssetCode").val('');
+                $("#SerialNumber").val('');
+                $("#AssetDefinitionId").val('');
+                $("#Condition").val('');
+                $("#AssetStatus").val('');
+                $("#SupplierId").val('');
+                $("#PurchaseDate").val('');
+                $("#PurchaseCost").val('');
+                $("#WarrantyExpiry").val('');
+                $("#SalvageValue").val('');
+                $("#LocationId").val('');
+                $("#LifeTime").val('');
+                $("#DepartmentId").val('');
+                $("#CustodianId").val('');
+            }
+
+            $('.datepicker').datepicker();
+
+            //clear value and reload the page
+            $(".btnClose").click(function () {
+                clearValues();
+                location.reload();
+            });
+
+            //Cheking the validity of text fields
+
+
+            //Cheking the validity of text fields
+            function IsValidEditData() {
+                if ($("#EditAssetName").val() == "") {
+                    return "Please fill in the Asset Name";
+                } else if ($("#EditCategoryId").val() == 0) {
+                    return "Please Select the category";
+                } else if ($("#EditDepreciationMethod").val() == 0) {
+                    return "Please Select the depreciation method";
+                }
+                return "";
+            }
+
+            // for editing purpose
+            $(".AssetRegister").click(function () {
+
+                var ValidateMsg = IsValidEditData();
+                if (ValidateMsg != "") {
+                    ShowNotice('#Editstatus-area', ValidateMsg, "Failure");
+                    return false;
+                }
+
+                var AssetRegisterData = {
+                    AssetRegisterId: $("#EditAssetRegisterId").val(),
+                    AssetName: $("#EditAssetName").val(),
+                    BrandName: $("#EditBrandName").val(),
+                    DepreciationMethod: $("#EditDepreciationMethod").val(),
+                    CategoryId: $("#EditCategoryId").val(),
+                    isLoad: $("#isLoad").val()
+                };
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("EditAssetRegister",ControllerName.AssetManagement)',
+                    data: AssetRegisterData,
+                    dataType: "json",
+                    success: function (data) {
+                        if (data.msg.toString() == "@FASM_GN.FASM_Msg.Updated") {
+                            ShowNotice("#Editstatus-area", data.msg, "Success");
+                        }
+                        else {
+                            ShowNotice('#Editstatus-area', data.msg, "Failure");
+                        }
+                        clearValues();
+
+                    },
+                    error: function () {
+                        ShowNotice('#Editstatus-area', "Error occured!!", "Failure");
+                        clearValues();
+                    }
+                });
+            })
+
+            //for saving purpose
+            $("#SaveAssetRegister").click(function () {
+                var ValidateMsg = IsValidData();
+                if (ValidateMsg != "") {
+                    ShowNotice('#status-area', ValidateMsg, "Failure");
+                    return false;
+                }
+
+                //var AssetRegisterData = {
+                //    SerialNumber: $("#SerialNumber").val(),
+                //    AssetCode: $("#AssetCode").val(),
+                //    AssetDefinitionId: $("#AssetDefinitionId").val(),
+                //    Model: $("#Model").val(),
+                //    Condition: $("#Condition").val(),
+                //    AssetStatus: $("#AssetStatus").val(),
+                //    SupplierId: $("#SupplierId").val(),
+                //    PurchaseDate: $("#PurchaseDate").val(),
+                //    PurchaseCost: $("#PurchaseCost").val(),
+                //    WarrantyExpiry: $("#WarrantyExpiry").val(),
+                //    SalvageValue: $("#SalvageValue").val(),
+                //    LocationId: $("#LocationId").val(),
+                //    LifeTime: $("#LifeTime").val(),
+                //    DepartmentId: $("#DepartmentId").val(),
+                //    CustodianId: $("#CustodianId").val()
+                //    //ImageFile: $("#ImageFile").val()
+                //};
+
+                var form = $('#AssetRegistrationForm'); // You need to use standard javascript object here
+                var formData = new FormData(form);
+
+
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("CreateAssetRegister",ControllerName.AssetManagement)',
+                    data: formData,
+                    dataType: "json",
+                    contentType: false, // NEEDED, DON'T OMIT THIS (requires jQuery 1.6+)
+                    processData: false, // NEEDED, DON'T OMIT THIS
+                    success: function (data) {
+                        if (data.msg.toString() == "@FASM_GN.FASM_Msg.SuccessfulSaved") {
+                            ShowNotice('#status-area', data.msg, "Success");
+                            clearValues();
+                        }
+                        else {
+                            ShowNotice('#status-area', data.msg, "Failure");
+                        }
+                    },
+                    error: function () {
+                        ShowNotice('#status-area', "Error occured!!", "Failure");
+                        clearValues();
+                    }
+                });
+            })
+            $('#myTable').DataTable();
+
+            //loading edit AssetRegister modal
+            $('.EditAssetRegister').submit(function (e) {
+                e.preventDefault();
+                var $form = $(this);
+
+                $.post($form.attr("action"), $form.serialize()).done(function (res) {
+                    $mymodal = $("#EditAssetRegisterModal");
+                    //update the modal's body with the response received
+                    $mymodal.find("div.modal-body").html(res);
+                    // Show the modal
+                    $mymodal.modal("show");
+                });
+            });
+
+            //Deleting AssetRegister
+            $("button.btnDelete").click(function () {
+                var Id = $(this).attr("AssetRegisterIdentifier");
+                DeleteItem(Id);
+
+            });
+
+            function DeleteItem(Id) {
+                DataObject = { AssetRegisterId: Id };
+
+                swal({
+                    title: "Confirm Deletion",
+                    text: "Are you sure that you want to delete this Asset?",
+                    type: "warning",
+                    showCancelButton: true,
+                    closeOnConfirm: false,
+                    confirmButtonText: "Yes, delete it!",
+                    confirmButtonColor: "#ec6c62"
+                }, function () {
+                    $.ajax({
+                        url: '@Url.Action("DeleteAssetRegister",ControllerName.AssetManagement)',
+                        type: "POST",
+                        data: DataObject,
+                        dataType: "json",
+                        success: function (data) {
+                            swal("Deleted!", data, "success");
+                            swal({ title: "Deleted!", text: data, type: "success" }, function () { location.reload(); });
+                        },
+                        error: function (data) {
+                            swal("Oops", data, "error");
+                        }
+                    })
+
+                });
+            }
+        });
+    </script>
+}

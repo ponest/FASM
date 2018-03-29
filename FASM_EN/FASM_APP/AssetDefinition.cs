@@ -15,6 +15,7 @@ namespace FASM_EN.AssetManagement
         [StringLength(maximumLength: 100)]
         public string AssetName { get; set; }
 
+        [Display(Name = "Category")]
         public int CategoryId { get; set; }
 
         [Display(Name = "Brand Name")]
@@ -25,6 +26,8 @@ namespace FASM_EN.AssetManagement
         [Display(Name = "Depreciation Method")]
         [StringLength(maximumLength: 1)]
         public string DepreciationMethod { get; set; }
+
+        public bool isLoad { get; set; }
 
         public System.Data.DataTable dtAssetDefinition { get; set; }
 

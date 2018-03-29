@@ -42,7 +42,7 @@ namespace FixedAssetsManagement.Controllers
                             message = FASM_Msg.SuccessfulSaved;
                             break;
                         case FASM_Enums.InfoMessages.AlreadyExist:
-                            message = FASM_Msg.AlreadyExist;
+                            message = "Sorry!the category name already exist";
                             break;
                     }
                     return Json(new { msg = message, JsonRequestBehavior.AllowGet });
@@ -80,7 +80,7 @@ namespace FixedAssetsManagement.Controllers
                                 message = FASM_Msg.Updated;
                                 break;
                             case FASM_Enums.InfoMessages.AlreadyExist:
-                                message = FASM_Msg.AlreadyExist;
+                                message = "Sorry!the category name already exist";
                                 break;
                         }
                         return Json(new { msg = message, JsonRequestBehavior.AllowGet });
@@ -151,7 +151,7 @@ namespace FixedAssetsManagement.Controllers
                             message = FASM_Msg.SuccessfulSaved;
                             break;
                         case FASM_Enums.InfoMessages.AlreadyExist:
-                            message = FASM_Msg.AlreadyExist;
+                            message = "Sorry! the location name already exist";
                             break;
                     }
                     return Json(new { msg = message, JsonRequestBehavior.AllowGet });
@@ -189,7 +189,7 @@ namespace FixedAssetsManagement.Controllers
                                 message = FASM_Msg.Updated;
                                 break;
                             case FASM_Enums.InfoMessages.AlreadyExist:
-                                message = "Sorry! Location name " + eLocation.LocationName + " " + FASM_Msg.AlreadyExist;
+                                message = "Sorry! the location name already exist";
                                 break;
                         }
                         return Json(new { msg = message, JsonRequestBehavior.AllowGet });
@@ -260,7 +260,7 @@ namespace FixedAssetsManagement.Controllers
                             message = FASM_Msg.SuccessfulSaved;
                             break;
                         case FASM_Enums.InfoMessages.AlreadyExist:
-                            message = FASM_Msg.AlreadyExist;
+                            message = "Sorry! the district name already exist";
                             break;
                     }
                     return Json(new { msg = message, JsonRequestBehavior.AllowGet });
@@ -298,7 +298,7 @@ namespace FixedAssetsManagement.Controllers
                                 message = FASM_Msg.Updated;
                                 break;
                             case FASM_Enums.InfoMessages.AlreadyExist:
-                                message = "Sorry! the district " + eDistricts.DistrictName + " " + FASM_Msg.AlreadyExist;
+                                message = "Sorry! the district name already exist";
                                 break;
                         }
                         return Json(new { msg = message, JsonRequestBehavior.AllowGet });
@@ -370,7 +370,7 @@ namespace FixedAssetsManagement.Controllers
                             message = FASM_Msg.SuccessfulSaved;
                             break;
                         case FASM_Enums.InfoMessages.AlreadyExist:
-                            message = FASM_Msg.AlreadyExist;
+                            message = "Sorry! the region name already exist";
                             break;
                     }
                     return Json(new { msg = message, JsonRequestBehavior.AllowGet });
@@ -407,7 +407,7 @@ namespace FixedAssetsManagement.Controllers
                                 message = FASM_Msg.Updated;
                                 break;
                             case FASM_Enums.InfoMessages.AlreadyExist:
-                                message = "Sorry! the region " + eRegions.RegionName + " " + FASM_Msg.AlreadyExist;
+                                message = "Sorry! the region name already exist";
                                 break;
                         }
                         return Json(new { msg = message, JsonRequestBehavior.AllowGet });
@@ -432,6 +432,225 @@ namespace FixedAssetsManagement.Controllers
                 if (eRegions.RegionId > 0)
                 {
                     FASM_Enums.InfoMessages DeleteResult = RegionsBI.DeleteRegions(eRegions.RegionId);
+                    switch (DeleteResult)
+                    {
+                        case FASM_Enums.InfoMessages.Success:
+                            message = "Successfully Deleted!";
+                            break;
+                        case FASM_Enums.InfoMessages.Failed:
+                            message = "Still in Use!";
+                            break;
+                    }
+                    return new JsonResult { Data = message, JsonRequestBehavior = JsonRequestBehavior.AllowGet };
+                }
+            }
+            catch (Exception ex)
+            {
+                ViewBag.CatchedMsg = ex.Message;
+            }
+            return View();
+        }
+        #endregion
+
+        #region Department
+        public ActionResult IndexDepartment()
+        {
+            ViewBag.AllowAdd = this.HasPermission(ControllerName.Setups + "-CreateDepartment");
+            ViewBag.AllowEdit = this.HasPermission(ControllerName.Setups + "-EditDepartment");
+            ViewBag.AllowDelete = this.HasPermission(ControllerName.Setups + "-DeleteDepartment");
+
+            Departments eDepartments = new Departments();
+            eDepartments.dtDepartment = DepartmentsBI.GetDepartments();
+            return View(eDepartments);
+        }
+
+        [HttpPost]
+        public ActionResult CreateDepartment(Departments eDepartments)
+        {
+            string message = "";
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    FASM_Enums.InfoMessages SaveResult = DepartmentsBI.SaveDepartments(ref eDepartments);
+                    switch (SaveResult)
+                    {
+                        case FASM_Enums.InfoMessages.Success:
+                            message = FASM_Msg.SuccessfulSaved;
+                            break;
+                        case FASM_Enums.InfoMessages.AlreadyExist:
+                            message = "Sorry! the Department name already exist";
+                            break;
+                    }
+                    return Json(new { msg = message, JsonRequestBehavior.AllowGet });
+                }
+                catch (Exception ex)
+                {
+                    ViewBag.CatchedMsg = ex.Message;
+                }
+            }
+
+            return View(eDepartments);
+        }
+
+        [HttpPost]
+        public ActionResult EditDepartment(Departments eDepartments)
+        {
+            if (eDepartments.isLoad == false)
+            {
+                eDepartments.DepartmentId = Convert.ToInt32(Request.Params["DepartmentId"]);
+                DepartmentsBI.LoadDepartments(ref eDepartments);
+                return PartialView(eDepartments);
+            }
+            else
+            {
+                string message = "";
+                if (ModelState.IsValid)
+                {
+                    try
+                    {
+                        FASM_Enums.InfoMessages Results = DepartmentsBI.SaveDepartments(ref eDepartments);
+
+                        switch (Results)
+                        {
+                            case FASM_Enums.InfoMessages.Success:
+                                message = FASM_Msg.Updated;
+                                break;
+                            case FASM_Enums.InfoMessages.AlreadyExist:
+                                message = "Sorry! the Department name already exist";
+                                break;
+                        }
+                        return Json(new { msg = message, JsonRequestBehavior.AllowGet });
+                    }
+                    catch (Exception ex)
+                    {
+                        ViewBag.CatchedMsg = ex.Message;
+                    }
+                }
+            }
+
+            return View(eDepartments);
+        }
+
+        [HttpPost]
+        public ActionResult DeleteDepartment(Departments eDepartments)
+        {
+
+            string message = "";
+            try
+            {
+                if (eDepartments.DepartmentId > 0)
+                {
+                    FASM_Enums.InfoMessages DeleteResult = DepartmentsBI.DeleteDepartments(eDepartments.DepartmentId);
+                    switch (DeleteResult)
+                    {
+                        case FASM_Enums.InfoMessages.Success:
+                            message = "Successfully Deleted!";
+                            break;
+                        case FASM_Enums.InfoMessages.Failed:
+                            message = "Still in Use!";
+                            break;
+                    }
+                    return new JsonResult { Data = message, JsonRequestBehavior = JsonRequestBehavior.AllowGet };
+                }
+            }
+            catch (Exception ex)
+            {
+                ViewBag.CatchedMsg = ex.Message;
+            }
+            return View();
+        }
+        #endregion
+
+        #region Employee
+        public ActionResult IndexEmployee()
+        {
+            ViewBag.AllowAdd = this.HasPermission(ControllerName.Setups + "-CreateEmployee");
+            ViewBag.AllowEdit = this.HasPermission(ControllerName.Setups + "-EditEmployee");
+            ViewBag.AllowDelete = this.HasPermission(ControllerName.Setups + "-DeleteEmployee");
+
+            DataTable dtGender = General.GetGender();
+            ViewData["Gender"] = General.DataTableToSelectList(dtGender, "Value", "Text", "0", TopEmptyItem: new SelectListItem { Value = "0", Text = "" });
+
+
+            Employees eEmployees = new Employees();
+            eEmployees.dtEmployee = EmployeesBI.GetEmployees();
+            return View(eEmployees);
+        }
+
+        [HttpPost]
+        public ActionResult CreateEmployee(Employees eEmployees)
+        {
+
+            string message = "";
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    DataTable dtGender = General.GetGender();
+                    ViewData["Gender"] = General.DataTableToSelectList(dtGender, "Value", "Text", "0", TopEmptyItem: new SelectListItem { Value = "0", Text = "" });
+
+                    EmployeesBI.SaveEmployees(ref eEmployees);
+                    message = FASM_Msg.SuccessfulSaved;
+                
+                    return Json(new { msg = message, JsonRequestBehavior.AllowGet });
+                }
+                catch (Exception ex)
+                {
+                    ViewBag.CatchedMsg = ex.Message;
+                }
+            }
+
+            return View(eEmployees);
+        }
+
+        [HttpPost]
+        public ActionResult EditEmployee(Employees eEmployees)
+        {
+            if (eEmployees.isLoad == false)
+            {
+                DataTable dtGender = General.GetGender();
+                ViewData["Genders"] = General.DataTableToSelectList(dtGender, "Value", "Text", "0", TopEmptyItem: new SelectListItem { Value = "0", Text = "" });
+
+                eEmployees.EmployeeId = Convert.ToInt32(Request.Params["EmployeeId"]);
+                EmployeesBI.LoadEmployees(ref eEmployees);
+                return PartialView(eEmployees);
+            }
+            else
+            {
+                string message = "";
+                if (ModelState.IsValid)
+                {
+                    try
+                    {
+                        DataTable dtGender = General.GetGender();
+                        ViewData["Gender"] = General.DataTableToSelectList(dtGender, "Value", "Text", "0", TopEmptyItem: new SelectListItem { Value = "0", Text = "" });
+
+                        EmployeesBI.SaveEmployees(ref eEmployees);
+                        message = FASM_Msg.Updated;
+                     
+                        return Json(new { msg = message, JsonRequestBehavior.AllowGet });
+                    }
+                    catch (Exception ex)
+                    {
+                        ViewBag.CatchedMsg = ex.Message;
+                    }
+                }
+            }
+
+            return View(eEmployees);
+        }
+
+        [HttpPost]
+        public ActionResult DeleteEmployee(Employees eEmployees)
+        {
+
+            string message = "";
+            try
+            {
+                if (eEmployees.EmployeeId > 0)
+                {
+                    FASM_Enums.InfoMessages DeleteResult = EmployeesBI.DeleteEmployees(eEmployees.EmployeeId);
                     switch (DeleteResult)
                     {
                         case FASM_Enums.InfoMessages.Success:

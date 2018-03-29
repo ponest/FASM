@@ -1,50 +1,61 @@
-﻿@model FASM_EN.User.Users
+﻿@model FASM_EN.Setups.Employees
 @using FASM.GeneralObjects
 @{
-    ViewBag.Title = "Index Users";
-    ViewBag.HeaderText = "Users";
+    ViewBag.Title = "Index Employees";
+    ViewBag.HeaderText = "Employees";
 }
 
 @section Styles{
     @Styles.Render("~/plugin/sweetAlertStyles")
+<style>
+    #status-area,#Editstatus-area{
+        margin-bottom:5px;
+    }
+    label{
+        text-align:right;
+        font-weight:bold;
+    }
+    </style>
 }
 @section breadcrumb{
     <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="@Url.Action("Index",ControllerName.Accounts)">Home</a></li>
-        <li class="breadcrumb-item">Manage User</li>
-        <li class="breadcrumb-item active" aria-current="page">Users</li>
+        <li class="breadcrumb-item"><a href="@Url.Action("Index",ControllerName.Setups)">Home</a></li>
+        <li class="breadcrumb-item"><a href="#">Setups</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Employees</li>
     </ol>
 }
 <div class="tile">
     @if (ViewBag.AllowAdd)
     {
-        <button type="button" class="btn btn-primary btn-sm addBtns" data-toggle="modal" data-target="#UsersModal"><i class="fa fa-plus-circle fa-lg"></i>New User</button>
+        <button type="button" class="btn btn-primary btn-sm addBtns" data-toggle="modal" data-target="#EmployeesModal"><i class="fa fa-plus-circle fa-lg"></i>New Employee</button>
     }
     <table class="table table-sm table-striped table-bordered" id="myTable">
 
         <thead class="thead-dark">
             <tr>
                 <th style="display:none">Id</th>
-                <th>User name</th>
-                <th>First Name</th>
+                <th>First name</th>
+                <th>Middle Name</th>
                 <th>Last Name</th>
+                <th>Gender</th>
                 <th>Email</th>
                 <th>Phone Number</th>
                 <th width="23%">Actions</th>
             </tr>
         </thead>
         <tbody>
-            @foreach (System.Data.DataRow item in Model.dtUsers.Rows)
+            @foreach (System.Data.DataRow item in Model.dtEmployee.Rows)
             {
                 <tr>
-                    <td style="display:none">@Html.DisplayTextFor(modelItem => item["UserId"])</td>
-                    <td>@Html.DisplayTextFor(ModelItem => item["UserName"])</td>
+                    <td style="display:none">@Html.DisplayTextFor(modelItem => item["EmployeeId"])</td>
                     <td>@Html.DisplayTextFor(ModelItem => item["FirstName"])</td>
+                    <td>@Html.DisplayTextFor(ModelItem => item["MiddleName"])</td>
                     <td>@Html.DisplayTextFor(ModelItem => item["LastName"])</td>
+                    <td>@Html.DisplayTextFor(ModelItem => item["Gender"])</td>
                     <td>@Html.DisplayTextFor(ModelItem => item["Email"])</td>
                     <td>@Html.DisplayTextFor(ModelItem => item["PhoneNumber"])</td>
                     <td>
-                        @using (Html.BeginForm("EditUsers", ControllerName.Accounts, FormMethod.Post, new{ @class = "EditUser" }))
+                        @using (Html.BeginForm("EditEmployee", ControllerName.Setups, FormMethod.Post, new { @class = "EditEmployee" }))
                         {
                             if (ViewBag.AllowEdit)
                             {
@@ -52,13 +63,9 @@
                             }
                             if (ViewBag.AllowDelete)
                             {
-                                <button type="button" UserIdentifier="@item["UserId"]" class="btn-danger btn-xs UserBtnDanger btnDelete"><i class="fa fa-trash-o"></i>  Delete</button>
+                                <button type="button" EmployeeIdentifier="@item["EmployeeId"]" class="btn-danger btn-xs UserBtnDanger btnDelete"><i class="fa fa-trash-o"></i>  Delete</button>
                             }
-                            if (ViewBag.AssignRoles)
-                            {
-                                <a class="btn-info btn-xs UserBtnInfo" href="@Url.Action("ViewRoles",ControllerName.Accounts,new { id = item["UserId"]})">Assign Roles</a>
-                            }
-                            @Html.HiddenFor(m => m.UserId, new { @Value = item["UserId"] });
+                            @Html.HiddenFor(m => m.EmployeeId, new { @Value = item["EmployeeId"] });
                         }
                     </td>
                 </tr>
@@ -66,11 +73,11 @@
         </tbody>
     </table>
 </div>
-<div class="modal fade" id="UsersModal">
+<div class="modal fade" id="EmployeesModal">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">New User</h5>
+                <h5 class="modal-title">New Employee</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -78,70 +85,56 @@
             <div class="modal-body">
                 <div id="status-area"></div>
                 <form class="form" role="form">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                @Html.LabelFor(m => m.FirstName, new { @class = "col-md-12 control-label" })
-                                @Html.TextBoxFor(m => m.FirstName, new { @class = "form-control" })
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                @Html.LabelFor(m => m.LastName, new { @class = "col-md-12 control-label" })
-                                @Html.TextBoxFor(m => m.LastName, new { @class = "form-control" })
-                            </div>
+                    <div class="form-group row">
+                        @Html.LabelFor(m => m.FirstName, new { @class = "col-md-3 control-label" })
+                        <div class="col-md-8">
+                            @Html.TextBoxFor(m => m.FirstName, new { @class = "form-control",  maxlength = "30" })
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                @Html.LabelFor(m => m.Email, new { @class = "col-md-12 control-label" })
-                                @Html.TextBoxFor(m => m.Email, new { @class = "form-control" , type="email"})
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                @Html.LabelFor(m => m.Username, new { @class = "col-md-12 control-label" })
-                                @Html.TextBoxFor(m => m.Username, new { @class = "form-control" })
-                            </div>
+                    <div class="form-group row">
+                        @Html.LabelFor(m => m.MiddleName, new { @class = "col-md-3 control-label" })
+                        <div class="col-md-8">
+                            @Html.TextBoxFor(m => m.MiddleName, new { @class = "form-control", maxlength = "30" })
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                @Html.LabelFor(m => m.PhoneNumber, new { @class = "col-md-12 control-label" })
-                                @Html.TextBoxFor(m => m.PhoneNumber, new { @class = "form-control" })
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                @Html.LabelFor(m => m.Password, new { @class = "col-md-12 control-label" })
-                                @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
-                            </div>
+                    <div class="form-group row">
+                        @Html.LabelFor(m => m.LastName, new { @class = "col-md-3 control-label" })
+                        <div class="col-md-8">
+                            @Html.TextBoxFor(m => m.LastName, new { @class = "form-control", maxlength = "30" })
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                @Html.LabelFor(m => m.ConfirmPassword, new { @class = "col-md-12 control-label" })
-                                @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control" })
-                            </div>
+                    <div class="form-group row">
+                        @Html.LabelFor(m => m.Gender, new { @class = "col-md-3 control-label" })
+                        <div class="col-md-8">
+                            @Html.DropDownListFor(m => m.Gender,(IEnumerable<SelectListItem>)ViewData["Gender"] ,new { @class = "form-control" })
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        @Html.LabelFor(m => m.Email, new { @class = "col-md-3 control-label" })
+                        <div class="col-md-8">
+                            @Html.TextBoxFor(m => m.Email, new { @class = "form-control", maxlength = "100" })
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        @Html.LabelFor(m => m.PhoneNumber, new { @class = "col-md-3 control-label" })
+                        <div class="col-md-8">
+                            @Html.TextBoxFor(m => m.PhoneNumber, new { @class = "form-control", maxlength = "20" })
                         </div>
                     </div>
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary" id="SaveUser">Save</button>
+                <button type="button" class="btn btn-primary" id="SaveEmployee">Save</button>
                 <button type="button" class="btn btn-default btnClose" data-dismiss="modal">Close</button>
             </div>
         </div>
     </div>
 </div>
-<div class="modal fade" id="EditUserModal">
+<div class="modal fade" id="EditEmployeeModal">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Edit User</h5>
+                <h5 class="modal-title">Edit Employee</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -150,7 +143,7 @@
 
             </div>
             <div class="modal-footer">
-                <button type="submit" class="btn btn-primary" id="UpdateUser">Update</button>
+                <button type="submit" class="btn btn-primary" id="UpdateEmployee">Update</button>
                 <button type="button" class="btn btn-default btnClose" data-dismiss="modal">Close</button>
             </div>
         </div>
@@ -163,18 +156,22 @@
     <script type="text/javascript">
 
         $(document).ready(function () {
-            //clear the text field UserName
+            //clear the text fields
             function clearValues() {
-                $("#Username").val('');
                 $("#FirstName").val('');
+                $("#MiddleName").val('');
                 $("#LastName").val('');
                 $("#Email").val('');
                 $("#PhoneNumber").val('');
-                $("#Password").val('');
-                $("#ConfirmPassword").val('');
+                $("#Gender").val('');
             }
 
-            $("#UpdateUser").click(function () {
+            //putting focus on First Name text field after the modal pop up
+            $('#EmployeesModal').on('shown.bs.modal', function () {
+                $('#FirstName').focus();
+            })
+
+            $("#UpdateEmployee").click(function () {
 
                 var ValidateMsg = IsValidEditData();
                 if (ValidateMsg != "") {
@@ -182,15 +179,15 @@
                     return false;
                 }
 
-                var UsersData = {
-                    UserId: $("#EditUserId").val(), UserName: $("#EditUserName").val(), FirstName: $("#EditFirstName").val(),
+                var EmployeesData = {
+                    EmployeeId: $("#EditEmployeeId").val(), MiddleName: $("#EditMiddleName").val(), FirstName: $("#EditFirstName").val(),
                     LastName: $("#EditLastName").val(), Email: $("#EditEmail").val(), PhoneNumber: $("#EditPhoneNumber").val(),
-                    isLoad: $("#isLoad").val(), Password: $("#EditPassword").val()
+                    isLoad: $("#isLoad").val(),Gender: $("#EditGender").val()
                 };
                 $.ajax({
                     type: "POST",
-                    url: '@Url.Action("EditUsers", ControllerName.Accounts)',
-                    data: UsersData,
+                    url: '@Url.Action("EditEmployee", ControllerName.Setups)',
+                    data: EmployeesData,
                     dataType: "json",
                     success: function (data) {
                         if (data.msg.toString() == "@FASM_GN.FASM_Msg.Updated") {
@@ -207,7 +204,7 @@
                     }
                 });
             })
-           // Checking the validity of email
+            // Checking the validity of email
             function ValidateEmail(email) {
                 var expr = /^([\w\.\-_]+)?\w+@@[\w-_]+(\.\w+){1,}$/igm;
                 return expr.test(email);
@@ -245,31 +242,29 @@
             function IsValidData() {
                 if ($("#FirstName").val() == "") {
                     return "Please fill in the first name";
+                } else if ($("#MiddleName").val() == "") {
+                    return "Please fill in the middle name";
                 } else if ($("#LastName").val() == "") {
                     return "Please fill in the last name";
-                }if ($("#Username").val() == "") {
-                    return "Please fill in the user name";
                 } else if ($("#PhoneNumber").val() == "") {
                     return "Please fill in the phone number";
-                } else if ($("#Password").val() == "") {
-                    return "Please fill in the password";
-                } else if ($("#ConfirmPassword").val() == "") {
-                    return "Please fill in the confirm password";
+                } else if ($("#Email").val() == "") {
+                    return "Please fill in the Email";
                 }
                 return "";
             }
 
             function IsValidEditData() {
-                if ($("#EditUserName").val() == "") {
-                    return "Please fill in the user name";
-                } else if ($("#EditFirstName").val() == "") {
+                if ($("#EditFirstName").val() == "") {
+                    return "Please fill in the Employee name";
+                } else if ($("#EditMiddleName").val() == "") {
                     return "Please fill in the first name";
                 } else if ($("#EditLastName").val() == "") {
                     return "Please fill in the last name";
-                } else if ($("#EditPassword").val() == "") {
-                    return "Please fill in the password";
                 } else if ($("#EditPhoneNumber").val() == "") {
                     return "Please fill in the phone number";
+                } else if ($("#EditEmail").val() == "") {
+                    return "Please fill in the Email";
                 }
                 return "";
             }
@@ -280,12 +275,12 @@
                 location.reload();
             });
 
-            $('.EditUser').submit(function (e) {
+            $('.EditEmployee').submit(function (e) {
                 e.preventDefault();
                 var $form = $(this);
 
                 $.post($form.attr("action"), $form.serialize()).done(function (res) {
-                    $mymodal = $("#EditUserModal");
+                    $mymodal = $("#EditEmployeeModal");
                     //update the modal's body with the response received
                     $mymodal.find("div.modal-body").html(res);
                     // Show the modal
@@ -294,7 +289,7 @@
             });
 
             //For Saving Purposes
-            $("#SaveUser").click(function () {
+            $("#SaveEmployee").click(function () {
 
                 var ValidateMsg = IsValidData();
                 if (ValidateMsg != "") {
@@ -302,25 +297,19 @@
                     return false;
                 }
 
-                var UsersData = {
-                    UserName: $("#Username").val(), FirstName: $("#FirstName").val(),
-                    LastName: $("#LastName").val(), Email: $("#Email").val(), PhoneNumber: $("#PhoneNumber").val(),
-                    Password: $("#Password").val(), ConfirmPassword: $("#ConfirmPassword").val()
+                var EmployeesData = {
+                    MiddleName: $("#MiddleName").val(), FirstName: $("#FirstName").val(),
+                    LastName: $("#LastName").val(), Email: $("#Email").val(), PhoneNumber: $("#PhoneNumber").val(), Gender: $("#Gender").val()
                 };
 
                 $.ajax({
                     type: "POST",
-                    url: '@Url.Action("CreateUsers",ControllerName.Accounts)',
-                    data: UsersData,
+                    url: '@Url.Action("CreateEmployee",ControllerName.Setups)',
+                    data: EmployeesData,
                     dataType: "json",
                     success: function (data) {
-                        if (data.msg.toString() == "Successfully created!") {
                             ShowNotice('#status-area', data.msg, "Success");
                             clearValues();
-                        }
-                        else {
-                            ShowNotice('#status-area', data.msg, "Failure");
-                        }
                     },
                     error: function () {
                         ShowNotice('#status-area', "Error occured!!", "Failure");
@@ -330,19 +319,19 @@
             $('#myTable').DataTable();
 
 
-            //Delete Users
+            //Delete Employees
             $("button.btnDelete").click(function () {
-                var Id = $(this).attr("UserIdentifier");
+                var Id = $(this).attr("EmployeeIdentifier");
                 DeleteItem(Id);
 
             });
 
             function DeleteItem(Id) {
-                DataObject = { UserId: Id };
+                DataObject = { EmployeeId: Id };
 
                 swal({
                     title: "Confirm Deletion",
-                    text: "Are you sure that you want to delete this User?",
+                    text: "Are you sure that you want to delete this Employee?",
                     type: "warning",
                     showCancelButton: true,
                     closeOnConfirm: false,
@@ -350,7 +339,7 @@
                     confirmButtonColor: "#ec6c62"
                 }, function () {
                     $.ajax({
-                        url: '@Url.Action("DeleteUsers",ControllerName.Accounts)',
+                        url: '@Url.Action("DeleteEmployee",ControllerName.Setups)',
                         type: "POST",
                         data: DataObject,
                         dataType: "json",
@@ -368,6 +357,10 @@
         });
     </script>
 }
+
+
+
+
 
 
 

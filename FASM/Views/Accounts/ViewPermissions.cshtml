@@ -14,6 +14,9 @@
             font-weight:bold;
             font-size:14px;
         }
+        #status-area{
+            margin-bottom:20px;
+        }
     </style>
     
     @Styles.Render("~/plugin/sweetAlertStyles")
@@ -46,7 +49,7 @@
                 if (item["ModName"].ToString() == "Setups")
                 {
                 <div class="col-md-3">
-                    <p class="para"><input type="checkbox" @item["isChecked"] class="chkPermit" name="checkboxpermit"/>   @item["Description"]  @Html.HiddenFor(m => m.PermissionId, new { @Value = @item["Permissionid"], @class = "PermissionId" })</p>
+                    <p class="para"><input type="checkbox" @item["isChecked"]  name="checkboxpermit"/>   @item["Description"]  @Html.HiddenFor(m => m.PermissionId, new { @Value = @item["Permissionid"], @class = "PermissionId" })</p>
                 </div>
             }
         }
@@ -98,7 +101,7 @@
                 $("#chkCheckAll").prop("checked",false);
             }
         });
-       
+
 
         function SavePermissions() {
             var $tweets = $(".PermissionId");
@@ -118,9 +121,15 @@
                 contentType: 'application/json; charset=utf-8',
                 data: JSON.stringify(ePermissions),
                 dataType: "json",
-                success: function (data) {
-                    swal("Successfully Assigned Permissions");
-                },
+                 success: function (data) {
+                        if (data.msg.toString() == "@FASM_GN.FASM_Msg.SuccessfulSaved") {
+                            swal("Successfully assigned permissions");
+                        }
+                        else {
+                            ShowNotice('#status-area', data.msg, "Failure");
+                        }
+                        clearValues();
+                    },
                 error: function () {
                     swal("Sorry An error occured!!");
                 }

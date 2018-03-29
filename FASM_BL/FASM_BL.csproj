@@ -51,8 +51,11 @@
   <ItemGroup>
     <Compile Include="Class1.cs" />
     <Compile Include="FASM_APP\AssetDefinitionBL.cs" />
+    <Compile Include="FASM_APP\AssetRegisterBL.cs" />
     <Compile Include="FASM_APP\CategoriesBL.cs" />
+    <Compile Include="FASM_APP\DepartmentsBL.cs" />
     <Compile Include="FASM_APP\DistrictsBL.cs" />
+    <Compile Include="FASM_APP\EmployeesBL.cs" />
     <Compile Include="FASM_APP\LocationBL.cs" />
     <Compile Include="FASM_APP\LoginBL.cs" />
     <Compile Include="FASM_APP\MapRolePermissionBL.cs" />
